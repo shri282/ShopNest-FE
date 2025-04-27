@@ -4,11 +4,14 @@ import ProductCards from '../components/ProductCards';
 import axios from 'axios';
 import { Product } from '../interfaces/Product';
 import "./css/home.css"
+import { Button } from '@mui/material';
+import AddProductPopup from '../components/popups/AddProductPopup';
 
 const Home: React.FC = () => {
 
   const [products, setProducts] = useState<Product[] | null>(null);
   const [error, setError] = useState<Error | null>(null);
+  const [open, setOpen] = React.useState(false);
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -33,6 +36,11 @@ const Home: React.FC = () => {
   return (
     <div className='home-container'>
       <Header />
+      <div className='product-action'>
+        <h4>Total products: {products?.length || 0}</h4>
+        <Button variant="outlined" onClick={() => setOpen(true)}>Add product</Button>
+      </div>
+      <AddProductPopup open={open} setOpen={setOpen} />
       {
         error?.message || <ProductCards products={products || []} />
       }
