@@ -81,12 +81,6 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ setOpen, open }) => {
         }
     };
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files.length > 0) {
-            setValue('image', e.target.files[0]);
-        }
-    };
-
     console.log('Current form values:', watch());
     return (
         <Dialog
@@ -219,18 +213,22 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ setOpen, open }) => {
 
                     <div className="input-group">
                         <label htmlFor="image" className="label">Upload Image</label>
-                        <input
-                            type="file"
-                            id="image"
-                            className="input-file"
-                            {...register('image')}
-                            onChange={handleImageChange}
+                        <Controller
+                            name="image"
+                            control={control}
+                            render={({ field }) => (
+                                <input
+                                    type="file"
+                                    id="image"
+                                    className="input-file"
+                                    onChange={(e) => {
+                                        if (e.target.files && e.target.files.length > 0) {
+                                            field.onChange(e.target.files[0]);
+                                        }
+                                    }}
+                                />
+                            )}
                         />
-                        {watch('image') && (
-                            <div style={{ marginTop: '8px' }}>
-                                Selected: {watch('image')?.name}
-                            </div>
-                        )}
                     </div>
 
                     <div className="availability-toggle">

@@ -9,6 +9,9 @@ export interface Product {
     description: string;
     updatetedAt: Date;
     createdAt: Date;
+    image: String;
+    imageType: String;
+    imageName: String;
 }
 export interface AddProduct {
     name: string;
