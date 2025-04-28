@@ -38,7 +38,7 @@ const Home: React.FC = () => {
       </div>
 
       <div className='products'>
-        <FallBackWrapper fallback={(() => Boolean(error?.message))()} fallbackComponent={<div>ddd</div>}>
+        <FallBackWrapper fallback={(() => Boolean(error?.message))} fallbackComponent={<div>ddd</div>}>
           <ProductCards products={products} />
         </FallBackWrapper>
       </div>

@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
 interface FallBackWrapperProps {
-    fallback: boolean;
+    fallback: () => boolean;
     fallbackComponent: ReactNode;
     children: ReactNode;
 }
@@ -13,7 +13,7 @@ const FallBackWrapper: React.FC<FallBackWrapperProps> = ({
 }) => {
     return (
         <>
-            {fallback ? fallbackComponent : children}
+            {fallback() ? fallbackComponent : children}
         </>
     );
 };
