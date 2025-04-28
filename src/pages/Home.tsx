@@ -7,6 +7,7 @@ import "./css/home.css"
 import { Button } from '@mui/material';
 import AddProductPopup from '../components/popups/AddProductPopup';
 import FallBackWrapper from '../common/FallBackWrapper';
+import ProductService from '../services/ProductService';
 
 const Home: React.FC = () => {
 
@@ -16,14 +17,8 @@ const Home: React.FC = () => {
 
   const fetchProducts = useCallback(async () => {
     try {
-      const response = await axios.get<Product[]>("http://localhost:8080/products", {
-        headers: {
-          // 'Authorization': 'Bearer your_token_here',
-          'Content-Type': 'application/json',
-        }
-      });
-
-      setProducts(response.data);
+      const data = await ProductService.getProducts();
+      setProducts(data);
     } catch (error: any) {
       setError(error);
     }

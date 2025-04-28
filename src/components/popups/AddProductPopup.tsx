@@ -1,9 +1,9 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import React from 'react';
 import { AddProduct } from '../../interfaces/Product';
-import axios from 'axios';
 import { useForm, Controller } from 'react-hook-form';
 import { TextField } from '@mui/material';
+import ProductService from '../../services/ProductService';
 import "../css/addProductPopup.css";
 
 interface AddProductPopupProps {
@@ -37,37 +37,9 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ setOpen, open }) => {
 
     const onSubmit = async (data: AddProduct) => {
         try {
-            const formData = new FormData();
-
-            // Create product object
-            const product = {
-                name: data.name,
-                brand: data.brand,
-                availability: data.availability,
-                category: data.category,
-                description: data.description,
-                prize: data.prize,
-                quantity: data.quantity
-            };
-
-            // Append product as JSON string
-            formData.append('product', new Blob([JSON.stringify(product)], {
-                type: 'application/json'
-            }));
-
-            // Append image file if exists
-            if (data.image) {
-                formData.append('image', data.image);
-            }
-
-            await axios.post("http://localhost:8080/products", formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
-            });
-
-            alert("Product added successfully");
+            const product = await ProductService.addProduct(data);
             handleClose();
+            alert("Product added successfully");
         } catch (error: any) {
             alert("Error in adding product: " + error.message);
         }

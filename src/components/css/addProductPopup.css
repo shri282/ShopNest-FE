@@ -24,6 +24,7 @@
     background-color: black;
     display: flex;
     justify-content: center;
+    z-index: 2;
 }
 
 /* Content Area */
@@ -161,6 +162,7 @@ input:checked+.toggle-slider:before {
     gap: 12px;
     position: sticky;
     bottom: 0px;
+    z-index: 2;
 }
 
 /* Button Styling */
