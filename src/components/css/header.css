@@ -23,6 +23,7 @@
 .header__logo {
     height: 40px;
     margin-right: 20px;
+    cursor: pointer;
 }
 
 .header__location {

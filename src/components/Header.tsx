@@ -3,12 +3,14 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import './css/header.css';
 import { MenuItem, Select } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const Header: React.FC = () => {
+    const navigate = useNavigate()
     return (
         <header className="header">
             <div className="header__left">
-                <img className="header__logo" src="/images/logo192.png" alt="Logo" />
+                <img onClick={() => navigate("/")} className="header__logo" src="/images/logo192.png" alt="Logo" />
                 <div className="header__location">
                     <LocationOnOutlinedIcon className="header__location-icon" />
                     <div className="header__location-text">
