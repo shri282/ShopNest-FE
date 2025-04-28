@@ -6,14 +6,16 @@ import FallBackWrapper from '../common/FallBackWrapper';
 import ProductService from '../services/ProductService';
 import "./css/product.css";
 import { Button, Chip, Rating, Skeleton, Typography } from '@mui/material';
-import { ShoppingCart, FavoriteBorder, Favorite, Star, StarBorder } from '@mui/icons-material';
+import { ShoppingCart, FavoriteBorder, Favorite, StarBorder } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/system';
+import UpdateProductPopup from '../components/popups/UpdateProductPopup';
 
 const Product = () => {
     const { id } = useParams();
     const [product, setProduct] = useState<IProduct | null>(null);
     const [isFavorite, setIsFavorite] = useState(false);
+    const [updatePopupOpen, setUpdatePopupOpen] = useState<boolean>(false);
     const theme = useTheme();
 
     const getProduct = useCallback(async () => {
@@ -219,11 +221,12 @@ const Product = () => {
 
                                     </div>
                                 )}
-                                
+
                                 <Button
                                     variant="contained"
                                     color="secondary"
                                     size="large"
+                                    onClick={() => setUpdatePopupOpen(true)}
                                     style={{ marginTop: '10px', textTransform: 'none' }}
                                 >
                                     Update
@@ -241,6 +244,9 @@ const Product = () => {
                                         <strong> 24/7</strong> customer support.
                                     </Typography>
                                 </div>
+                            </div>
+                            <div className='prod-popups'>
+                                <UpdateProductPopup open={updatePopupOpen} setOpen={setUpdatePopupOpen} product={product} />
                             </div>
                         </div>
                     )
