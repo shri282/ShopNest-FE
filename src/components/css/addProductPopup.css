@@ -1,82 +1,96 @@
-/* addProductPopup.css */
+/* addProductPopup.css - No Input Animations Version */
 
-/* Base Dialog Styling */
+/* ================ Base Styles ================ */
+.add-product-popup {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ================ Dialog Container ================ */
 .add-product-popup .MuiPaper-root {
     border-radius: 16px !important;
     width: 580px;
     max-width: 95vw;
     background: #ffffff;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-    animation: fadeIn 0.25s ease-out forwards;
-    scrollbar-width: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
 
-/* Title Section */
+/* ================ Title Section ================ */
 .dialog-title {
-    padding: 24px 32px 16px !important;
-    font-size: 1.4rem !important;
-    font-weight: 700 !important;
-    color: white;
-    background: white;
-    border-bottom: 1px solid #e5e7eb;
-    position: sticky;
-    top: 0;
-    background-color: black;
     display: flex;
+    align-items: center;
     justify-content: center;
-    z-index: 2;
+    color: white;
+    padding: 20px 24px !important;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    font-weight: 600 !important;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Content Area */
+/* ================ Content Area ================ */
 .dialog-content {
-    padding: 24px 32px !important;
-    background: #ffffff;
+    padding: 28px 32px !important;
+    background: #f8fafc;
+    max-height: 70vh;
+    overflow-y: auto;
 }
 
-/* Input Grid Layout */
+/* ================ Form Elements ================ */
 .input-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 
-/* Material-UI TextField Customization */
 .input-group .MuiFormControl-root {
     width: 100%;
+    margin-top: 4px;
 }
 
 .input-group .MuiInputLabel-root {
-    color: #374151;
-    font-size: 0.9rem;
+    color: #475569;
+    font-size: 0.85rem;
     font-weight: 500;
 }
 
+.image-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.input-group .MuiInputLabel-root.Mui-focused {
+    color: #4f46e5;
+}
+
 .input-group .MuiOutlinedInput-root {
-    border-radius: 8px;
+    border-radius: 10px;
+    background: white;
 }
 
 .input-group .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
-    border-color: #d1d5db;
+    border-color: #94a3b8;
 }
 
 .input-group .Mui-focused .MuiOutlinedInput-notchedOutline {
-    border-color: #6366f1 !important;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    border-color: #4f46e5 !important;
+    border-width: 2px;
 }
 
 .input-group .Mui-error .MuiOutlinedInput-notchedOutline {
-    border-color: #ef4444 !important;
+    border-color: #dc2626 !important;
 }
 
 .input-group .MuiFormHelperText-root {
     margin-left: 0;
     font-size: 0.75rem;
+    margin-top: 6px;
 }
 
-/* File Input Customization */
+/* ================ File Input ================ */
 .input-file-group {
-    margin-top: 16px;
+    margin-top: 20px;
 }
 
 .input-file-label {
@@ -84,40 +98,28 @@
     margin-bottom: 8px;
     font-size: 0.85rem;
     font-weight: 600;
-    color: #374151;
+    color: #475569;
 }
 
-.input-file {
-    width: 100%;
-    padding: 12px 0;
-    font-size: 0.9rem;
-}
-
-/* Toggle Switch Styling */
+/* ================ Toggle Switch ================ */
 .availability-toggle {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-top: 16px;
+    margin-top: 20px;
 }
 
 .toggle-label {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #374151;
+    color: #475569;
 }
 
 .toggle-switch {
     position: relative;
     display: inline-block;
-    width: 50px;
-    height: 26px;
-}
-
-.toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
+    width: 52px;
+    height: 28px;
 }
 
 .toggle-slider {
@@ -127,103 +129,96 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #e5e7eb;
-    transition: .4s;
+    background-color: #e2e8f0;
     border-radius: 34px;
 }
 
 .toggle-slider:before {
     position: absolute;
     content: "";
-    height: 18px;
-    width: 18px;
+    height: 20px;
+    width: 20px;
     left: 4px;
     bottom: 4px;
     background-color: white;
-    transition: .4s;
     border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 input:checked+.toggle-slider {
-    background-color: #6366f1;
+    background-color: #4f46e5;
 }
 
 input:checked+.toggle-slider:before {
     transform: translateX(24px);
 }
 
-/* Actions Bar */
+/* ================ Actions Bar ================ */
 .dialog-actions {
-    padding: 20px 32px !important;
-    background: white;
-    border-top: 1px solid #e5e7eb;
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
-    position: sticky;
-    bottom: 0px;
-    z-index: 2;
+    gap: 16px;
+    padding: 20px 32px !important;
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
 }
 
-/* Button Styling */
+/* ================ Buttons ================ */
 .close-button {
     text-transform: none !important;
-    font-weight: 600 !important;
-    padding: 10px 20px !important;
-    border-radius: 8px !important;
+    font-weight: 500 !important;
+    padding: 8px 24px !important;
+    border-radius: 10px !important;
     font-size: 0.9rem !important;
-    color: #6b7280 !important;
+    color: #475569 !important;
     background: transparent !important;
-    border: 1px solid #e5e7eb !important;
+    border: 1px solid #cbd5e1 !important;
 }
 
 .close-button:hover {
-    background: #f3f4f6 !important;
+    background: #f1f5f9 !important;
 }
 
 .add-button {
     text-transform: none !important;
     font-weight: 600 !important;
-    padding: 10px 20px !important;
-    border-radius: 8px !important;
+    padding: 8px 28px !important;
+    border-radius: 10px !important;
     font-size: 0.9rem !important;
-    background: #6366f1 !important;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
     color: white !important;
-    box-shadow: none !important;
 }
 
-.add-button:hover {
-    background: #4f46e5 !important;
-}
-
-/* Animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Responsive Adjustments */
+/* ================ Responsive Design ================ */
 @media (max-width: 640px) {
     .input-row {
         grid-template-columns: 1fr;
+        gap: 16px;
     }
 
     .dialog-title,
     .dialog-content,
     .dialog-actions {
-        padding-left: 24px !important;
-        padding-right: 24px !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
     }
 
-    .add-product-popup .MuiPaper-root {
-        width: 90vw;
-        margin: 0 !important;
+    .dialog-title {
+        padding: 16px 20px !important;
+    }
+
+    .dialog-content {
+        padding: 20px !important;
+    }
+
+    .dialog-actions {
+        padding: 16px 20px !important;
+        flex-direction: column-reverse;
+        gap: 12px;
+    }
+
+    .close-button,
+    .add-button {
+        width: 100%;
     }
 }

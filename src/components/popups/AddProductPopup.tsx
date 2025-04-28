@@ -5,6 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { TextField } from '@mui/material';
 import ProductService from '../../services/ProductService';
 import "../css/addProductPopup.css";
+import ProductForm from '../ProductForm';
 
 interface AddProductPopupProps {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -54,170 +55,16 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ setOpen, open }) => {
             className="add-product-popup"
         >
             <DialogTitle id="add-product-dialog-title" className="dialog-title">
-                Add Product
+                Product
             </DialogTitle>
+            <DialogContent className='dialog-content'>
+                <ProductForm control={control} errors={errors} onSubmit={handleSubmit(onSubmit)} defaultValues={{}} />
+            </DialogContent>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <DialogContent className="dialog-content">
-                    <div className="input-row">
-                        <div className="input-group">
-                            <Controller
-                                name="name"
-                                control={control}
-                                rules={{ required: 'Name is required' }}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label="Name"
-                                        fullWidth
-                                        error={!!errors.name}
-                                        helperText={errors.name?.message}
-                                    />
-                                )}
-                            />
-                        </div>
-
-                        <div className="input-group">
-                            <Controller
-                                name="brand"
-                                control={control}
-                                rules={{ required: 'Brand is required' }}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label="Brand"
-                                        fullWidth
-                                        error={!!errors.brand}
-                                        helperText={errors.brand?.message}
-                                    />
-                                )}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="input-row">
-                        <div className="input-group">
-                            <Controller
-                                name="description"
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label="Description"
-                                        fullWidth
-                                        multiline
-                                        rows={3}
-                                    />
-                                )}
-                            />
-                        </div>
-
-                        <div className="input-group">
-                            <Controller
-                                name="category"
-                                control={control}
-                                rules={{ required: 'Category is required' }}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label="Category"
-                                        fullWidth
-                                        error={!!errors.category}
-                                        helperText={errors.category?.message}
-                                    />
-                                )}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="input-row">
-                        <div className="input-group">
-                            <Controller
-                                name="prize"
-                                control={control}
-                                rules={{
-                                    required: 'Price is required',
-                                    min: { value: 0, message: 'Price must be positive' }
-                                }}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label="Price"
-                                        type="number"
-                                        fullWidth
-                                        error={!!errors.prize}
-                                        helperText={errors.prize?.message}
-                                    />
-                                )}
-                            />
-                        </div>
-
-                        <div className="input-group">
-                            <Controller
-                                name="quantity"
-                                control={control}
-                                rules={{
-                                    required: 'Quantity is required',
-                                    min: { value: 0, message: 'Quantity must be positive' }
-                                }}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label="Quantity"
-                                        type="number"
-                                        fullWidth
-                                        error={!!errors.quantity}
-                                        helperText={errors.quantity?.message}
-                                    />
-                                )}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="input-group">
-                        <label htmlFor="image" className="label">Upload Image</label>
-                        <Controller
-                            name="image"
-                            control={control}
-                            render={({ field }) => (
-                                <input
-                                    type="file"
-                                    id="image"
-                                    className="input-file"
-                                    onChange={(e) => {
-                                        if (e.target.files && e.target.files.length > 0) {
-                                            field.onChange(e.target.files[0]);
-                                        }
-                                    }}
-                                />
-                            )}
-                        />
-                    </div>
-
-                    <div className="availability-toggle">
-                        <span className="toggle-label">Availability</span>
-                        <Controller
-                            name="availability"
-                            control={control}
-                            render={({ field }) => (
-                                <label className="toggle-switch">
-                                    <input
-                                        type="checkbox"
-                                        checked={field.value}
-                                        onChange={(e) => field.onChange(e.target.checked)}
-                                    />
-                                    <span className="toggle-slider"></span>
-                                </label>
-                            )}
-                        />
-                    </div>
-                </DialogContent>
-
-                <DialogActions className="dialog-actions">
-                    <Button onClick={handleClose} className="close-button">Close</Button>
-                    <Button type="submit" autoFocus className="add-button">Add</Button>
-                </DialogActions>
-            </form>
+            <DialogActions className="dialog-actions">
+                <Button onClick={handleClose} className="close-button">Close</Button>
+                <Button type="submit" autoFocus className="add-button">Add</Button>
+            </DialogActions>
         </Dialog>
     );
 };
