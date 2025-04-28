@@ -1,17 +1,19 @@
 /* addProductPopup.css - No Input Animations Version */
 
 /* ================ Base Styles ================ */
-.add-product-popup {
+.product-popup {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* ================ Dialog Container ================ */
-.add-product-popup .MuiPaper-root {
+.product-popup .MuiPaper-root {
     border-radius: 16px !important;
     width: 580px;
     max-width: 95vw;
     background: #ffffff;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    max-height: calc(100vh - 64px);
+    scrollbar-width: none;
 }
 
 /* ================ Title Section ================ */
@@ -25,14 +27,23 @@
     font-weight: 600 !important;
     letter-spacing: 0.5px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 /* ================ Content Area ================ */
 .dialog-content {
     padding: 28px 32px !important;
     background: #f8fafc;
-    max-height: 70vh;
-    overflow-y: auto;
+    overflow-y: visible !important;
+}
+
+.image-preview {
+    display: block;
+    max-width: 50%;
+    object-fit: contain;
+    margin-bottom: 10px;
 }
 
 /* ================ Form Elements ================ */
@@ -161,6 +172,9 @@ input:checked+.toggle-slider:before {
     padding: 20px 32px !important;
     background: #ffffff;
     border-top: 1px solid #e2e8f0;
+    position:sticky;
+    bottom: 0;
+    z-index: 2;
 }
 
 /* ================ Buttons ================ */

@@ -17,7 +17,8 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ setOpen, open }) => {
         control,
         handleSubmit,
         formState: { errors },
-        reset
+        reset,
+        watch
     } = useForm<AddProduct>({
         defaultValues: {
             name: "",
@@ -52,19 +53,22 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ setOpen, open }) => {
             onClose={handleClose}
             aria-labelledby="add-product-dialog-title"
             aria-describedby="add-product-dialog-description"
-            className="add-product-popup"
+            className="product-popup"
         >
             <DialogTitle id="add-product-dialog-title" className="dialog-title">
                 Product
             </DialogTitle>
-            <DialogContent className='dialog-content'>
-                <ProductForm control={control} errors={errors} onSubmit={handleSubmit(onSubmit)} defaultValues={{}} />
-            </DialogContent>
 
-            <DialogActions className="dialog-actions">
-                <Button onClick={handleClose} className="close-button">Close</Button>
-                <Button type="submit" autoFocus className="add-button">Add</Button>
-            </DialogActions>
+            <form onSubmit={handleSubmit(onSubmit)} action="">
+                <DialogContent className='dialog-content'>
+                    <ProductForm watch={watch} control={control} errors={errors} defaultValues={{}} />
+                </DialogContent>
+
+                <DialogActions className="dialog-actions">
+                    <Button onClick={handleClose} className="close-button">Close</Button>
+                    <Button type="submit" autoFocus className="add-button">Add</Button>
+                </DialogActions>
+            </form>
         </Dialog>
     );
 };

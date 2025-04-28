@@ -8,6 +8,7 @@ import { Button } from '@mui/material';
 import AddProductPopup from '../components/popups/AddProductPopup';
 import FallBackWrapper from '../common/FallBackWrapper';
 import ProductService from '../services/ProductService';
+import UpdateProductPopup from '../components/popups/UpdateProductPopup';
 
 const Home: React.FC = () => {
 
@@ -46,8 +47,9 @@ const Home: React.FC = () => {
 
       <div className='popups'>
         {
-          <AddProductPopup open={open} setOpen={setOpen} />
+          products.length && <UpdateProductPopup open={open} setOpen={setOpen} product={products[0]} />
         }
+        {/* <AddProductPopup open={open} setOpen={setOpen} /> */}
       </div>
 
     </div>

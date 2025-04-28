@@ -5,13 +5,13 @@ import { TextField, Button } from '@mui/material';
 interface ProductFormProps {
     control: any;
     errors: any;
-    onSubmit: (data: any) => void;
     defaultValues: any;
+    watch: any;
 }
 
-const ProductForm: React.FC<ProductFormProps> = ({ control, errors, onSubmit, defaultValues }) => {
+const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, defaultValues }) => {
     return (
-        <form onSubmit={onSubmit}>
+        <>
             <div className="input-row">
                 <div className="input-group">
                     <Controller
@@ -131,6 +131,13 @@ const ProductForm: React.FC<ProductFormProps> = ({ control, errors, onSubmit, de
             </div>
 
             <div className="input-group">
+                {watch('image') && (
+                    <img
+                        src={URL.createObjectURL(watch('image'))}
+                        alt="Preview"
+                        className="image-preview"
+                    />
+                )}
                 <span className="image-label">Upload Image </span>
                 <Controller
                     name="image"
@@ -143,6 +150,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ control, errors, onSubmit, de
                             onChange={(e) => {
                                 if (e.target.files && e.target.files.length > 0) {
                                     field.onChange(e.target.files[0]);
+                                } else {
+                                    field.onChange(null);
                                 }
                             }}
                         />
@@ -169,7 +178,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ control, errors, onSubmit, de
                 />
             </div>
 
-        </form>
+        </>
     );
 };
 
