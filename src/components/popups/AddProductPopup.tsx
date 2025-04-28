@@ -1,11 +1,10 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import React from 'react';
-import { AddProduct } from '../../interfaces/Product';
-import { useForm, Controller } from 'react-hook-form';
-import { TextField } from '@mui/material';
+import { IAddProduct } from '../../interfaces/Product';
+import { useForm } from 'react-hook-form';
 import ProductService from '../../services/ProductService';
-import "../css/addProductPopup.css";
 import ProductForm from '../ProductForm';
+import "../css/addProductPopup.css";
 
 interface AddProductPopupProps {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,7 +18,7 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ setOpen, open }) => {
         formState: { errors },
         reset,
         watch
-    } = useForm<AddProduct>({
+    } = useForm<IAddProduct>({
         defaultValues: {
             name: "",
             brand: "",
@@ -37,7 +36,7 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ setOpen, open }) => {
         setOpen(false);
     };
 
-    const onSubmit = async (data: AddProduct) => {
+    const onSubmit = async (data: IAddProduct) => {
         try {
             const product = await ProductService.addProduct(data);
             handleClose();

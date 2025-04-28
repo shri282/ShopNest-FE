@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { Product, AddProduct, UpdateProduct } from '../interfaces/Product';
+import { IProduct, IAddProduct, IUpdateProduct } from '../interfaces/Product';
 
 class ProductService {
 
-    static async addProduct(data: AddProduct) {
+    static async addProduct(data: IAddProduct) {
         const formData = new FormData();
 
         const { image, ...productObj } = data;
@@ -23,7 +23,7 @@ class ProductService {
         return product;
     }
 
-    static async updateProduct(data: UpdateProduct) {
+    static async updateProduct(data: IUpdateProduct) {
         const formData = new FormData();
 
         const { image, ...productObj } = data;
@@ -42,7 +42,18 @@ class ProductService {
     }
 
     static async getProducts() {
-        const response = await axios.get<Product[]>("http://localhost:8080/products", {
+        const response = await axios.get<IProduct[]>("http://localhost:8080/products", {
+            headers: {
+                // 'Authorization': 'Bearer your_token_here',
+                'Content-Type': 'application/json',
+            }
+        });
+
+        return response.data;
+    }
+
+    static async getProduct(id: number) {
+        const response = await axios.get<IProduct>(`http://localhost:8080/products/${id}`, {
             headers: {
                 // 'Authorization': 'Bearer your_token_here',
                 'Content-Type': 'application/json',

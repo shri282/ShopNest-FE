@@ -1,4 +1,4 @@
-export interface Product {
+export interface IProduct {
     id: number;
     name: string;
     prize: number;
@@ -13,7 +13,7 @@ export interface Product {
     imageType: String;
     imageName: String;
 }
-export interface AddProduct {
+export interface IAddProduct {
     name: string;
     prize: number;
     quantity: number;
@@ -24,7 +24,7 @@ export interface AddProduct {
     image: File | null;
 }
 
-export interface UpdateProduct {
+export interface IUpdateProduct {
     id: number;
     name: string;
     prize: number;

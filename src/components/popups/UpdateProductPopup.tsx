@@ -3,18 +3,18 @@ import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import ProductForm from '../ProductForm';
 import { useForm } from 'react-hook-form';
-import { Product, UpdateProduct } from '../../interfaces/Product';
+import { IProduct, IUpdateProduct } from '../../interfaces/Product';
 import "../css/addProductPopup.css";
 import ProductService from '../../services/ProductService';
 
 interface UpdateProductPopupProps {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     open: boolean;
-    product: Product;
+    product: IProduct;
 }
 
 const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, product }) => {
-    const { control, handleSubmit, formState: { errors }, reset, watch } = useForm<UpdateProduct>({
+    const { control, handleSubmit, formState: { errors }, reset, watch } = useForm<IUpdateProduct>({
         defaultValues: {
             id: product.id,
             name: product.name,
@@ -33,7 +33,7 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, 
         setOpen(false);
     };
 
-    const onSubmit = async (data: UpdateProduct) => {
+    const onSubmit = async (data: IUpdateProduct) => {
         try {
             const product = await ProductService.updateProduct(data);
 

@@ -1,18 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Header from '../components/Header';
 import ProductCards from '../components/ProductCards';
-import axios from 'axios';
-import { Product } from '../interfaces/Product';
+import { IProduct } from '../interfaces/Product';
 import "./css/home.css"
 import { Button } from '@mui/material';
-import AddProductPopup from '../components/popups/AddProductPopup';
 import FallBackWrapper from '../common/FallBackWrapper';
 import ProductService from '../services/ProductService';
 import UpdateProductPopup from '../components/popups/UpdateProductPopup';
 
 const Home: React.FC = () => {
 
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<IProduct[]>([]);
   const [error, setError] = useState<Error | null>(null);
   const [open, setOpen] = React.useState(false);
 
@@ -47,7 +45,7 @@ const Home: React.FC = () => {
 
       <div className='popups'>
         {
-          products.length && <UpdateProductPopup open={open} setOpen={setOpen} product={products[0]} />
+          products.length && <UpdateProductPopup open={open} setOpen={setOpen} product={products[Math.floor(Math.random() * products.length)]} />
         }
         {/* <AddProductPopup open={open} setOpen={setOpen} /> */}
       </div>
