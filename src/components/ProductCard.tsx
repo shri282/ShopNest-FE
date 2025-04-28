@@ -12,7 +12,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <img src={product.image ? `data:image/jpeg;base64,${product.image}` : "images/galina-n-miziNqvJx5M-unsplash.jpg"} alt="" />
         <div>
             <h5>{product.name}</h5>
-            <p>{product.description} ghjbvgfgghjnvcd fghjnbvf dsfhb sddhsfbsn snbdfhs hgeygns jsdfhdsfn</p>
+            <p>{product.description}</p>
             <span>{product.prize}</span>
         </div>
     </div>

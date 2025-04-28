@@ -16,10 +16,7 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ setOpen, open }) => {
         control,
         handleSubmit,
         formState: { errors },
-        reset,
-        watch,
-        setValue,
-        register
+        reset
     } = useForm<AddProduct>({
         defaultValues: {
             name: "",
@@ -63,11 +60,6 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ setOpen, open }) => {
                 formData.append('image', data.image);
             }
 
-            // Debug: Log FormData contents
-            for (let [key, value] of Array.from(formData.entries())) {
-                console.log(key, value);
-            }
-
             await axios.post("http://localhost:8080/products", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -81,7 +73,6 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ setOpen, open }) => {
         }
     };
 
-    console.log('Current form values:', watch());
     return (
         <Dialog
             open={open}

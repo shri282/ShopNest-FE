@@ -14,8 +14,6 @@ const Login: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Login Data:', formData);
-        // Add login logic here
     };
 
     return (
