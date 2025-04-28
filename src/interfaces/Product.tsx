@@ -35,3 +35,9 @@ export interface IUpdateProduct {
     description: string;
     image: File | null;
 }
+
+export interface IProductFilter {
+    name: string;
+    brand: string;
+    category: string;
+}

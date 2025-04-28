@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IProduct, IAddProduct, IUpdateProduct } from '../interfaces/Product';
+import { IProduct, IAddProduct, IUpdateProduct, IProductFilter } from '../interfaces/Product';
 
 class ProductService {
 
@@ -63,6 +63,17 @@ class ProductService {
         return response.data;
     }
 
+    static async searchProducts(field: String, keyword: String) {
+        const response = await axios.get<IProduct[]>(`http://localhost:8080/products/search?${field}=${keyword}`, {
+            headers: {
+                // 'Authorization': 'Bearer your_token_here',
+                'Content-Type': 'application/json',
+            }
+        });
+
+        return response.data;
+    }
+
     static base64ToFile(base64String: String, filename: String, mimeType: String = 'image/jpeg'): File | null {
         if (!base64String) return null;
 
@@ -70,6 +81,33 @@ class ProductService {
         const byteNumbers = new Array(byteString.length).fill(0).map((_, i) => byteString.charCodeAt(i));
         const byteArray = new Uint8Array(byteNumbers);
         return new File([byteArray], filename as string, { type: mimeType as string });
+    }
+
+    static mapProductToSearchResults(field: string, keyword: string, products: IProduct[]): Map<string, IProduct[]> {
+        
+        if (field === "all") {
+            const searchRes = ["name", "brand", "category"]
+                .map(k => ProductService.groupBy((k as keyof IProductFilter), products))
+                .reduce((acc, map) => {
+                    map.forEach((value: IProduct[], key: string) => acc.set(key, value));
+                    return acc;
+                }, new Map());
+
+            searchRes.set(keyword, products);
+            return searchRes;
+        }
+
+        const searchRes = ProductService.groupBy(field as keyof IProductFilter, products);
+        searchRes.set(keyword, products);
+        return searchRes;
+    }
+
+    static groupBy(key: keyof IProductFilter, products: IProduct[]) {
+        return products.reduce((acc: Map<string, IProduct[]>, product: IProduct) => {
+            const value = product[key];
+            const updated = acc.get(value) ?? [];
+            return new Map(acc).set(value, [...updated, product]);
+        }, new Map<string, IProduct[]>());
     }
 
 }

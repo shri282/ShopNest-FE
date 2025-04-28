@@ -1,12 +1,32 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import './css/header.css';
 import { MenuItem, Select } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import ProductService from '../services/ProductService';
+import { IProduct } from '../interfaces/Product';
+import { useThrottle } from '../hooks/useThrottle';
 
 const Header: React.FC = () => {
     const navigate = useNavigate()
+    const [field, setField] = useState<String>("all");
+    const [keyword, setKeyword] = useState<String>("");
+    const throttledKeyword = useThrottle(keyword, 500);
+    const [searchResults, setSearchResults] = useState<Map<String, IProduct[]>>(new Map());
+
+    const searchProducts = useCallback(async () => {
+        if (!throttledKeyword.trim()) return;
+
+        const products = await ProductService.searchProducts(field, keyword);
+        const searchRes = ProductService.mapProductToSearchResults(field as string, keyword as string, products);
+        setSearchResults(searchRes);
+    }, [field, throttledKeyword]);
+
+    useEffect(() => {
+        searchProducts()
+    }, [searchProducts])
+
     return (
         <header className="header">
             <div className="header__left">
@@ -25,12 +45,15 @@ const Header: React.FC = () => {
                     className="header__search-category"
                     variant="filled"
                     displayEmpty
+                    value={field}
+                    onChange={(e) => setField(e.target.value as string)}
                 >
-                    <MenuItem value=""><em>All</em></MenuItem>
-                    <MenuItem value={10}>Electronics</MenuItem>
-                    <MenuItem value={20}>Books</MenuItem>
+                    <MenuItem value="all"><em>All</em></MenuItem>
+                    <MenuItem value="category">Category</MenuItem>
+                    <MenuItem value="name">Name</MenuItem>
+                    <MenuItem value="brand">Brand</MenuItem>
                 </Select>
-                <input type="text" placeholder="Search Amazon.in" className="header__search-input" />
+                <input onChange={(e) => setKeyword(e.target.value)} type="text" placeholder="Search Amazon.in" className="header__search-input" />
             </div>
 
             <div className="header__right">
