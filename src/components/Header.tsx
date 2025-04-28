@@ -9,23 +9,30 @@ import { IProduct } from '../interfaces/Product';
 import { useThrottle } from '../hooks/useThrottle';
 
 const Header: React.FC = () => {
-    const navigate = useNavigate()
-    const [field, setField] = useState<String>("all");
-    const [keyword, setKeyword] = useState<String>("");
+    const navigate = useNavigate();
+    const [field, setField] = useState<string>("all");
+    const [keyword, setKeyword] = useState<string>("");
     const throttledKeyword = useThrottle(keyword, 500);
-    const [searchResults, setSearchResults] = useState<Map<String, IProduct[]>>(new Map());
+    const [searchResults, setSearchResults] = useState<Map<string, IProduct[]>>(new Map());
+    const [showDropdown, setShowDropdown] = useState(false);
 
     const searchProducts = useCallback(async () => {
-        if (!throttledKeyword.trim()) return;
+        if (!throttledKeyword.trim()) {
+            setSearchResults(new Map());
+            return;
+        }
 
-        const products = await ProductService.searchProducts(field, keyword);
-        const searchRes = ProductService.mapProductToSearchResults(field as string, keyword as string, products);
+        const products = await ProductService.searchProducts(field, throttledKeyword);
+        const searchRes = ProductService.mapProductToSearchResults(field, throttledKeyword, products);
+        console.log("searchres", searchRes);
+        
         setSearchResults(searchRes);
+        setShowDropdown(true);
     }, [field, throttledKeyword]);
 
     useEffect(() => {
-        searchProducts()
-    }, [searchProducts])
+        searchProducts();
+    }, [searchProducts]);
 
     return (
         <header className="header">
@@ -41,6 +48,7 @@ const Header: React.FC = () => {
             </div>
 
             <div className="header__search">
+
                 <Select
                     className="header__search-category"
                     variant="filled"
@@ -53,8 +61,42 @@ const Header: React.FC = () => {
                     <MenuItem value="name">Name</MenuItem>
                     <MenuItem value="brand">Brand</MenuItem>
                 </Select>
-                <input onChange={(e) => setKeyword(e.target.value)} type="text" placeholder="Search Amazon.in" className="header__search-input" />
+
+                <div className="header__search-container">
+                    <input
+                        onChange={(e) => setKeyword(e.target.value)}
+                        onFocus={() => {
+                            if (searchResults.size > 0) setShowDropdown(true);
+                        }}
+                        onBlur={() => {
+                            setTimeout(() => setShowDropdown(false), 800);
+                        }}
+                        type="text"
+                        placeholder="Search Amazon.in"
+                        className="header__search-input"
+                    />
+
+                    {showDropdown && searchResults.size > 0 && (
+                        <div className="header__search-results">
+                            {Array.from(searchResults.entries()).map(([key, products]) => (
+                                <div
+                                    key={key}
+                                    className="header__search-item"
+                                    onClick={() => {
+                                        console.log("onclickkkkkkkkkkkkk");
+                                        navigate(`/search-results`, { state: products });
+                                        setShowDropdown(false);
+                                        setKeyword('');
+                                    }}
+                                >
+                                    {key}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
+
 
             <div className="header__right">
                 <div className="header__auth">
