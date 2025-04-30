@@ -1,31 +1,43 @@
 import React, { useState } from 'react';
 import './css/login.css';
+import { ILoginRequest } from '../interfaces/Auth';
+import { Role } from '../enum/Role';
+import AuthService from '../services/AuthService';
+import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
-    const [formData, setFormData] = useState({
-        email: '',
+    const [formData, setFormData] = useState<ILoginRequest>({
+        username: '',
         password: '',
-        role: 'user'
+        role: Role.USER 
     });
+    const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async(e: React.FormEvent) => {
+        try {
+            e.preventDefault();
+            const loginResp = await AuthService.login(formData);
+            sessionStorage.setItem("successfulLoginResp", JSON.stringify(loginResp));
+            navigate("/");
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
         <div className="login-container">
             <form className="login-form" onSubmit={handleSubmit}>
                 <h2>Login</h2>
-                <label>Email</label>
+                <label>Username</label>
                 <input
-                    type="email"
-                    name="email"
+                    type="text"
+                    name="username"
                     placeholder="Enter your email"
-                    value={formData.email}
+                    value={formData.username}
                     onChange={handleChange}
                     required
                 />

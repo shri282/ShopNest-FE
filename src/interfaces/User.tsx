@@ -1,0 +1,16 @@
+import { Role } from "../enum/Role";
+
+export interface User {
+    id: Number;
+    username: String;
+    email: String;
+    dob: String;
+    gender: String;
+    password: String;
+    roles: Role[];
+    enabled: boolean;
+    accountNonLocked: boolean;
+    phNo: String;
+    createdAt: Date;
+    updatedAt: Date;
+}

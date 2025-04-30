@@ -17,7 +17,10 @@ class ProductService {
         }
 
         const product = axios.post('http://localhost:8080/products', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
+            headers: { 
+                // 'Authorization': `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
+            },
         });
 
         return product;
@@ -35,7 +38,10 @@ class ProductService {
         }
 
         const product = await axios.put(`http://localhost:8080/products`, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
+            headers: { 
+                // 'Authorization': `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data' 
+            },
         });
 
         return product;
@@ -44,7 +50,7 @@ class ProductService {
     static async getProducts() {
         const response = await axios.get<IProduct[]>("http://localhost:8080/products", {
             headers: {
-                // 'Authorization': 'Bearer your_token_here',
+                // 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             }
         });
@@ -55,7 +61,7 @@ class ProductService {
     static async getProduct(id: number) {
         const response = await axios.get<IProduct>(`http://localhost:8080/products/${id}`, {
             headers: {
-                // 'Authorization': 'Bearer your_token_here',
+                // 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             }
         });
@@ -66,7 +72,7 @@ class ProductService {
     static async searchProducts(field: String, keyword: String) {
         const response = await axios.get<IProduct[]>(`http://localhost:8080/products/search?${field}=${keyword}`, {
             headers: {
-                // 'Authorization': 'Bearer your_token_here',
+                // 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             }
         });
