@@ -1,15 +1,10 @@
-import axios from "axios";
 import { ILoginRequest, ISuccessfulLoginResponse } from "../interfaces/Auth";
+import { apiPublic } from "../config/axios";
 
 class AuthService {
 
     static async login(loginReq: ILoginRequest) {
-        const response = await axios.post<ISuccessfulLoginResponse>("http://localhost:8080/login", loginReq, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
+        const response = await apiPublic.post<ISuccessfulLoginResponse>("/login", loginReq);
         return response.data;
     }
 

@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { IProduct, IAddProduct, IUpdateProduct, IProductFilter } from '../interfaces/Product';
+import { apiPrivate } from '../config/axios';
 
 class ProductService {
 
@@ -16,9 +16,8 @@ class ProductService {
             formData.append('image', image);
         }
 
-        const product = axios.post('http://localhost:8080/products', formData, {
+        const product = apiPrivate.post('/products', formData, {
             headers: { 
-                // 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data'
             },
         });
@@ -37,49 +36,23 @@ class ProductService {
             formData.append('image', image);
         }
 
-        const product = await axios.put(`http://localhost:8080/products`, formData, {
-            headers: { 
-                // 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'multipart/form-data' 
-            },
-        });
+        const product = await apiPrivate.put(`/products`, formData);
 
         return product;
     }
 
     static async getProducts() {
-        const token = sessionStorage.getItem("token");
-        console.log(token);
-        
-        const response = await axios.get<IProduct[]>("http://localhost:8080/products", {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            }
-        });
-
+        const response = await apiPrivate.get<IProduct[]>("/products");
         return response.data;
     }
 
     static async getProduct(id: number) {
-        const response = await axios.get<IProduct>(`http://localhost:8080/products/${id}`, {
-            headers: {
-                // 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            }
-        });
-
+        const response = await apiPrivate.get<IProduct>(`/products/${id}`);
         return response.data;
     }
 
     static async searchProducts(field: String, keyword: String) {
-        const response = await axios.get<IProduct[]>(`http://localhost:8080/products/search?${field}=${keyword}`, {
-            headers: {
-                // 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            }
-        });
-
+        const response = await apiPrivate.get<IProduct[]>(`/products/search?${field}=${keyword}`);
         return response.data;
     }
 
