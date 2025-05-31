@@ -13,21 +13,34 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [token, setToken] = useState<String | null>(null);
     const navigate = useNavigate();
 
-    const getSuccessfulLoginResp = useCallback(() => {
-        const successfulLoginResp = sessionStorage.getItem("successfulLoginResp");
-        if (!successfulLoginResp) {
-            return navigate("/login");
+    const loadUserFromSession = useCallback(() => {
+        const loggedInUserStr = sessionStorage.getItem("loggedInUser");
+
+        if (!loggedInUserStr) {
+            navigate("/login");
+            return;
         }
 
-        const loginRespObj = JSON.parse(successfulLoginResp);
+        try {
+            const { user, token } = JSON.parse(loggedInUserStr);
 
-        setUser(loginRespObj.user);
-        setToken(loginRespObj.token);
-    }, [setUser, setToken, navigate])
+            if (!user || !token) {
+                navigate("/login");
+                return;
+            }
+
+            setUser(user);
+            setToken(token);
+        } catch (error) {
+            console.error("Invalid login data:", error);
+            navigate("/login");
+        }
+    }, [setUser, setToken, navigate]);
+    
 
     useEffect(() => {
-        getSuccessfulLoginResp();
-    }, [getSuccessfulLoginResp]);
+        loadUserFromSession();
+    }, [loadUserFromSession]);
 
     return (
         <AuthContext.Provider value={{ user: user, token: token }}>

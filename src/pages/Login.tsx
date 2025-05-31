@@ -22,7 +22,6 @@ const Login: React.FC = () => {
             e.preventDefault();
             const loginResp = await AuthService.login(formData);
             sessionStorage.setItem("loggedInUser", JSON.stringify(loginResp));
-            sessionStorage.setItem("token", loginResp.token);
             navigate("/");
         } catch (error) {
             console.log(error);

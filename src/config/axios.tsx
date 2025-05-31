@@ -17,10 +17,18 @@ export const apiPrivate = axios.create({
 });
 
 apiPrivate.interceptors.request.use((config) => {
-    const token = sessionStorage.getItem('token');
+    const loggedInUserStr = sessionStorage.getItem('loggedInUser');
+
+    if(!loggedInUserStr) {
+        return config;
+    }
+
+    const { token } = JSON.parse(loggedInUserStr);
+
     if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
     }
+    
     return config;
 }, (error) => {
     return Promise.reject(error);
