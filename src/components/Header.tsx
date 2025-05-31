@@ -2,14 +2,16 @@ import React, { useCallback, useEffect, useState } from 'react';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import './css/header.css';
-import { MenuItem, Select } from '@mui/material';
+import { Button, MenuItem, Select } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ProductService from '../services/ProductService';
 import { IProduct } from '../interfaces/Product';
 import { useThrottle } from '../hooks/useThrottle';
+import { useAuth } from '../context/AuthContext';
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
+    const { user, token, logout } = useAuth();
     const [field, setField] = useState<string>("all");
     const [keyword, setKeyword] = useState<string>("");
     const throttledKeyword = useThrottle(keyword, 500);
@@ -25,7 +27,7 @@ const Header: React.FC = () => {
         const products = await ProductService.searchProducts(field, throttledKeyword);
         const searchRes = ProductService.mapProductToSearchResults(field, throttledKeyword, products);
         console.log("searchres", searchRes);
-        
+
         setSearchResults(searchRes);
         setShowDropdown(true);
     }, [field, throttledKeyword]);
@@ -97,18 +99,26 @@ const Header: React.FC = () => {
                 </div>
             </div>
 
-
-            <div className="header__right">
-                <div className="header__auth">
-                    <a href="/login" className="header__link">Sign in</a>
-                    <span className="header__separator">|</span>
-                    <a href="/register" className="header__link">Register</a>
-                </div>
-                <div className="header__cart">
-                    <ShoppingCartOutlinedIcon />
-                    <span className="header__cart-text">Cart</span>
-                </div>
-            </div>
+            {
+                (user && token) ?
+                    <div className="header__right">
+                        <div className="header__auth">
+                            <Button onClick={logout} variant='contained'>logout</Button>
+                        </div>
+                    </div>
+                    :
+                    <div className="header__right">
+                        <div className="header__auth">
+                            <a href="/login" className="header__link">Sign in</a>
+                            <span className="header__separator">|</span>
+                            <a href="/register" className="header__link">Register</a>
+                        </div>
+                        <div className="header__cart">
+                            <ShoppingCartOutlinedIcon />
+                            <span className="header__cart-text">Cart</span>
+                        </div>
+                    </div>
+            }
         </header>
     );
 };

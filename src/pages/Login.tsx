@@ -4,8 +4,10 @@ import { ILoginRequest } from '../interfaces/Auth';
 import { Role } from '../enum/Role';
 import AuthService from '../services/AuthService';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Login: React.FC = () => {
+    const { login } = useAuth();
     const [formData, setFormData] = useState<ILoginRequest>({
         username: '',
         password: '',
@@ -21,7 +23,7 @@ const Login: React.FC = () => {
         try {
             e.preventDefault();
             const loginResp = await AuthService.login(formData);
-            sessionStorage.setItem("loggedInUser", JSON.stringify(loginResp));
+            login(loginResp);
             navigate("/");
         } catch (error) {
             console.log(error);
