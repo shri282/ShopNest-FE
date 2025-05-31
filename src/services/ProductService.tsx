@@ -48,9 +48,12 @@ class ProductService {
     }
 
     static async getProducts() {
+        const token = sessionStorage.getItem("token");
+        console.log(token);
+        
         const response = await axios.get<IProduct[]>("http://localhost:8080/products", {
             headers: {
-                // 'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             }
         });

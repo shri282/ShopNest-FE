@@ -3,7 +3,7 @@ import { User } from "./User";
 
 export interface ISuccessfulLoginResponse {
     user: User;
-    token: String;
+    token: string;
 }
 
 export interface ILoginRequest {

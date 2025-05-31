@@ -9,7 +9,7 @@ const Login: React.FC = () => {
     const [formData, setFormData] = useState<ILoginRequest>({
         username: '',
         password: '',
-        role: Role.USER 
+        role: Role.USER
     });
     const navigate = useNavigate();
 
@@ -17,11 +17,12 @@ const Login: React.FC = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async(e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         try {
             e.preventDefault();
             const loginResp = await AuthService.login(formData);
-            sessionStorage.setItem("successfulLoginResp", JSON.stringify(loginResp));
+            sessionStorage.setItem("loggedInUser", JSON.stringify(loginResp));
+            sessionStorage.setItem("token", loginResp.token);
             navigate("/");
         } catch (error) {
             console.log(error);
