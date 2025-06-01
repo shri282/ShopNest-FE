@@ -7,8 +7,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import { IProduct } from '../../interfaces/Product';
 import UpdateProductPopup from '../popups/UpdateProductPopup';
 import { useNavigate } from 'react-router-dom';
-import { apiPrivate } from '../../config/axios';
 import ErrorSnackbar from '../../common/ErrorSnackBar';
+import ProductService from '../../services/ProductService';
 
 const ProductListTable: React.FC = () => {
 
@@ -34,7 +34,7 @@ const ProductListTable: React.FC = () => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const resp: any = await apiPrivate.get(`/products/paginated?page=${paginationModel.page}&size=${paginationModel.pageSize}`);
+                const resp: any = await ProductService.getPaginatedProducts(paginationModel);
                 setRows(resp.data.content);
                 setRowCount(resp.data.totalElements);
             } catch (error) {

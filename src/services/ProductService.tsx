@@ -50,6 +50,11 @@ class ProductService {
         return response.data;
     }
 
+    static async getPaginatedProducts({ page, pageSize }: any) {
+        const response = await apiPrivate.get<any>(`/products/paginated?page=${page}&size=${pageSize}`)
+        return response.data;
+    }
+
     static async getProduct(id: number) {
         const response = await apiPrivate.get<IProduct>(`/products/${id}`);
         return response.data;

@@ -10,10 +10,18 @@ import { ShoppingCart, FavoriteBorder, Favorite, StarBorder } from '@mui/icons-m
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/system';
 import UpdateProductPopup from '../components/popups/UpdateProductPopup';
+import { useAuth } from '../context/AuthContext';
+import CartService from '../services/CartService';
+import InfoSnackbar from '../common/InfoSnackBar';
+import ErrorSnackbar from '../common/ErrorSnackBar';
 
 const Product = () => {
     const { id } = useParams();
+    const { user } = useAuth();
     const [product, setProduct] = useState<IProduct | null>(null);
+    const [openInfoSnackBar, setOpenInfoSnackBar] = useState<boolean>(false);
+    const [openErrorSnackBar, setOpenErrorSnackBar] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>("");
     const [isFavorite, setIsFavorite] = useState(false);
     const [updatePopupOpen, setUpdatePopupOpen] = useState<boolean>(false);
     const theme = useTheme();
@@ -26,6 +34,22 @@ const Product = () => {
             console.log(error);
         }
     }, [id])
+
+    const addToCartHandler = async () => {
+        if (!(user?.id && product)) {
+            return;
+        }
+
+        try {
+            await CartService.addItemToCart(user.id, product);
+            setOpenInfoSnackBar(true);
+            setMessage("cart added successfully");
+        } catch (error: any) {
+            console.log(error);
+            setOpenErrorSnackBar(true);
+            setMessage(error.message);
+        }
+    }
 
     useEffect(() => {
         if (!id) return;
@@ -142,7 +166,7 @@ const Product = () => {
                                         {formatPrice(100)}
                                     </Typography>
                                 </Typography>
-                                <p style={{marginTop: '0px', fontSize: '14px'}}>(16 % off)</p>
+                                <p style={{ marginTop: '0px', fontSize: '14px' }}>(16 % off)</p>
 
                                 <Typography variant="body1" style={{ marginBottom: '24px' }}>
                                     {product.description}
@@ -203,6 +227,7 @@ const Product = () => {
                                         <StyledButton
                                             variant="contained"
                                             color="primary"
+                                            onClick={addToCartHandler}
                                             startIcon={<ShoppingCart />}
                                             size="large"
                                         >
@@ -251,6 +276,8 @@ const Product = () => {
                         </div>
                     )
                 }
+                <InfoSnackbar open={openInfoSnackBar} message={message} onClose={() => setOpenInfoSnackBar(false)} />
+                <ErrorSnackbar open={openErrorSnackBar} message={message} onClose={() => setOpenErrorSnackBar(false)} />
             </FallBackWrapper>
         </div>
     )

@@ -102,7 +102,7 @@ const Header: React.FC = () => {
             {
                 (user && token) ?
                     <div className="header__right">
-                        <div className="header__cart">
+                        <div onClick={() => navigate("/user/cart")} className="header__cart">
                             <ShoppingCartOutlinedIcon />
                             <span className="header__cart-text">Cart</span>
                         </div>
