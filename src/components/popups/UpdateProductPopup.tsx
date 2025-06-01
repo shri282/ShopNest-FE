@@ -35,7 +35,7 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, 
 
     const onSubmit = async (data: IUpdateProduct) => {
         try {
-            const product = await ProductService.updateProduct(data);
+            await ProductService.updateProduct(data);
 
             alert('Product updated successfully!');
             handleClose();

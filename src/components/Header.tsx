@@ -39,7 +39,7 @@ const Header: React.FC = () => {
     return (
         <header className="header">
             <div className="header__left">
-                <img onClick={() => navigate("/")} className="header__logo" src="/images/logo192.png" alt="Logo" />
+                <img onClick={() => navigate("/")} className="header__logo" src="/images/amazon-dark-seeklogo.png" alt="Logo" />
                 <div className="header__location">
                     <LocationOnOutlinedIcon className="header__location-icon" />
                     <div className="header__location-text">

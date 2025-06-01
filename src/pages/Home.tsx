@@ -5,6 +5,8 @@ import { IProduct } from '../interfaces/Product';
 import "./css/home.css"
 import FallBackWrapper from '../common/FallBackWrapper';
 import ProductService from '../services/ProductService';
+import ResponsiveDrawer from '../components/SideDrawer';
+import ProductListTable from '../components/ProductsListTable';
 
 const Home: React.FC = () => {
 
@@ -27,14 +29,15 @@ const Home: React.FC = () => {
   return (
     <div className='home-container'>
 
-      <Header />
-
-      <div className='products'>
-        <FallBackWrapper fallback={(() => Boolean(error?.message))} fallbackComponent={<div>ddd</div>}>
-          <ProductCards products={products} />
-        </FallBackWrapper>
-      </div>
-
+      <ResponsiveDrawer Header={<Header />}>
+          <FallBackWrapper fallback={(() => Boolean(error?.message))} fallbackComponent={<div>ddd</div>}>
+            <ProductListTable rows={products} />
+            <div className='products'>
+                <ProductCards products={products} />
+            </div>
+          </FallBackWrapper>
+      </ResponsiveDrawer>
+      
     </div>
   );
 }
