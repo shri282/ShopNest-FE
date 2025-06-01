@@ -102,6 +102,10 @@ const Header: React.FC = () => {
             {
                 (user && token) ?
                     <div className="header__right">
+                        <div className="header__cart">
+                            <ShoppingCartOutlinedIcon />
+                            <span className="header__cart-text">Cart</span>
+                        </div>
                         <div className="header__auth">
                             <Button onClick={logout} variant='contained'>logout</Button>
                         </div>
@@ -112,10 +116,6 @@ const Header: React.FC = () => {
                             <a href="/login" className="header__link">Sign in</a>
                             <span className="header__separator">|</span>
                             <a href="/register" className="header__link">Register</a>
-                        </div>
-                        <div className="header__cart">
-                            <ShoppingCartOutlinedIcon />
-                            <span className="header__cart-text">Cart</span>
                         </div>
                     </div>
             }

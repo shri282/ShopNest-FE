@@ -35,7 +35,6 @@ export default function AdminSideDrawer(props: Props) {
 
     const drawer = (
         <div>
-            {/* <Toolbar /> */}
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
                 <Box
                     component="img"
