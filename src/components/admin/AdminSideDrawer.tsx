@@ -14,6 +14,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
+import { useAuth } from '../../context/AuthContext';
 
 const drawerWidth = 240;
 
@@ -24,6 +25,7 @@ interface Props {
 }
 
 export default function AdminSideDrawer(props: Props) {
+    const { user } = useAuth();
     const { Header, children } = props;
     const [open, setOpen] = React.useState(true);
 
@@ -33,7 +35,24 @@ export default function AdminSideDrawer(props: Props) {
 
     const drawer = (
         <div>
-            <Toolbar />
+            {/* <Toolbar /> */}
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
+                <Box
+                    component="img"
+                    src={'/default-avatar.png'}
+                    alt="Profile"
+                    sx={{
+                        width: 80,
+                        height: 20,
+                        borderRadius: '50%',
+                        mb: 1,
+                    }}
+                />
+                <Box sx={{ textAlign: 'center' }}>
+                    <Box sx={{ fontWeight: 'bold' }}>{user?.username || 'Admin'}</Box>
+                    <Box sx={{ fontSize: '0.875rem', color: 'gray' }}>{user?.email}</Box>
+                </Box>
+            </Box>
             <Divider />
             <List>
                 {['Products', 'Orders', 'Revenue', 'Analytics'].map((text, index) => (

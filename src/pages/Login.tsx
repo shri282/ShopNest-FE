@@ -27,7 +27,7 @@ const Login: React.FC = () => {
             e.preventDefault();
             const loginResp = await AuthService.login(formData);
             login(loginResp);
-            if (formData.role == 0) {
+            if (formData.role === 0) {
                 navigate("/");
             } else {
                 navigate("/admin/dashboard");
