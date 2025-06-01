@@ -4,18 +4,21 @@ import Paper from '@mui/material/Paper';
 import { Box } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
-import { IProduct } from '../interfaces/Product';
-import UpdateProductPopup from './popups/UpdateProductPopup';
+import { IProduct } from '../../interfaces/Product';
+import UpdateProductPopup from '../popups/UpdateProductPopup';
 import { useNavigate } from 'react-router-dom';
-import { apiPrivate } from '../config/axios';
+import { apiPrivate } from '../../config/axios';
+import ErrorSnackbar from '../../common/ErrorSnackBar';
 
 const ProductListTable: React.FC = () => {
 
     const navigate = useNavigate();
+    const [error, setError] = React.useState<any>(null)
     const [paginationModel, setPaginationModel] = React.useState({
         page: 0,
         pageSize: 5,
     });
+    const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
     const [rows, setRows] = React.useState<IProduct[]>([]);
     const [rowCount, setRowCount] = React.useState(0);
     const [loading, setLoading] = React.useState(false);
@@ -32,12 +35,12 @@ const ProductListTable: React.FC = () => {
             setLoading(true);
             try {
                 const resp: any = await apiPrivate.get(`/products/paginated?page=${paginationModel.page}&size=${paginationModel.pageSize}`);
-                console.log("dataaaa", resp.data);
-                
                 setRows(resp.data.content);
                 setRowCount(resp.data.totalElements);
             } catch (error) {
                 console.error('Failed to fetch products:', error);
+                setErrorPopupOpen(true);
+                setError(error);
             } finally {
                 setLoading(false);
             }
@@ -51,7 +54,7 @@ const ProductListTable: React.FC = () => {
             prev.map((item) => item.id === updatedProduct.id ? updatedProduct : item)
         );
     };
-    
+
 
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 70 },
@@ -119,7 +122,8 @@ const ProductListTable: React.FC = () => {
             {
                 updatePopupOpen && product && (
                     <UpdateProductPopup open={updatePopupOpen} setOpen={setUpdatePopupOpen} product={product} onUpdated={(p) => updateRowInState(p)} />)
-            }  
+            }
+            <ErrorSnackbar open={errorPopupOpen} message={error?.message} onClose={() => setErrorPopupOpen(false)} />
         </>
     );
 }

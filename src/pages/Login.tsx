@@ -5,6 +5,7 @@ import { Role } from '../enum/Role';
 import AuthService from '../services/AuthService';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import ErrorSnackbar from '../common/ErrorSnackBar';
 
 const Login: React.FC = () => {
     const { login } = useAuth();
@@ -13,6 +14,8 @@ const Login: React.FC = () => {
         password: '',
         role: Role.USER
     });
+    const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
+    const [error, setError] = useState<any>(null);
     const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -24,9 +27,15 @@ const Login: React.FC = () => {
             e.preventDefault();
             const loginResp = await AuthService.login(formData);
             login(loginResp);
-            navigate("/");
+            if (formData.role == 0) {
+                navigate("/");
+            } else {
+                navigate("/admin/dashboard");
+            }
         } catch (error) {
             console.log(error);
+            setError(error);
+            setErrorPopupOpen(true);
         }
     };
 
@@ -60,6 +69,7 @@ const Login: React.FC = () => {
                 </select>
                 <button type="submit">Login</button>
             </form>
+            <ErrorSnackbar open={errorPopupOpen} message={error?.message} onClose={() => setErrorPopupOpen(false)} />
         </div>
     );
 };

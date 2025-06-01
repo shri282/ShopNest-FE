@@ -23,7 +23,7 @@ interface Props {
     children: React.ReactNode;
 }
 
-export default function ResponsiveDrawer(props: Props) {
+export default function AdminSideDrawer(props: Props) {
     const { Header, children } = props;
     const [open, setOpen] = React.useState(true);
 
