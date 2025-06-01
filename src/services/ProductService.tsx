@@ -36,7 +36,11 @@ class ProductService {
             formData.append('image', image);
         }
 
-        const product = await apiPrivate.put(`/products`, formData);
+        const product = await apiPrivate.put(`/products`, formData, {
+            headers: {
+                "Content-Type": 'multipart/form-data'
+            }
+        });
 
         return product;
     }

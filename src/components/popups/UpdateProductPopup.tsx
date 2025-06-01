@@ -11,9 +11,10 @@ interface UpdateProductPopupProps {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     open: boolean;
     product: IProduct;
+    onUpdated?: (product: IProduct) => void;
 }
 
-const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, product }) => {
+const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, product, onUpdated }) => {
     const { control, handleSubmit, formState: { errors }, reset, watch } = useForm<IUpdateProduct>({
         defaultValues: {
             id: product.id,
@@ -35,8 +36,8 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, 
 
     const onSubmit = async (data: IUpdateProduct) => {
         try {
-            await ProductService.updateProduct(data);
-
+            const product = await ProductService.updateProduct(data);
+            if (onUpdated) onUpdated(product.data);
             alert('Product updated successfully!');
             handleClose();
         } catch (error: any) {

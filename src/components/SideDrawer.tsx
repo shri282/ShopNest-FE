@@ -28,7 +28,7 @@ export default function ResponsiveDrawer(props: Props) {
     const [open, setOpen] = React.useState(true);
 
     const handleDrawerToggle = () => {
-        setOpen(!open);   
+        setOpen(!open);
     };
 
     const drawer = (
@@ -95,6 +95,7 @@ export default function ResponsiveDrawer(props: Props) {
                 sx={{
                     flexGrow: 1,
                     p: 3,
+                    marginTop: 5,
                     width: open ? `calc(100% - ${drawerWidth}px)` : '100%',
                     ml: open ? `${drawerWidth}px` : 0,
                     transition: 'margin 0.3s, width 0.3s',

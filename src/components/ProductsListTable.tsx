@@ -4,19 +4,21 @@ import Paper from '@mui/material/Paper';
 import { Box } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
-import { IProduct, IUpdateProduct } from '../interfaces/Product';
+import { IProduct } from '../interfaces/Product';
 import UpdateProductPopup from './popups/UpdateProductPopup';
 import { useNavigate } from 'react-router-dom';
+import { apiPrivate } from '../config/axios';
 
-interface ProductListTableProps {
-    rows: IProduct[]
-}
-
-const paginationModel = { page: 0, pageSize: 5 };
-
-const ProductListTable: React.FC<ProductListTableProps> = ({ rows }) => {
+const ProductListTable: React.FC = () => {
 
     const navigate = useNavigate();
+    const [paginationModel, setPaginationModel] = React.useState({
+        page: 0,
+        pageSize: 5,
+    });
+    const [rows, setRows] = React.useState<IProduct[]>([]);
+    const [rowCount, setRowCount] = React.useState(0);
+    const [loading, setLoading] = React.useState(false);
     const [updatePopupOpen, setUpdatePopupOpen] = React.useState<boolean>(false);
     const [product, setProduct] = React.useState<IProduct | null>(null);
 
@@ -25,23 +27,39 @@ const ProductListTable: React.FC<ProductListTableProps> = ({ rows }) => {
         setProduct(product);
     }
 
+    React.useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                const resp: any = await apiPrivate.get(`/products/paginated?page=${paginationModel.page}&size=${paginationModel.pageSize}`);
+                console.log("dataaaa", resp.data);
+                
+                setRows(resp.data.content);
+                setRowCount(resp.data.totalElements);
+            } catch (error) {
+                console.error('Failed to fetch products:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [paginationModel]);
+
+    const updateRowInState = (updatedProduct: IProduct) => {
+        setRows((prev) =>
+            prev.map((item) => item.id === updatedProduct.id ? updatedProduct : item)
+        );
+    };
+    
+
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'name', headerName: 'Product Name', width: 130 },
+        { field: 'name', headerName: 'Product Name', width: 180 },
         { field: 'brand', headerName: 'Brand', width: 130 },
-        {
-            field: 'category',
-            headerName: 'Category',
-            description: 'This column has a value getter and is not sortable.',
-            sortable: false,
-            width: 160,
-        },
-        {
-            field: 'prize',
-            headerName: 'Price',
-            type: 'number',
-            width: 90,
-        },
+        { field: 'category', headerName: 'Category', sortable: false, width: 160 },
+        { field: 'prize', headerName: 'Price', type: 'number', width: 90 },
+        { field: 'quantity', headerName: 'Quantity', type: 'number', width: 90 },
         {
             field: 'action',
             headerName: 'Action',
@@ -87,8 +105,12 @@ const ProductListTable: React.FC<ProductListTableProps> = ({ rows }) => {
                 <DataGrid
                     rows={rows}
                     columns={columns}
-                    initialState={{ pagination: { paginationModel } }}
-                    pageSizeOptions={[5, 10]}
+                    rowCount={rowCount}
+                    loading={loading}
+                    paginationModel={paginationModel}
+                    onPaginationModelChange={setPaginationModel}
+                    pageSizeOptions={[5, 10, 20]}
+                    paginationMode="server"
                     checkboxSelection
                     disableRowSelectionOnClick
                     sx={{ border: 0 }}
@@ -96,7 +118,7 @@ const ProductListTable: React.FC<ProductListTableProps> = ({ rows }) => {
             </Paper>
             {
                 updatePopupOpen && product && (
-                <UpdateProductPopup open={updatePopupOpen} setOpen={setUpdatePopupOpen} product={product} />)
+                    <UpdateProductPopup open={updatePopupOpen} setOpen={setUpdatePopupOpen} product={product} onUpdated={(p) => updateRowInState(p)} />)
             }  
         </>
     );

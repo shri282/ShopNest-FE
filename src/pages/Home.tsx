@@ -31,7 +31,7 @@ const Home: React.FC = () => {
 
       <ResponsiveDrawer Header={<Header />}>
           <FallBackWrapper fallback={(() => Boolean(error?.message))} fallbackComponent={<div>ddd</div>}>
-            <ProductListTable rows={products} />
+            <ProductListTable />
             <div className='products'>
                 <ProductCards products={products} />
             </div>
