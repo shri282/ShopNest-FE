@@ -34,9 +34,9 @@ const ProductListTable: React.FC = () => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const resp: any = await ProductService.getPaginatedProducts(paginationModel);
-                setRows(resp.data.content);
-                setRowCount(resp.data.totalElements);
+                const data: any = await ProductService.getPaginatedProducts(paginationModel);
+                setRows(data.content);
+                setRowCount(data.totalElements);
             } catch (error) {
                 console.error('Failed to fetch products:', error);
                 setErrorPopupOpen(true);

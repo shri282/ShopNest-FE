@@ -35,21 +35,19 @@ export default function AdminSideDrawer(props: Props) {
 
     const drawer = (
         <div>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
+            <Box sx={{ display: 'flex', backgroundColor: 'brown', gap: 2, alignItems: 'center' }}>
                 <Box
                     component="img"
-                    src={'/default-avatar.png'}
+                    src={'/images/galina-n-miziNqvJx5M-unsplash.jpg'}
                     alt="Profile"
                     sx={{
-                        width: 80,
-                        height: 20,
-                        borderRadius: '50%',
-                        mb: 1,
+                        width: '40%',
+                        height: '75px'
                     }}
                 />
-                <Box sx={{ textAlign: 'center' }}>
-                    <Box sx={{ fontWeight: 'bold' }}>{user?.username || 'Admin'}</Box>
-                    <Box sx={{ fontSize: '0.875rem', color: 'gray' }}>{user?.email}</Box>
+                <Box>
+                    <Box sx={{ fontWeight: 'bold', color: 'white' }}>{user?.username || 'Guest'}</Box>
+                    <Box sx={{ fontSize: '0.65rem', color: 'white' }}>{user?.email}</Box>
                 </Box>
             </Box>
             <Divider />
