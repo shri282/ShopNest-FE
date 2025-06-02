@@ -1,4 +1,6 @@
+import { AxiosResponse } from "axios";
 import { apiPrivate } from "../config/axios";
+import { ICart } from "../interfaces/Cart";
 import { IProduct } from "../interfaces/Product";
 
 class CartService {
@@ -9,7 +11,7 @@ class CartService {
     }
 
     static async getUserCart(userId: Number) {
-        const resp = await apiPrivate.get(`/users/${userId}/cart`);
+        const resp: AxiosResponse<ICart> = await apiPrivate.get<ICart>(`/users/${userId}/cart`);
         return resp.data;
     }
 
