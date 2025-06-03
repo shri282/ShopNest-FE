@@ -1,7 +1,28 @@
 import { IProduct, IAddProduct, IUpdateProduct, IProductFilter } from '../interfaces/Product';
-import { apiPrivate } from '../config/axios';
+import { apiPrivate, apiPrivateMultiPart } from '../config/axios';
+import { GET_PAGINATED_PRODUCTS, PRODUCTS_ENDPOINT, SEARCH_PRODUCT } from '../constants/apiEndPoints';
 
 class ProductService {
+    
+    static async getProducts() {
+        const response = await apiPrivate.get<IProduct[]>(PRODUCTS_ENDPOINT);
+        return response.data;
+    }
+    
+    static async getPaginatedProducts({ page, pageSize }: any) {
+        const response = await apiPrivate.get<any>(`${GET_PAGINATED_PRODUCTS}?page=${page}&size=${pageSize}`)
+        return response.data;
+    } 
+    
+    static async getProduct(id: number) {
+        const response = await apiPrivate.get<IProduct>(`${PRODUCTS_ENDPOINT}/${id}`);
+        return response.data;
+    }
+
+    static async searchProducts(field: String, keyword: String) {
+        const response = await apiPrivate.get<IProduct[]>(`${SEARCH_PRODUCT}?${field}=${keyword}`);
+        return response.data;
+    }
 
     static async addProduct(data: IAddProduct) {
         const formData = new FormData();
@@ -16,11 +37,7 @@ class ProductService {
             formData.append('image', image);
         }
 
-        const product = apiPrivate.post('/products', formData, {
-            headers: { 
-                'Content-Type': 'multipart/form-data'
-            },
-        });
+        const product = apiPrivateMultiPart.post(PRODUCTS_ENDPOINT, formData);
 
         return product;
     }
@@ -36,42 +53,9 @@ class ProductService {
             formData.append('image', image);
         }
 
-        const product = await apiPrivate.put(`/products`, formData, {
-            headers: {
-                "Content-Type": 'multipart/form-data'
-            }
-        });
+        const product = await apiPrivateMultiPart.put(PRODUCTS_ENDPOINT, formData);
 
         return product;
-    }
-
-    static async getProducts() {
-        const response = await apiPrivate.get<IProduct[]>("/products");
-        return response.data;
-    }
-
-    static async getPaginatedProducts({ page, pageSize }: any) {
-        const response = await apiPrivate.get<any>(`/products/paginated?page=${page}&size=${pageSize}`)
-        return response.data;
-    }
-
-    static async getProduct(id: number) {
-        const response = await apiPrivate.get<IProduct>(`/products/${id}`);
-        return response.data;
-    }
-
-    static async searchProducts(field: String, keyword: String) {
-        const response = await apiPrivate.get<IProduct[]>(`/products/search?${field}=${keyword}`);
-        return response.data;
-    }
-
-    static base64ToFile(base64String: String, filename: String, mimeType: String = 'image/jpeg'): File | null {
-        if (!base64String) return null;
-
-        const byteString = atob(base64String as string);
-        const byteNumbers = new Array(byteString.length).fill(0).map((_, i) => byteString.charCodeAt(i));
-        const byteArray = new Uint8Array(byteNumbers);
-        return new File([byteArray], filename as string, { type: mimeType as string });
     }
 
     static mapProductToSearchResults(field: string, keyword: string, products: IProduct[]): Map<string, IProduct[]> {

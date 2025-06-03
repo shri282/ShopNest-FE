@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { IProduct, IUpdateProduct } from '../../interfaces/Product';
 import "../css/addProductPopup.css";
 import ProductService from '../../services/ProductService';
+import { base64ToFile } from '../../utils/FileEncoding';
 
 interface UpdateProductPopupProps {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,7 +26,7 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, 
             availability: product.availability,
             prize: product.prize,
             quantity: product.quantity,
-            image: ProductService.base64ToFile(product.image, product.imageName, product.imageType),
+            image: base64ToFile(product.image, product.imageName, product.imageType),
         },
     });
 

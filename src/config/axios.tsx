@@ -16,6 +16,13 @@ export const apiPrivate = axios.create({
     },
 });
 
+export const apiPrivateMultiPart = axios.create({
+    baseURL: BASEURL,
+    headers: {
+        'Content-Type': 'multipart/form-data',
+    },
+});
+
 apiPrivate.interceptors.request.use((config) => {
     const loggedInUserStr = sessionStorage.getItem('loggedInUser');
 

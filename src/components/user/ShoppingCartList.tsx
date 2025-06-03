@@ -26,7 +26,7 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart, setCart }) =>
             const updatedCart: ICart = await CartService.updateCartItemQuantity(user.id, item.id, quantity);
             setCart(updatedCart);
             setOpenInfoSnackBar(true);
-            setMessage('quantity added successfully');
+            setMessage(`1 quantity ${quantity > 0 ? 'added' : 'removed'} successfully`);
         } catch (error: any) {
             console.log(error);
             setOpenErrorSnackBar(true);

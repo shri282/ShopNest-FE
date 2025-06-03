@@ -26,7 +26,6 @@ const Header: React.FC = () => {
 
         const products = await ProductService.searchProducts(field, throttledKeyword);
         const searchRes = ProductService.mapProductToSearchResults(field, throttledKeyword, products);
-        console.log("searchres", searchRes);
 
         setSearchResults(searchRes);
         setShowDropdown(true);
