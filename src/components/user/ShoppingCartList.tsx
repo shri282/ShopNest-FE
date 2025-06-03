@@ -76,7 +76,7 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart, setCart }) =>
                         <Box sx={{ width: '45%', display: 'flex', alignItems: 'center' }}>
                             <CardMedia
                                 component="img"
-                                image={'/images/galina-n-miziNqvJx5M-unsplash.jpg'}
+                                image={`data:image/jpeg;base64,${item.image}`}
                                 alt={'img'}
                                 sx={{ width: 80, height: 80, borderRadius: 1, mr: 2 }}
                             />
