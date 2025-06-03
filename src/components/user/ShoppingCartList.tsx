@@ -82,7 +82,7 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart, setCart }) =>
                             />
                             <Box>
                                 <Typography variant="body1">{item.productName}</Typography>
-                                <Typography sx={{ fontSize: 10, color: 'red' }} variant="body2">{item.availability ? 'In stock' : 'Out of stock'}</Typography>
+                                <Typography sx={{ fontSize: 10, color: item.availability ? 'green' : 'red' }} variant="body2">{item.availability ? 'In stock' : 'Out of stock'}</Typography>
                                 <Button onClick={() => removeItem(item.id)} sx={{ fontSize: 12 }} size="small" color="secondary">Remove</Button>
                             </Box>
                         </Box>
