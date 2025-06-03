@@ -11,9 +11,11 @@ import { useUserCart } from '../hooks/useUserCart';
 import DataState from '../common/DataState';
 import ShoppingCartList from '../components/user/ShoppingCartList';
 import OrderSummary from '../components/user/OrderSummary';
+import { useNavigate } from 'react-router-dom';
 
 const Cart: React.FC = () => {
     const { user } = useAuth();
+    const navigate = useNavigate();
     const { cart, setCart, error, loading } = useUserCart(user?.id);
     const [errorPopupOpen, setErrorPopupOpen] = useState(false);
 
@@ -36,7 +38,7 @@ const Cart: React.FC = () => {
                             <Box sx={{ width: '70%' }}>
                                 <ShoppingCartList cart={cart} setCart={setCart} />
                                 <Box mt={3}>
-                                    <Button color="primary" sx={{ textTransform: 'none' }}>
+                                    <Button onClick={() => navigate('/')} color="primary" sx={{ textTransform: 'none' }}>
                                         ← Continue Shopping
                                     </Button>
                                 </Box>

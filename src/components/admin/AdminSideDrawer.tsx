@@ -111,7 +111,7 @@ export default function AdminSideDrawer(props: Props) {
                 sx={{
                     flexGrow: 1,
                     p: 3,
-                    marginTop: 5,
+                    marginTop: 1,
                     width: open ? `calc(100% - ${drawerWidth}px)` : '100%',
                     ml: open ? `${drawerWidth}px` : 0,
                     transition: 'margin 0.3s, width 0.3s',

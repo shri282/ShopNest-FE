@@ -3,6 +3,7 @@ import { IProduct } from '../interfaces/Product';
 import ProductCard from './ProductCard';
 import "./css/productCards.css"
 import { useNavigate } from 'react-router-dom';
+import { Typography } from '@mui/material';
 
 interface ProductCardsProps {
   products: IProduct[];
