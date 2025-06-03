@@ -17,5 +17,5 @@ export interface ICartItem {
     productName: string;
     availability: boolean;
     quantity: number;
-    price: number;
+    unitPrice: number;
 }

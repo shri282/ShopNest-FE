@@ -1,7 +1,12 @@
 import { Box, Button, Divider, MenuItem, TextField, Typography } from '@mui/material'
 import React from 'react'
+import { ICart } from '../../interfaces/Cart'
 
-const OrderSummary: React.FC = () => {
+interface OrderSummaryProps {
+    cart: ICart
+}
+
+const OrderSummary: React.FC<OrderSummaryProps> = ({ cart }) => {
 
     return (
         <Box sx={{
@@ -14,7 +19,7 @@ const OrderSummary: React.FC = () => {
 
             <Box display="flex" justifyContent="space-between" mb={2}>
                 <Typography>Items</Typography>
-                <Typography>£{'2500'}</Typography>
+                <Typography>£{cart.subtotalPrice}</Typography>
             </Box>
 
             <Box display="flex" alignItems={'center'} justifyContent="space-between" mb={2}>
@@ -25,7 +30,7 @@ const OrderSummary: React.FC = () => {
                     size="small"
                     sx={{ width: '60%' }}
                 >
-                    <MenuItem value="standard">Standard Delivery – £{'100'}</MenuItem>
+                    <MenuItem value="standard">Standard Delivery – £{cart.shippingCost}</MenuItem>
                 </TextField>
             </Box>
 
@@ -42,7 +47,7 @@ const OrderSummary: React.FC = () => {
 
             <Box display="flex" justifyContent="space-between" mb={2}>
                 <Typography fontWeight="bold">Total Cost</Typography>
-                <Typography fontWeight="bold">£{'2500'}</Typography>
+                <Typography fontWeight="bold">£{cart.grandTotal}</Typography>
             </Box>
 
             <Button fullWidth variant="contained" sx={{ background: '#5c6bc0' }}>

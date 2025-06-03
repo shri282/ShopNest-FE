@@ -1,8 +1,10 @@
 import { Box, Button, CardMedia, Divider, Typography } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { ICart, ICartItem } from '../../interfaces/Cart'
 import CartService from '../../services/CartService';
 import { useAuth } from '../../context/AuthContext';
+import InfoSnackbar from '../../common/InfoSnackBar';
+import ErrorSnackbar from '../../common/ErrorSnackBar';
 
 interface ShoppingCartListProps {
     cart: ICart
@@ -12,26 +14,40 @@ interface ShoppingCartListProps {
 const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart, setCart }) => {
 
     const { user } = useAuth();
+    const [openInfoSnackBar, setOpenInfoSnackBar] = useState<boolean>(false);
+    const [openErrorSnackBar, setOpenErrorSnackBar] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>("");
 
-    // const updateItemQuantityHandler = async (itemId: number, quantity: number) => {
-    //     if (!user?.id) return;
-    //     if (quantity < 1) return removeItem(itemId);
+    const updateItemQuantityHandler = async (item: ICartItem, quantity: number) => {
+        if (!user?.id) return;
+        if (item.quantity + quantity === 0) return removeItem(item.id);
 
-    //     try {
-    //         const updatedCart = await CartService.updateCartItemQuantity(user.id, itemId, quantity);
-    //         setCart(updatedCart);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
+        try {
+            const updatedCart: ICart = await CartService.updateCartItemQuantity(user.id, item.id, quantity);
+            setCart(updatedCart);
+            setOpenInfoSnackBar(true);
+            setMessage('quantity added successfully');
+        } catch (error: any) {
+            console.log(error);
+            setOpenErrorSnackBar(true);
+            setMessage(error.message)
+        }
+    }
 
-    // const removeItem = (itemId: number) => {
-    //     try {
+    const removeItem = async (itemId: number) => {
+        if (!user?.id) return
 
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
+        try {
+            const updatedCart: ICart = await CartService.removeCartItem(user.id, itemId);
+            setCart(updatedCart);
+            setOpenInfoSnackBar(true);
+            setMessage('item removed successfully');
+        } catch (error: any) {
+            console.log(error);
+            setOpenErrorSnackBar(true);
+            setMessage(error.message);
+        }
+    }
 
     return (
         <Box sx={{ width: '100%' }}>
@@ -67,7 +83,7 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart, setCart }) =>
                             <Box>
                                 <Typography variant="body1">{item.productName}</Typography>
                                 <Typography sx={{ fontSize: 10, color: 'red' }} variant="body2">{item.availability ? 'In stock' : 'Out of stock'}</Typography>
-                                <Button sx={{ fontSize: 12 }} size="small" color="secondary">Remove</Button>
+                                <Button onClick={() => removeItem(item.id)} sx={{ fontSize: 12 }} size="small" color="secondary">Remove</Button>
                             </Box>
                         </Box>
 
@@ -75,7 +91,7 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart, setCart }) =>
                             <Button
                                 variant="outlined"
                                 size="small"
-                                // onClick={() => updateItemQuantityHandler(item.id, -1)}
+                                onClick={() => updateItemQuantityHandler(item, -1)}
                                 sx={{
                                     minWidth: '20px',
                                     width: '20px',
@@ -104,7 +120,7 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart, setCart }) =>
                             <Button
                                 variant="outlined"
                                 size="small"
-                                // onClick={() => updateItemQuantityHandler(item.id, 1)}
+                                onClick={() => updateItemQuantityHandler(item, 1)}
                                 sx={{
                                     minWidth: '20px',
                                     width: '20px',
@@ -119,12 +135,14 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart, setCart }) =>
                         </Box>
 
                         <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Typography>£{item.price.toFixed(2)}</Typography>
-                            <Typography fontWeight="bold">£{(item.price * item.quantity).toFixed(2)}</Typography>
+                            <Typography>£{item.unitPrice.toFixed(2)}</Typography>
+                            <Typography fontWeight="bold">£{(item.unitPrice * item.quantity).toFixed(2)}</Typography>
                         </Box>
                     </Box>
                 ))}
             </Box>
+            <InfoSnackbar open={openInfoSnackBar} message={message} onClose={() => setOpenInfoSnackBar(false)} />
+            <ErrorSnackbar open={openErrorSnackBar} message={message} onClose={() => setOpenErrorSnackBar(false)} />
         </Box>
     )
 }

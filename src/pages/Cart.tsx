@@ -42,7 +42,7 @@ const Cart: React.FC = () => {
                                 </Box>
                             </Box>
                             <Box sx={{ position: 'sticky', top: 90, overflow: 'hidden', alignSelf: 'flex-start' }}>
-                                <OrderSummary />
+                                <OrderSummary cart={cart} />
                             </Box>
                         </Box>
                     }
