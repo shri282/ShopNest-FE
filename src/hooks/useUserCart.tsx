@@ -27,5 +27,5 @@ export function useUserCart(userId?: number) {
         fetchData();
     }, [userId]);
 
-    return { cart, loading, error };
+    return { cart, setCart, loading, error };
 }

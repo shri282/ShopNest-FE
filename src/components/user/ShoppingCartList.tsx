@@ -1,12 +1,37 @@
 import { Box, Button, CardMedia, Divider, Typography } from '@mui/material'
 import React from 'react'
-import { ICart } from '../../interfaces/Cart'
+import { ICart, ICartItem } from '../../interfaces/Cart'
+import CartService from '../../services/CartService';
+import { useAuth } from '../../context/AuthContext';
 
 interface ShoppingCartListProps {
     cart: ICart
+    setCart: (cart: ICart) => void;
 }
 
-const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart }) => {
+const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart, setCart }) => {
+
+    const { user } = useAuth();
+
+    // const updateItemQuantityHandler = async (itemId: number, quantity: number) => {
+    //     if (!user?.id) return;
+    //     if (quantity < 1) return removeItem(itemId);
+
+    //     try {
+    //         const updatedCart = await CartService.updateCartItemQuantity(user.id, itemId, quantity);
+    //         setCart(updatedCart);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
+
+    // const removeItem = (itemId: number) => {
+    //     try {
+
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
     return (
         <Box sx={{ width: '100%' }}>
@@ -50,6 +75,7 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart }) => {
                             <Button
                                 variant="outlined"
                                 size="small"
+                                // onClick={() => updateItemQuantityHandler(item.id, -1)}
                                 sx={{
                                     minWidth: '20px',
                                     width: '20px',
@@ -78,6 +104,7 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart }) => {
                             <Button
                                 variant="outlined"
                                 size="small"
+                                // onClick={() => updateItemQuantityHandler(item.id, 1)}
                                 sx={{
                                     minWidth: '20px',
                                     width: '20px',

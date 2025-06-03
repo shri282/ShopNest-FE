@@ -14,7 +14,7 @@ import OrderSummary from '../components/user/OrderSummary';
 
 const Cart: React.FC = () => {
     const { user } = useAuth();
-    const { cart, error, loading } = useUserCart(user?.id);
+    const { cart, setCart, error, loading } = useUserCart(user?.id);
     const [errorPopupOpen, setErrorPopupOpen] = useState(false);
 
     return (
@@ -34,7 +34,7 @@ const Cart: React.FC = () => {
                             alignSelf: 'flex-start'
                         }}>
                             <Box sx={{ width: '70%' }}>
-                                <ShoppingCartList cart={cart} />
+                                <ShoppingCartList cart={cart} setCart={setCart} />
                                 <Box mt={3}>
                                     <Button color="primary" sx={{ textTransform: 'none' }}>
                                         ← Continue Shopping
