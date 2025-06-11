@@ -1,23 +1,23 @@
 import axios from 'axios';
 
-const BASEURL = process.env.BE_BASEURL ?? "http://localhost:8080";
+const BACKEND_URL = process.env.BACKEND_URL ?? "http://localhost:8080";
 
 export const apiPublic = axios.create({
-    baseURL: BASEURL,
+    baseURL: BACKEND_URL,
     headers: {
         'Content-Type': 'application/json',
     },
 });
 
 export const apiPrivate = axios.create({
-    baseURL: BASEURL,
+    baseURL: BACKEND_URL,
     headers: {
         'Content-Type': 'application/json',
     },
 });
 
 export const apiPrivateMultiPart = axios.create({
-    baseURL: BASEURL,
+    baseURL: BACKEND_URL,
     headers: {
         'Content-Type': 'multipart/form-data',
     },
