@@ -18,7 +18,13 @@ const DataState = <T,>({
 }: DataStateProps<T>) => {
     if (loading) {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+            <Box sx={{ 
+                height: '100vh', 
+                display: 'flex', 
+                justifyContent: 'center', 
+                alignItems: 'center', 
+                mt: 4 
+            }}>
                 <CircularProgress />
             </Box>
         );
