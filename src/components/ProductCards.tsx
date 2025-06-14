@@ -30,9 +30,9 @@ const ProductCards: React.FC<ProductCardsProps> = ({ products }) => {
   return (
     <div onClick={productClickedHandler} className='products'>
         {
-            products.map((product, index) => {
-                return <ProductCard key={index} product={product} />;
-            })
+          Array.isArray(products) && products.map((product, index) => {
+            return <ProductCard key={index} product={product} />;
+          })
         }
     </div>
   )
