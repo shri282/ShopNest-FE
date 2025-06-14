@@ -9,5 +9,5 @@ export interface ISuccessfulLoginResponse {
 export interface ILoginRequest {
     username: string;
     password: string;
-    role: Role
+    role: string
 }

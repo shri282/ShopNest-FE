@@ -27,7 +27,7 @@ const Login: React.FC = () => {
             e.preventDefault();
             const loginResp = await AuthService.login(formData);
             login(loginResp);
-            if (formData.role === 0) {
+            if (formData.role === "user") {
                 navigate("/");
             } else {
                 navigate("/admin/dashboard");
@@ -63,9 +63,9 @@ const Login: React.FC = () => {
                 />
                 <label>Role</label>
                 <select name="role" value={formData.role} onChange={handleChange}>
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
-                    <option value="moderator">Moderator</option>
+                    <option value={Role.USER}>User</option>
+                    <option value={Role.ADMIN}>Admin</option>
+                    <option value={Role.SELLER}>Seller</option>
                 </select>
                 <button type="submit">Login</button>
             </form>
