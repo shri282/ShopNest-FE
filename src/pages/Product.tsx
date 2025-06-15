@@ -271,7 +271,7 @@ const Product = () => {
                                 </div>
                             </div>
                             <div className='prod-popups'>
-                                <UpdateProductPopup open={updatePopupOpen} setOpen={setUpdatePopupOpen} product={product} />
+                                <UpdateProductPopup onUpdated={(product) => setProduct(product)} open={updatePopupOpen} setOpen={setUpdatePopupOpen} product={product} />
                             </div>
                         </div>
                     )
