@@ -68,6 +68,9 @@ const Login: React.FC = () => {
                     <option value={Role.SELLER}>Seller</option>
                 </select>
                 <button type="submit">Login</button>
+                <button onClick={() => setFormData({
+                    username: "tharun", password: "tharun123", role: "user"
+                })} style={{ backgroundColor: 'red' }}>Login as guest user</button>
             </form>
             <ErrorSnackbar open={errorPopupOpen} message={error?.message} onClose={() => setErrorPopupOpen(false)} />
         </div>

@@ -58,3 +58,24 @@ apiPrivateMultiPart.interceptors.request.use((config) => {
 }, (error) => {
     return Promise.reject(error);
 });
+
+apiPrivate.interceptors.response.use((resp) => resp, (error) => {
+        if (error.response && error.response.status === 401) {
+            sessionStorage.removeItem('loggedInUser');
+            window.location.href = '/login';
+        }
+
+        return Promise.reject(error);
+    }
+);
+
+apiPrivateMultiPart.interceptors.response.use((resp) => resp, (error) => {
+        if (error.response && error.response.status === 401) {
+            sessionStorage.removeItem('loggedInUser');
+            window.location.href = '/login';
+        }
+
+        return Promise.reject(error);
+    }
+);
+  
