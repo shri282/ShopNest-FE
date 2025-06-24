@@ -24,7 +24,7 @@ interface Props {
     children?: React.ReactNode;
 }
 
-export default function AdminSideDrawer(props: Props) {
+export default function SideDrawer(props: Props) {
     const { user } = useAuth();
     const { Header, navs, children } = props;
     const defaultBody: any = navs.find((ele: any) => ele.default);

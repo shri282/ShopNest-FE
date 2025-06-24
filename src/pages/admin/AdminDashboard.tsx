@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../../components/Header';
 import "../css/user-dashboard.css"
-import AdminSideDrawer from '../../components/admin/SideDrawer';
+import SideDrawer from '../../components/admin/SideDrawer';
 import ProductListTable from '../../components/admin/ProductsListTable';
 
 const navs = [
@@ -29,7 +29,7 @@ const AdminDashboard: React.FC = () => {
 
   return (
     <div className='home-container'>
-      <AdminSideDrawer navs={navs} Header={<Header />}></AdminSideDrawer>
+      <SideDrawer navs={navs} Header={<Header />}></SideDrawer>
     </div>
   );
 }

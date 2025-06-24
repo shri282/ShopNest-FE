@@ -1,6 +1,6 @@
 import React from 'react';
 import "../css/user-dashboard.css"
-import AdminSideDrawer from '../../components/admin/SideDrawer';
+import SideDrawer from '../../components/admin/SideDrawer';
 import Header from '../../components/Header';
 import Products from '../../components/Products';
 
@@ -29,7 +29,7 @@ const UserDashboard: React.FC = () => {
 
   return (
     <div className='user-dashboard'>
-      <AdminSideDrawer navs={navs} Header={<Header />}></AdminSideDrawer>
+      <SideDrawer navs={navs} Header={<Header />}></SideDrawer>
     </div>
   );
 }
