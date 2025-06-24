@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import AdminSideDrawer from '../components/admin/AdminSideDrawer';
+import AdminSideDrawer from '../components/admin/SideDrawer';
 import ErrorSnackbar from '../common/ErrorSnackBar';
 import Header from '../components/Header';
 import {
@@ -21,35 +21,34 @@ const Cart: React.FC = () => {
 
     return (
         <div className="user-dashboard">
-            <AdminSideDrawer Header={<Header />}>
-                <DataState
-                    data={cart}
-                    error={error}
-                    loading={loading}
-                    render={(cart) =>
-                        <Box sx={{
-                            display: 'flex',
-                            width: '100%',
-                            margin: 'auto',
-                            p: 3,
-                            gap: 4,
-                            alignSelf: 'flex-start'
-                        }}>
-                            <Box sx={{ width: '70%' }}>
-                                <ShoppingCartList cart={cart} setCart={setCart} />
-                                <Box mt={3}>
-                                    <Button onClick={() => navigate('/')} color="primary" sx={{ textTransform: 'none' }}>
-                                        ← Continue Shopping
-                                    </Button>
-                                </Box>
-                            </Box>
-                            <Box sx={{ position: 'sticky', top: 90, overflow: 'hidden', alignSelf: 'flex-start' }}>
-                                <OrderSummary cart={cart} />
+            <Header />
+            <DataState
+                data={cart}
+                error={error}
+                loading={loading}
+                render={(cart) =>
+                    <Box sx={{
+                        display: 'flex',
+                        width: '100%',
+                        margin: 'auto',
+                        p: 3,
+                        gap: 4,
+                        alignSelf: 'flex-start'
+                    }}>
+                        <Box sx={{ width: '70%' }}>
+                            <ShoppingCartList cart={cart} setCart={setCart} />
+                            <Box mt={3}>
+                                <Button onClick={() => navigate('/')} color="primary" sx={{ textTransform: 'none' }}>
+                                    ← Continue Shopping
+                                </Button>
                             </Box>
                         </Box>
-                    }
-                />
-            </AdminSideDrawer>
+                        <Box sx={{ position: 'sticky', top: 90, overflow: 'hidden', alignSelf: 'flex-start' }}>
+                            <OrderSummary cart={cart} />
+                        </Box>
+                    </Box>
+                }
+            />
 
             <ErrorSnackbar
                 open={errorPopupOpen}
