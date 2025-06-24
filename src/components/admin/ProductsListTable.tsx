@@ -57,54 +57,57 @@ const ProductListTable: React.FC = () => {
 
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'name', headerName: 'Product Name', width: 180 },
-        { field: 'brand', headerName: 'Brand', width: 130 },
-        { field: 'category', headerName: 'Category', sortable: false, width: 160 },
-        { field: 'prize', headerName: 'Price', type: 'number', width: 90 },
-        { field: 'quantity', headerName: 'Quantity', type: 'number', width: 90 },
+        { field: 'id', headerName: 'ID', flex: 0.5, minWidth: 50 },
+        { field: 'name', headerName: 'Product Name', flex: 1.5, minWidth: 150 },
+        { field: 'brand', headerName: 'Brand', flex: 1, minWidth: 120 },
+        { field: 'category', headerName: 'Category', sortable: false, flex: 1.2, minWidth: 140 },
+        { field: 'prize', headerName: 'Price', type: 'number', flex: 0.8, minWidth: 100 },
+        { field: 'quantity', headerName: 'Quantity', type: 'number', flex: 0.8, minWidth: 100 },
         {
             field: 'action',
             headerName: 'Action',
             sortable: false,
+            flex: 1,
+            minWidth: 150,
             renderCell: (cell) => {
                 const productId = cell.row.id;
-                return <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="flex-start"
-                    width="100%"
-                    height="100%"
-                >
-                    <EditIcon
-                        color="primary"
-                        onClick={() => editHandler(cell.row as IProduct)}
-                        sx={{
-                            marginRight: "10px",
-                            borderRadius: "5px",
-                            cursor: "pointer",
-                            ":hover": { opacity: 0.6 }
-                        }}
-
-                    />
-                    <VisibilityIcon
-                        onClick={() => navigate(`/product/${productId}`)}
-                        color="primary"
-                        sx={{
-                            borderRadius: "5px",
-                            cursor: "pointer",
-                            ":hover": { opacity: 0.6 }
-                        }}
-                    />
-                </Box>
-            },
-            width: 180
+                return (
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="flex-start"
+                        width="100%"
+                        height="100%"
+                    >
+                        <EditIcon
+                            color="primary"
+                            onClick={() => editHandler(cell.row as IProduct)}
+                            sx={{
+                                marginRight: "10px",
+                                borderRadius: "5px",
+                                cursor: "pointer",
+                                ":hover": { opacity: 0.6 }
+                            }}
+                        />
+                        <VisibilityIcon
+                            onClick={() => navigate(`/product/${productId}`)}
+                            color="primary"
+                            sx={{
+                                borderRadius: "5px",
+                                cursor: "pointer",
+                                ":hover": { opacity: 0.6 }
+                            }}
+                        />
+                    </Box>
+                );
+            }
         }
     ];
 
+
     return (
         <>
-            <Paper sx={{ height: 400, width: '100%' }}>
+            <Paper sx={{ boxShadow: 'none', height: 'auto', minHeight: 400, width: '100%' }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
@@ -116,7 +119,14 @@ const ProductListTable: React.FC = () => {
                     paginationMode="server"
                     checkboxSelection
                     disableRowSelectionOnClick
-                    sx={{ border: 0 }}
+                    sx={{
+                        '& .MuiDataGrid-cell': {
+                            transition: 'width 0.1s ease-in-out',
+                        },
+                        '& .MuiDataGrid-columnHeader': {
+                            transition: 'width 0.1s ease-in-out',
+                        }
+                      }}
                 />
             </Paper>
             {

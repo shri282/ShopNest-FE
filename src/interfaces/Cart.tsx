@@ -20,3 +20,7 @@ export interface ICartItem {
     quantity: number;
     unitPrice: number;
 }
+
+export interface ICheckoutSession {
+    sessionId: string;
+}

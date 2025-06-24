@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import AdminSideDrawer from '../components/admin/SideDrawer';
 import ErrorSnackbar from '../common/ErrorSnackBar';
 import Header from '../components/Header';
 import {
@@ -12,12 +11,31 @@ import DataState from '../common/DataState';
 import ShoppingCartList from '../components/user/ShoppingCartList';
 import OrderSummary from '../components/user/OrderSummary';
 import { useNavigate } from 'react-router-dom';
+import { loadStripe } from '@stripe/stripe-js';
+import { ICheckoutSession } from '../interfaces/Cart';
+import CartService from '../services/CartService';
 
 const Cart: React.FC = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
     const { cart, setCart, error, loading } = useUserCart(user?.id);
     const [errorPopupOpen, setErrorPopupOpen] = useState(false);
+
+    const handleCheckout = useCallback(async () => {
+        if (!cart?.id) return;
+
+        try {
+            const stripe = await loadStripe("pk_test_51RcRvOI2BykSxmKfjrk3CkwHOXKKXJOlWNXIEXUAoYzbkP5LUqXLHdJo4simz0NIqZOH5TIaqXdYVKWY70nXBlju00WvBXUphq");
+
+            const checkoutSession: ICheckoutSession = await CartService.checkoutCart(cart?.id);
+            stripe?.redirectToCheckout({
+                sessionId: checkoutSession.sessionId,
+            })
+        } catch (error) {
+            console.log(error);
+        }
+
+    }, [cart]); 
 
     return (
         <div className="user-dashboard">
@@ -33,7 +51,8 @@ const Cart: React.FC = () => {
                         margin: 'auto',
                         p: 3,
                         gap: 4,
-                        alignSelf: 'flex-start'
+                        alignSelf: 'flex-start',
+                        boxSizing: 'border-box'
                     }}>
                         <Box sx={{ width: '70%' }}>
                             <ShoppingCartList cart={cart} setCart={setCart} />
@@ -44,7 +63,7 @@ const Cart: React.FC = () => {
                             </Box>
                         </Box>
                         <Box sx={{ position: 'sticky', top: 90, overflow: 'hidden', alignSelf: 'flex-start' }}>
-                            <OrderSummary cart={cart} />
+                            <OrderSummary onCheckout={handleCheckout} cart={cart} />
                         </Box>
                     </Box>
                 }

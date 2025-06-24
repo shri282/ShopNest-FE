@@ -16,3 +16,7 @@ export const userCartURL = (userId: Number) => {
 export const userCartItemURL = (userId: number, itemId: number) => {
     return `/users/${userId}/cart/cartItem/${itemId}`;
 };
+
+export const userCartCheckoutURL = (cartId: number) => {
+    return `/api/user/payment/checkout-session/${cartId}`;
+}

@@ -4,16 +4,18 @@ import { ICart } from '../../interfaces/Cart'
 
 interface OrderSummaryProps {
     cart: ICart
+    onCheckout: () => void;
 }
 
-const OrderSummary: React.FC<OrderSummaryProps> = ({ cart }) => {
+const OrderSummary: React.FC<OrderSummaryProps> = ({ cart, onCheckout }) => {
 
     return (
         <Box sx={{
             width: '100%',
             p: 2,
             height: 'fit-content',
-            border: '1px solid #ccc'
+            border: '1px solid #ccc',
+            boxSizing: 'border-box'
         }}>
             <Typography variant="h6" mb={2}>Order Summary</Typography>
 
@@ -50,7 +52,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ cart }) => {
                 <Typography fontWeight="bold">£{cart.grandTotal}</Typography>
             </Box>
 
-            <Button fullWidth variant="contained" sx={{ background: '#5c6bc0' }}>
+            <Button onClick={onCheckout} fullWidth variant="contained" sx={{ background: '#5c6bc0' }}>
                 CHECKOUT
             </Button>
         </Box>

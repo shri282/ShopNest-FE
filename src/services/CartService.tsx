@@ -1,8 +1,8 @@
 import { AxiosResponse } from "axios";
 import { apiPrivate } from "../config/axios";
-import { ICart } from "../interfaces/Cart";
+import { ICart, ICheckoutSession } from "../interfaces/Cart";
 import { IProduct } from "../interfaces/Product";
-import { userCartItemURL, userCartURL } from "../constants/apiEndPoints";
+import { userCartCheckoutURL, userCartItemURL, userCartURL } from "../constants/apiEndPoints";
 
 class CartService {
     static async removeCartItem(userId: number, itemId: number): Promise<ICart> {
@@ -21,6 +21,13 @@ class CartService {
 
     static async getUserCart(userId: Number) {
         const resp: AxiosResponse<ICart> = await apiPrivate.get<ICart>(userCartURL(userId));
+        return resp.data;
+    }
+
+    static async checkoutCart(cartId: number) {
+        const resp: AxiosResponse<ICheckoutSession> = await apiPrivate.get<ICheckoutSession>(userCartCheckoutURL(cartId), {
+            timeout: 50000
+        });
         return resp.data;
     }
 
