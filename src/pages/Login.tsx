@@ -6,6 +6,7 @@ import AuthService from '../services/AuthService';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import ErrorSnackbar from '../common/ErrorSnackBar';
+import LoadingOverlay from '../common/LoadingOverlay';
 
 const Login: React.FC = () => {
     const { login } = useAuth();
@@ -16,6 +17,7 @@ const Login: React.FC = () => {
     });
     const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
     const [error, setError] = useState<any>(null);
+    const [isApiLoading, setIsApiLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -24,6 +26,7 @@ const Login: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         try {
+            setIsApiLoading(true);
             e.preventDefault();
             const loginResp = await AuthService.login(formData);
             login(loginResp);
@@ -36,6 +39,8 @@ const Login: React.FC = () => {
             console.log(error);
             setError(error);
             setErrorPopupOpen(true);
+        } finally {
+            setIsApiLoading(false);
         }
     };
 
@@ -72,6 +77,7 @@ const Login: React.FC = () => {
                     username: "tharun", password: "tharun123", role: "user"
                 })} style={{ backgroundColor: 'red' }}>Login as guest user</button>
             </form>
+            <LoadingOverlay loading={isApiLoading} />
             <ErrorSnackbar open={errorPopupOpen} message={error?.message} onClose={() => setErrorPopupOpen(false)} />
         </div>
     );

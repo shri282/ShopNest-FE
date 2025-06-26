@@ -7,11 +7,12 @@ import InfoSnackbar from '../../common/InfoSnackBar';
 import ErrorSnackbar from '../../common/ErrorSnackBar';
 
 interface ShoppingCartListProps {
+    setIsLoading: (flag: boolean) => void
     cart: ICart
     setCart: (cart: ICart) => void;
 }
 
-const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart, setCart }) => {
+const ShoppingCartList: React.FC<ShoppingCartListProps> = ({setIsLoading, cart, setCart }) => {
 
     const { user } = useAuth();
     const [openInfoSnackBar, setOpenInfoSnackBar] = useState<boolean>(false);
@@ -21,6 +22,7 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart, setCart }) =>
     const updateItemQuantityHandler = async (item: ICartItem, quantity: number) => {
         if (!user?.id) return;
         if (item.quantity + quantity === 0) return removeItem(item.id);
+        setIsLoading(true);
 
         try {
             const updatedCart: ICart = await CartService.updateCartItemQuantity(user.id, item.id, quantity);
@@ -31,11 +33,14 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart, setCart }) =>
             console.log(error);
             setOpenErrorSnackBar(true);
             setMessage(error.message)
+        } finally {
+            setIsLoading(false);
         }
     }
 
     const removeItem = async (itemId: number) => {
         if (!user?.id) return
+        setIsLoading(true);
 
         try {
             const updatedCart: ICart = await CartService.removeCartItem(user.id, itemId);
@@ -46,6 +51,8 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart, setCart }) =>
             console.log(error);
             setOpenErrorSnackBar(true);
             setMessage(error.message);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -162,7 +169,7 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart, setCart }) =>
                         >
                             <Typography sx={{ fontSize: 18, fontWeight: 700 }}>×</Typography>
                         </Box>
-                    </Box> 
+                    </Box>
                 ))}
             </Box>
             <InfoSnackbar open={openInfoSnackBar} message={message} onClose={() => setOpenInfoSnackBar(false)} />

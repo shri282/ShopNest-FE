@@ -14,11 +14,13 @@ import { useAuth } from '../context/AuthContext';
 import CartService from '../services/CartService';
 import InfoSnackbar from '../common/InfoSnackBar';
 import ErrorSnackbar from '../common/ErrorSnackBar';
+import LoadingOverlay from '../common/LoadingOverlay';
 
 const Product = () => {
     const { id } = useParams();
     const { user } = useAuth();
     const [product, setProduct] = useState<IProduct | null>(null);
+    const [isApiLoading, setIsApiLoading] = useState(false);
     const [openInfoSnackBar, setOpenInfoSnackBar] = useState<boolean>(false);
     const [openErrorSnackBar, setOpenErrorSnackBar] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
@@ -39,6 +41,7 @@ const Product = () => {
         if (!(user?.id && product)) {
             return;
         }
+        setIsApiLoading(true);
 
         try {
             await CartService.addItemToCart(user.id, product);
@@ -48,6 +51,8 @@ const Product = () => {
             console.log(error);
             setOpenErrorSnackBar(true);
             setMessage(error.message);
+        } finally {
+            setIsApiLoading(false);
         }
     }
 
@@ -276,6 +281,7 @@ const Product = () => {
                         </div>
                     )
                 }
+                <LoadingOverlay loading={isApiLoading} />
                 <InfoSnackbar open={openInfoSnackBar} message={message} onClose={() => setOpenInfoSnackBar(false)} />
                 <ErrorSnackbar open={openErrorSnackBar} message={message} onClose={() => setOpenErrorSnackBar(false)} />
             </FallBackWrapper>

@@ -14,15 +14,18 @@ import { useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import { ICheckoutSession } from '../interfaces/Cart';
 import CartService from '../services/CartService';
+import LoadingOverlay from '../common/LoadingOverlay';
 
 const Cart: React.FC = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
     const { cart, setCart, error, loading } = useUserCart(user?.id);
+    const [isApiLoading, setIsApiLoading] = useState(false);
     const [errorPopupOpen, setErrorPopupOpen] = useState(false);
 
     const handleCheckout = useCallback(async () => {
         if (!cart?.id) return;
+        setIsApiLoading(true);
 
         try {
             const stripe = await loadStripe("pk_test_51RcRvOI2BykSxmKfjrk3CkwHOXKKXJOlWNXIEXUAoYzbkP5LUqXLHdJo4simz0NIqZOH5TIaqXdYVKWY70nXBlju00WvBXUphq");
@@ -33,6 +36,8 @@ const Cart: React.FC = () => {
             })
         } catch (error) {
             console.log(error);
+        } finally {
+            setIsApiLoading(false);
         }
 
     }, [cart]); 
@@ -55,7 +60,7 @@ const Cart: React.FC = () => {
                         boxSizing: 'border-box'
                     }}>
                         <Box sx={{ width: '70%' }}>
-                            <ShoppingCartList cart={cart} setCart={setCart} />
+                            <ShoppingCartList setIsLoading={setIsApiLoading} cart={cart} setCart={setCart} />
                             <Box mt={3}>
                                 <Button onClick={() => navigate('/')} color="primary" sx={{ textTransform: 'none' }}>
                                     ← Continue Shopping
@@ -68,7 +73,8 @@ const Cart: React.FC = () => {
                     </Box>
                 }
             />
-
+            
+            <LoadingOverlay loading={isApiLoading} />
             <ErrorSnackbar
                 open={errorPopupOpen}
                 message={error?.message || 'An unexpected error occurred.'}

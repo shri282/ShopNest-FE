@@ -16,7 +16,7 @@ const InfoSnackbar: React.FC<InfoSnackbarProps> = ({ open, message, onClose }) =
     return (
         <Snackbar
             open={open}
-            autoHideDuration={5000}
+            autoHideDuration={1000}
             onClose={onClose}
             anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
