@@ -1,5 +1,5 @@
 // components/Product/UpdateProductPopup.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import ProductForm from '../ProductForm';
 import { useForm } from 'react-hook-form';
@@ -7,6 +7,7 @@ import { IProduct, IUpdateProduct } from '../../interfaces/Product';
 import "../css/addProductPopup.css";
 import ProductService from '../../services/ProductService';
 import { base64ToFile } from '../../utils/FileEncoding';
+import LoadingOverlay from '../../common/LoadingOverlay';
 
 interface UpdateProductPopupProps {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,6 +30,7 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, 
             image: base64ToFile(product.image, product.imageName, product.imageType),
         },
     });
+    const [isApiLoading, setIsApiLoading] = useState(false);
 
     const handleClose = () => {
         reset();
@@ -36,13 +38,16 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, 
     };
 
     const onSubmit = async (data: IUpdateProduct) => {
+        setIsApiLoading(true);
+
         try {
             const product = await ProductService.updateProduct(data);
             if (onUpdated) onUpdated(product.data);
-            alert('Product updated successfully!');
             handleClose();
         } catch (error: any) {
             alert('Error updating product: ' + error.message);
+        } finally {
+            setIsApiLoading(false);
         }
     };
 
@@ -68,6 +73,7 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, 
                     <Button type="submit" autoFocus className="add-button">Update</Button>
                 </DialogActions>
             </form>
+            <LoadingOverlay loading={isApiLoading} />
         </Dialog>
     );
 };
