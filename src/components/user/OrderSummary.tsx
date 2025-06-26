@@ -21,7 +21,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ cart, onCheckout }) => {
 
             <Box display="flex" justifyContent="space-between" mb={2}>
                 <Typography>Items</Typography>
-                <Typography>£{cart.subtotalPrice}</Typography>
+                <Typography>₹{cart.subtotalPrice}</Typography>
             </Box>
 
             <Box display="flex" alignItems={'center'} justifyContent="space-between" mb={2}>
@@ -49,7 +49,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ cart, onCheckout }) => {
 
             <Box display="flex" justifyContent="space-between" mb={2}>
                 <Typography fontWeight="bold">Total Cost</Typography>
-                <Typography fontWeight="bold">£{cart.grandTotal}</Typography>
+                <Typography fontWeight="bold">₹{cart.grandTotal}</Typography>
             </Box>
 
             <Button onClick={onCheckout} fullWidth variant="contained" sx={{ background: '#5c6bc0' }}>

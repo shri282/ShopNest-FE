@@ -58,87 +58,111 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ cart, setCart }) =>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, marginTop: 1 }}>
 
-                <Box sx={{ display: 'flex', gap: 3, px: 1 }}>
-                    <Box sx={{ width: '45%', alignSelf: 'center', fontWeight: 600 }}>Product Details</Box>
-                    <Box sx={{ display: 'flex', width: '90px', alignItems: 'center', gap: 3, fontWeight: 600 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center', gap: 3, p: 1 }}>
+                    <Box sx={{ alignSelf: 'center', fontWeight: 600 }}>Product Details</Box>
+                    <Box sx={{ display: 'flex', fontWeight: 600 }}>
                         Quantity
                     </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexGrow: 1, fontWeight: 600 }}>
-                        <Typography fontWeight={600}>Price</Typography>
-                        <Typography fontWeight={600}>Total</Typography>
-                    </Box>
+                    <Typography sx={{ marginRight: 10 }} fontWeight={600}>Total</Typography>
                 </Box>
 
                 <Divider />
 
                 {cart.items.map((item, index) => (
-                    <Box key={index} sx={{ display: 'flex', width: '100%', alignItems: 'center', gap: 3, p: 1 }}>
-                        <Box sx={{ width: '45%', display: 'flex', alignItems: 'center' }}>
-                            <CardMedia
-                                component="img"
-                                image={`data:image/jpeg;base64,${item.image}`}
-                                alt={'img'}
-                                sx={{ width: 80, height: 80, borderRadius: 1, mr: 2 }}
-                            />
-                            <Box>
-                                <Typography variant="body1">{item.productName}</Typography>
-                                <Typography sx={{ fontSize: 10, color: item.availability ? 'green' : 'red' }} variant="body2">{item.availability ? 'In stock' : 'Out of stock'}</Typography>
-                                <Button onClick={() => removeItem(item.id)} sx={{ fontSize: 12 }} size="small" color="secondary">Remove</Button>
-                            </Box>
+                    <Box
+                        key={index}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 2,
+                            p: 2,
+                            borderRadius: 2,
+                            backgroundColor: '#fff',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+                            border: '1px solid #eee',
+                            mb: 2,
+                            flexWrap: 'wrap',
+                        }}
+                    >
+                        {/* Product Image */}
+                        <CardMedia
+                            component="img"
+                            image={`data:image/jpeg;base64,${item.image}`}
+                            alt={item.productName}
+                            sx={{
+                                width: 80,
+                                height: 80,
+                                objectFit: 'cover',
+                                borderRadius: 1,
+                            }}
+                        />
+
+                        {/* Product Info */}
+                        <Box sx={{ flex: 1, minWidth: 200 }}>
+                            <Typography fontWeight={500}>{item.productName}</Typography>
+                            <Typography
+                                variant="body2"
+                                sx={{ fontSize: 12, color: item.availability ? 'green' : 'red', mt: 0.5 }}
+                            >
+                                {item.availability ? 'In stock' : 'Out of stock'}
+                            </Typography>
+                            <Typography variant="body2" sx={{ fontSize: 13, mt: 1, color: '#555' }}>
+                                Unit Price: <b>₹{item.unitPrice.toFixed(2)}</b>
+                            </Typography>
                         </Box>
 
-                        <Box sx={{ width: 'fit-content', display: 'flex', alignItems: 'center' }}>
+                        {/* Quantity Controls */}
+                        <Box sx={{ display: 'flex', flex: 1, alignItems: 'center', gap: 1 }}>
                             <Button
                                 variant="outlined"
                                 size="small"
                                 onClick={() => updateItemQuantityHandler(item, -1)}
-                                sx={{
-                                    minWidth: '20px',
-                                    width: '20px',
-                                    height: '20px',
-                                    padding: 0,
-                                    lineHeight: 1,
-                                    fontSize: '14px'
-                                }}
+                                sx={{ minWidth: 32, height: 32, fontSize: 18 }}
                             >
                                 -
                             </Button>
-                            <Box
-                                sx={{
-                                    px: 2,
-                                    py: 0.5,
-                                    border: '1px solid #ccc',
-                                    mx: 1,
-                                    borderRadius: 1,
-                                    minWidth: 22,
-                                    width: '22px',
-                                    textAlign: 'center'
-                                }}
-                            >
+                            <Typography sx={{ minWidth: 24, textAlign: 'center', fontWeight: 500 }}>
                                 {item.quantity}
-                            </Box>
+                            </Typography>
                             <Button
                                 variant="outlined"
                                 size="small"
                                 onClick={() => updateItemQuantityHandler(item, 1)}
-                                sx={{
-                                    minWidth: '20px',
-                                    width: '20px',
-                                    height: '20px',
-                                    padding: 0,
-                                    lineHeight: 1,
-                                    fontSize: '14px'
-                                }}
+                                sx={{ minWidth: 32, height: 32, fontSize: 18 }}
                             >
                                 +
                             </Button>
                         </Box>
 
-                        <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Typography>£{item.unitPrice.toFixed(2)}</Typography>
-                            <Typography fontWeight="bold">£{(item.unitPrice * item.quantity).toFixed(2)}</Typography>
+                        {/* Total Price */}
+                        <Box sx={{ textAlign: 'right', minWidth: 100 }}>
+                            <Typography sx={{ fontWeight: 600, fontSize: 16 }}>
+                                ₹{(item.unitPrice * item.quantity).toFixed(2)}
+                            </Typography>
                         </Box>
-                    </Box>
+
+                        {/* Remove Button */}
+                        <Box
+                            onClick={() => removeItem(item.id)}
+                            sx={{
+                                ml: 2,
+                                color: '#d32f2f',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: 32,
+                                height: 32,
+                                borderRadius: '50%',
+                                transition: 'background 0.2s',
+                                '&:hover': {
+                                    backgroundColor: '#ffe6e6',
+                                },
+                            }}
+                        >
+                            <Typography sx={{ fontSize: 18, fontWeight: 700 }}>×</Typography>
+                        </Box>
+                    </Box> 
                 ))}
             </Box>
             <InfoSnackbar open={openInfoSnackBar} message={message} onClose={() => setOpenInfoSnackBar(false)} />

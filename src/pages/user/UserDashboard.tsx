@@ -7,20 +7,16 @@ import Products from '../../components/Products';
 const navs = [
   {
     id: 1,
-    name: 'products',
-    component: <div>products</div>,
+    name: 'orders',
+    component: <div>orders</div>,
+    iconSrc: 'images/order.png',
     default: false
   },
   {
     id: 2,
-    name: 'orders',
-    component: <div>orders</div>,
-    default: false
-  },
-  {
-    id: 3,
     name: 'products',
     component: <Products />,
+    iconSrc: 'images/collection.png',
     default: true
   },
 ]

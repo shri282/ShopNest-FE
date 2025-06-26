@@ -5,7 +5,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -14,6 +13,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import { useAuth } from '../../context/AuthContext';
+import { Tooltip, Typography } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -36,36 +36,98 @@ export default function SideDrawer(props: Props) {
     };
 
     const drawer = (
-        <div>
-            <Box sx={{ display: 'flex', backgroundColor: 'brown', gap: 2, alignItems: 'center' }}>
+        <Box>
+            <Box
+                sx={{
+                    display: 'flex',
+                    boxSizing: 'border-box',
+                    backgroundColor: 'brown',
+                    gap: 2,
+                    alignItems: 'center',
+                    width: '100%',
+                    overflow: 'hidden',
+                    padding: 1,
+                }}
+            >
                 <Box
                     component="img"
                     src={'/images/galina-n-miziNqvJx5M-unsplash.jpg'}
                     alt="Profile"
                     sx={{
-                        width: '40%',
-                        height: '75px'
+                        width: 60,
+                        height: 60,
+                        borderRadius: '50%',
+                        objectFit: 'cover',
+                        flexShrink: 0,
                     }}
                 />
-                <Box>
-                    <Box sx={{ fontWeight: 'bold', color: 'white' }}>{user?.username || 'Guest'}</Box>
-                    <Box sx={{ fontSize: '0.65rem', color: 'white' }}>{user?.email}</Box>
+                <Box sx={{ minWidth: 0, overflow: 'hidden' }}>
+                    <Box
+                        sx={{
+                            fontWeight: 'bold',
+                            color: 'white',
+                            textOverflow: 'ellipsis',
+                            overflow: 'hidden',
+                            whiteSpace: 'nowrap',
+                        }}
+                    >
+                        {user?.username || 'Guest'}
+                    </Box>
+                    <Tooltip title={user?.email || ''} arrow>
+                        <Typography
+                            sx={{
+                                fontSize: '0.65rem',
+                                color: 'white',
+                                textOverflow: 'ellipsis',
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                cursor: 'default',
+                            }}
+                        >
+                            {user?.email}
+                        </Typography>
+                    </Tooltip>
                 </Box>
             </Box>
+
             <Divider />
-            <List>
+            <List sx={{ py: 1 }}>
                 {navs.map((nav: any, index) => (
-                    <ListItem onClick={() => setBody(nav)} key={index} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <InboxIcon />
+                    <ListItem key={index} disablePadding>
+                        <ListItemButton
+                            onClick={() => setBody(nav)}
+                            sx={{
+                                px: 2.5,
+                                py: 1.2,
+                                borderRadius: 2,
+                                mx: 1,
+                                my: 0.5,
+                                '&:hover': {
+                                    backgroundColor: '#f0f0f0',
+                                },
+                                '&.Mui-selected': {
+                                    backgroundColor: '#e0e0e0',
+                                    '&:hover': {
+                                        backgroundColor: '#d5d5d5',
+                                    },
+                                },
+                            }}
+                            selected={body?.name === nav.name}
+                        >
+                            <ListItemIcon sx={{ color: 'brown', minWidth: 36 }}>
+                                <Box
+                                    component="img"
+                                    src={nav.iconSrc}
+                                    alt="icon"
+                                    sx={{ width: 24, height: 24 }}
+                                />
                             </ListItemIcon>
                             <ListItemText primary={nav.name} />
                         </ListItemButton>
                     </ListItem>
                 ))}
             </List>
-        </div>
+        </Box>
     );
 
     return (
