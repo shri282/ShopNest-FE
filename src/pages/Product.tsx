@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import Header from '../components/Header'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { IProduct } from '../interfaces/Product';
 import FallBackWrapper from '../common/FallBackWrapper';
 import ProductService from '../services/ProductService';
@@ -19,6 +19,7 @@ import LoadingOverlay from '../common/LoadingOverlay';
 const Product = () => {
     const { id } = useParams();
     const { user } = useAuth();
+    const navigate = useNavigate();
     const [product, setProduct] = useState<IProduct | null>(null);
     const [isApiLoading, setIsApiLoading] = useState(false);
     const [openInfoSnackBar, setOpenInfoSnackBar] = useState<boolean>(false);
@@ -38,7 +39,8 @@ const Product = () => {
     }, [id])
 
     const addToCartHandler = async () => {
-        if (!(user?.id && product)) {
+        if (!user?.id) return navigate("/login");
+        if (!product) {
             return;
         }
         setIsApiLoading(true);

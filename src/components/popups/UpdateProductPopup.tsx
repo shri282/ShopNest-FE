@@ -1,4 +1,3 @@
-// components/Product/UpdateProductPopup.tsx
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import ProductForm from '../ProductForm';
@@ -8,6 +7,8 @@ import "../css/addProductPopup.css";
 import ProductService from '../../services/ProductService';
 import { base64ToFile } from '../../utils/FileEncoding';
 import LoadingOverlay from '../../common/LoadingOverlay';
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 interface UpdateProductPopupProps {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,6 +32,8 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, 
         },
     });
     const [isApiLoading, setIsApiLoading] = useState(false);
+    const { user } = useAuth();
+    const navigate = useNavigate();
 
     const handleClose = () => {
         reset();
@@ -38,6 +41,7 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, 
     };
 
     const onSubmit = async (data: IUpdateProduct) => {
+        if (!user) return navigate("/login");
         setIsApiLoading(true);
 
         try {
