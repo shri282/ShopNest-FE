@@ -3,7 +3,7 @@ import React from 'react';
 import { IAddProduct } from '../../interfaces/Product';
 import { useForm } from 'react-hook-form';
 import ProductService from '../../services/ProductService';
-import ProductForm from '../ProductForm';
+import ProductForm from '../forms/ProductForm';
 import "../css/addProductPopup.css";
 
 interface AddProductPopupProps {

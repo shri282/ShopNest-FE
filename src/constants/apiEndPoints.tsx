@@ -2,6 +2,19 @@
 export const LOGIN_URL = "/login";
 export const REGISTER_URL = "/register";
 
+// user
+export const getUserAddressesURL = (userId: number) => {
+    return `/users/${userId}/address`;
+}
+
+export const updateUserAddressURL = (userId: number) => {
+    return `/users/${userId}/update-address`;
+}
+
+export const addUserAddressesURL = (userId: number) => {
+    return `/users/${userId}/add-address`;
+}
+
 // product module
 
 export const PRODUCTS_ENDPOINT = "/products";

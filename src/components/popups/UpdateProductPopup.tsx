@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import ProductForm from '../ProductForm';
+import ProductForm from '../forms/ProductForm';
 import { useForm } from 'react-hook-form';
 import { IProduct, IUpdateProduct } from '../../interfaces/Product';
 import "../css/addProductPopup.css";

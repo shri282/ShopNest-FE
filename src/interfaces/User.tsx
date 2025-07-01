@@ -1,3 +1,4 @@
+import { AddressType } from "../enum/AddressType";
 import { Role } from "../enum/Role";
 
 export interface User {
@@ -13,4 +14,19 @@ export interface User {
     phNo: String;
     createdAt: Date;
     updatedAt: Date;
+}
+
+export interface UserAddress {
+    id: number,
+    userId: number,
+    fullName: string,
+    phoneNumber: string,
+    addressLine1: string,
+    addressLine2: string,
+    city: string,
+    state: string,
+    postalCode: string,
+    country: string,
+    isDefault: boolean,
+    addressType: AddressType
 }

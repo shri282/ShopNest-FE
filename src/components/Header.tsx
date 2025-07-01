@@ -73,7 +73,7 @@ const Header: React.FC = () => {
                             setTimeout(() => setShowDropdown(false), 800);
                         }}
                         type="text"
-                        placeholder="Search ShopNest.in"
+                        placeholder="Search shopnest.in"
                         className="header__search-input"
                     />
 

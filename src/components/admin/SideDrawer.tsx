@@ -45,7 +45,7 @@ export default function SideDrawer(props: Props) {
                     gap: 2,
                     alignItems: 'center',
                     width: '100%',
-                    height: '74px',
+                    height: '75px',
                     overflow: 'hidden',
                     padding: 1,
                 }}
@@ -92,7 +92,7 @@ export default function SideDrawer(props: Props) {
             </Box>
 
             <Divider />
-            <List sx={{ py: 1, backgroundColor: 'white', height: `calc(100vh - 75px)` }}>
+            <List sx={{ py: 1, backgroundColor: 'white', height: `calc(100vh - 76px)` }}>
                 {navs.map((nav: any, index) => (
                     <ListItem key={index} disablePadding>
                         <ListItemButton
@@ -176,12 +176,12 @@ export default function SideDrawer(props: Props) {
                 sx={{
                     flexGrow: 1,
                     p: 3,
-                    marginTop: 1,
                     width: open ? `calc(100% - ${drawerWidth}px)` : '100%',
                     ml: open ? `${drawerWidth}px` : 0,
                     transition: 'margin 0.3s, width 0.3s',
                 }}
-            >
+            >   
+                {/* reason for some margin in top */}
                 <Toolbar />
                 {body?.component || children}
             </Box>
