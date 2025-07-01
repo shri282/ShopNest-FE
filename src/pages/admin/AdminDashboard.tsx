@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../../components/Header';
 import "../css/user-dashboard.css"
-import SideDrawer from '../../components/admin/SideDrawer';
+import SideDrawer from '../../common/SideDrawer';
 import ProductListTable from '../../components/admin/ProductsListTable';
 
 const navs = [

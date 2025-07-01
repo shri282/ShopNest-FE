@@ -12,7 +12,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 import { Tooltip, Typography } from '@mui/material';
 
 const drawerWidth = 240;
@@ -180,7 +180,7 @@ export default function SideDrawer(props: Props) {
                     ml: open ? `${drawerWidth}px` : 0,
                     transition: 'margin 0.3s, width 0.3s',
                 }}
-            >   
+            >
                 {/* reason for some margin in top */}
                 <Toolbar />
                 {body?.component || children}

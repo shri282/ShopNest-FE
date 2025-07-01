@@ -1,6 +1,6 @@
 import React from 'react';
 import "../css/user-dashboard.css"
-import SideDrawer from '../../components/admin/SideDrawer';
+import SideDrawer from '../../common/SideDrawer';
 import Header from '../../components/Header';
 import Products from '../../components/Products';
 
