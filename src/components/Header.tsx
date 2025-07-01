@@ -38,7 +38,7 @@ const Header: React.FC = () => {
     return (
         <header className="header">
             <div className="header__left">
-                <img onClick={() => navigate("/")} className="header__logo" src="/images/amazon-dark-seeklogo.png" alt="Logo" />
+                <img onClick={() => navigate("/")} className="header__logo" src="/images/logoo.webp" alt="Logo" />
                 <div className="header__location">
                     <LocationOnOutlinedIcon className="header__location-icon" />
                     <div className="header__location-text">
@@ -73,7 +73,7 @@ const Header: React.FC = () => {
                             setTimeout(() => setShowDropdown(false), 800);
                         }}
                         type="text"
-                        placeholder="Search Amazon.in"
+                        placeholder="Search ShopNest.in"
                         className="header__search-input"
                     />
 
@@ -84,7 +84,6 @@ const Header: React.FC = () => {
                                     key={key}
                                     className="header__search-item"
                                     onClick={() => {
-                                        console.log("onclickkkkkkkkkkkkk");
                                         navigate(`/search-results`, { state: products });
                                         setShowDropdown(false);
                                         setKeyword('');
