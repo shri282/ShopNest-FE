@@ -134,7 +134,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, defau
             <div className="input-group">
                 {watch('image') && (
                     <img
-                        src={URL.createObjectURL(watch('image'))}
+                        src={watch('imageURL') ? watch('imageURL') : URL.createObjectURL(watch('image'))}
                         alt="Preview"
                         className="image-preview"
                     />

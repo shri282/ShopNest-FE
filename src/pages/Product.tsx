@@ -106,7 +106,7 @@ const Product = () => {
                             <div className="img-div">
                                 <img
                                     className='prod-img'
-                                    src={`data:image/jpeg;base64,${product.image}`}
+                                    src={product.imageURL}
                                     alt={product.name}
                                     loading="lazy"
                                 />

@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { IProduct, IUpdateProduct } from '../../interfaces/Product';
 import "../css/addProductPopup.css";
 import ProductService from '../../services/ProductService';
-import { base64ToFile } from '../../utils/FileEncoding';
 import LoadingOverlay from '../../common/LoadingOverlay';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -29,7 +28,7 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, 
             prize: product.prize,
             quantity: product.quantity,
             imageURL: product.imageURL,
-            image: base64ToFile(product.image, product.imageName, product.imageType),
+            image: null,
         },
     });
     const [isApiLoading, setIsApiLoading] = useState(false);
