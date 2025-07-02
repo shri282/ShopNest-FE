@@ -15,7 +15,7 @@ export interface ICartItem {
     id: number;
     productId: number;
     productName: string;
-    image: String;
+    imageURL: string;
     availability: boolean;
     quantity: number;
     unitPrice: number;

@@ -18,7 +18,7 @@ interface UpdateProductPopupProps {
 }
 
 const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, product, onUpdated }) => {
-    const { control, handleSubmit, formState: { errors }, reset, watch } = useForm<IUpdateProduct>({
+    const { control, handleSubmit, setValue, formState: { errors }, reset, watch } = useForm<IUpdateProduct>({
         defaultValues: {
             id: product.id,
             name: product.name,
@@ -28,6 +28,7 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, 
             availability: product.availability,
             prize: product.prize,
             quantity: product.quantity,
+            imageURL: product.imageURL,
             image: base64ToFile(product.image, product.imageName, product.imageType),
         },
     });
@@ -69,7 +70,7 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, 
 
             <form onSubmit={handleSubmit(onSubmit)} action="">
                 <DialogContent className='dialog-content'>
-                    <ProductForm watch={watch} control={control} errors={errors} defaultValues={{}} />
+                    <ProductForm setValue={setValue} watch={watch} control={control} errors={errors} defaultValues={{}} />
                 </DialogContent>
 
                 <DialogActions className="dialog-actions">

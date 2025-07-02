@@ -12,6 +12,7 @@ export interface IProduct {
     image: String;
     imageType: String;
     imageName: String;
+    imageURL: string;
 }
 export interface IAddProduct {
     name: string;
@@ -34,6 +35,7 @@ export interface IUpdateProduct {
     category: string;
     description: string;
     image: File | null;
+    imageURL: string;
 }
 
 export interface IProductFilter {

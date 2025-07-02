@@ -12,7 +12,7 @@ interface ShoppingCartListProps {
     setCart: (cart: ICart) => void;
 }
 
-const ShoppingCartList: React.FC<ShoppingCartListProps> = ({setIsLoading, cart, setCart }) => {
+const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ setIsLoading, cart, setCart }) => {
 
     const { user } = useAuth();
     const [openInfoSnackBar, setOpenInfoSnackBar] = useState<boolean>(false);
@@ -94,7 +94,7 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({setIsLoading, cart, 
                         {/* Product Image */}
                         <CardMedia
                             component="img"
-                            image={`data:image/jpeg;base64,${item.image}`}
+                            image={item.imageURL}
                             alt={item.productName}
                             sx={{
                                 width: 80,

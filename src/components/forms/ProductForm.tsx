@@ -1,5 +1,5 @@
 // components/Product/ProductForm.tsx
-import { Controller } from 'react-hook-form';
+import { Controller, UseFormSetValue } from 'react-hook-form';
 import { TextField } from '@mui/material';
 
 interface ProductFormProps {
@@ -7,9 +7,10 @@ interface ProductFormProps {
     errors: any;
     defaultValues: any;
     watch: any;
+    setValue: UseFormSetValue<any>;
 }
 
-const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, defaultValues }) => {
+const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, defaultValues, setValue }) => {
     return (
         <>
             <div className="input-row">
@@ -138,6 +139,17 @@ const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, defau
                         className="image-preview"
                     />
                 )}
+                <button
+                    type="button"
+                    className="remove-image-button"
+                    onClick={() => {
+                        setValue('image', null);
+                        const input = document.getElementById('image') as HTMLInputElement;
+                        if (input) input.value = '';
+                    }}
+                >
+                    Remove
+                </button><br />
                 <span className="image-label">Upload Image </span>
                 <Controller
                     name="image"

@@ -17,7 +17,8 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ setOpen, open }) => {
         handleSubmit,
         formState: { errors },
         reset,
-        watch
+        watch,
+        setValue
     } = useForm<IAddProduct>({
         defaultValues: {
             name: "",
@@ -60,7 +61,7 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ setOpen, open }) => {
 
             <form onSubmit={handleSubmit(onSubmit)} action="">
                 <DialogContent className='dialog-content'>
-                    <ProductForm watch={watch} control={control} errors={errors} defaultValues={{}} />
+                    <ProductForm setValue={setValue} watch={watch} control={control} errors={errors} defaultValues={{}} />
                 </DialogContent>
 
                 <DialogActions className="dialog-actions">
