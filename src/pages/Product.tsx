@@ -14,14 +14,13 @@ import { useAuth } from '../context/AuthContext';
 import CartService from '../services/CartService';
 import InfoSnackbar from '../common/InfoSnackBar';
 import ErrorSnackbar from '../common/ErrorSnackBar';
-import LoadingOverlay from '../common/LoadingOverlay';
 
 const Product = () => {
     const { id } = useParams();
     const { user } = useAuth();
     const navigate = useNavigate();
     const [product, setProduct] = useState<IProduct | null>(null);
-    const [isApiLoading, setIsApiLoading] = useState(false);
+    const [isAddingCartInProgress, setIsAddingCartInProgress] = useState(false);
     const [openInfoSnackBar, setOpenInfoSnackBar] = useState<boolean>(false);
     const [openErrorSnackBar, setOpenErrorSnackBar] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
@@ -43,7 +42,7 @@ const Product = () => {
         if (!product) {
             return;
         }
-        setIsApiLoading(true);
+        setIsAddingCartInProgress(true);
 
         try {
             await CartService.addItemToCart(user.id, product);
@@ -54,7 +53,7 @@ const Product = () => {
             setOpenErrorSnackBar(true);
             setMessage(error.message);
         } finally {
-            setIsApiLoading(false);
+            setIsAddingCartInProgress(false);
         }
     }
 
@@ -70,7 +69,7 @@ const Product = () => {
         textTransform: 'none',
         transition: 'all 0.3s ease',
         '&:hover': {
-            transform: 'translateY(-2px)'
+            transform: 'translateY(-1px)'
         }
     });
 
@@ -236,9 +235,11 @@ const Product = () => {
                                             color="primary"
                                             onClick={addToCartHandler}
                                             startIcon={<ShoppingCart />}
+                                            loading={isAddingCartInProgress}
+                                            loadingPosition="end"
                                             size="large"
                                         >
-                                            Add to Cart
+                                            {isAddingCartInProgress ? "Adding..." : "Add to Cart"}
                                         </StyledButton>
 
                                         <StyledButton
@@ -283,7 +284,6 @@ const Product = () => {
                         </div>
                     )
                 }
-                <LoadingOverlay loading={isApiLoading} />
                 <InfoSnackbar open={openInfoSnackBar} message={message} onClose={() => setOpenInfoSnackBar(false)} />
                 <ErrorSnackbar open={openErrorSnackBar} message={message} onClose={() => setOpenErrorSnackBar(false)} />
             </FallBackWrapper>
