@@ -7,10 +7,6 @@ import { User } from '../interfaces/User';
 import { readSession, writeSession } from '../utils/WebStorage';
 import { createContext } from 'react';
 
-interface AuthProviderProps {
-    children: React.ReactNode;
-}
-
 interface AuthState {
     user: User | null,
     token: string | null,
@@ -26,7 +22,7 @@ const initialAuthState: AuthState = {
 type AuthAction =
     | { type: "LOGIN"; payload: AuthState }
     | { type: "LOGOUT" };
-    
+
 interface AuthContextType extends AuthState {
     authDispatch: React.Dispatch<AuthAction>;
 }
@@ -48,7 +44,7 @@ const authReducer = (state: AuthState, action: AuthAction) => {
     }
 }
 
-const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [authState, dispatch] = useReducer(authReducer, initialAuthState);
 
     useEffect(() => {
