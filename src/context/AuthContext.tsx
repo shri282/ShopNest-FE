@@ -17,37 +17,31 @@ interface AuthState {
     isAuthenticated: boolean
 }
 
-export const initialAuthState: AuthState = {
+const initialAuthState: AuthState = {
     user: null,
     token: null,
     isAuthenticated: false
 }
 
+type AuthAction =
+    | { type: "LOGIN"; payload: AuthState }
+    | { type: "LOGOUT" };
+    
 interface AuthContextType extends AuthState {
-    authDispatch: React.Dispatch<{ type: string; payload: AuthState }>;
+    authDispatch: React.Dispatch<AuthAction>;
 }
 
 const AuthContext = createContext<AuthContextType>({
     ...initialAuthState,
-    authDispatch: () => {}
+    authDispatch: () => { }
 });
 
-const authReducer = (state: AuthState, action: { type: string, payload: AuthState }) => {
+const authReducer = (state: AuthState, action: AuthAction) => {
     switch (action.type) {
         case "LOGIN":
-            return {
-                ...state,
-                user: action.payload.user,
-                token: action.payload.token,
-                isAuthenticated: true,
-            };
+            return { ...state, ...action.payload, isAuthenticated: true };
         case "LOGOUT":
-            return {
-                ...state,
-                user: null,
-                token: null,
-                isAuthenticated: false,
-            };
+            return { ...initialAuthState };
 
         default:
             return state;
@@ -61,7 +55,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const storedAuth: AuthState = readSession('loggedInUser');
 
         if (storedAuth && !authState.isAuthenticated) {
-            dispatch({ type: "LOGIN", payload: storedAuth})
+            dispatch({ type: "LOGIN", payload: storedAuth })
         } else if (authState.isAuthenticated) {
             writeSession("loggedInUser", authState)
         }
