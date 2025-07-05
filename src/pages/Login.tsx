@@ -11,7 +11,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import PersonIcon from '@mui/icons-material/Person';
 
 const Login: React.FC = () => {
-    const { login } = useAuth();
+    const { authDispatch } = useAuth();
     const [formData, setFormData] = useState<ILoginRequest>({
         username: '',
         password: '',
@@ -31,7 +31,7 @@ const Login: React.FC = () => {
             setIsLoggingIn(true);
             e.preventDefault();
             const loginResp = await AuthService.login(formData);
-            login(loginResp);
+            authDispatch({ type: "LOGIN", payload: {...loginResp, isAuthenticated: true} })
             if (formData.role === "user") {
                 navigate("/");
             } else {

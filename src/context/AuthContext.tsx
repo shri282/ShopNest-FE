@@ -1,78 +1,75 @@
 import React, {
-    useCallback,
     useEffect,
-    useState,
-    createContext,
     useContext,
+    useReducer,
 } from 'react';
 import { User } from '../interfaces/User';
-import { ISuccessfulLoginResponse } from '../interfaces/Auth';
-import { useNavigate } from 'react-router-dom';
+import { readSession, writeSession } from '../utils/WebStorage';
+import { createContext } from 'react';
 
 interface AuthProviderProps {
     children: React.ReactNode;
 }
 
-interface AuthContextType {
-    isAuthenticated: boolean;
-    user: User | null;
-    token: string | null;
-    login: (loginResp: ISuccessfulLoginResponse) => void;
-    logout: () => void;
+interface AuthState {
+    user: User | null,
+    token: string | null,
+    isAuthenticated: boolean
+}
+
+export const initialAuthState: AuthState = {
+    user: null,
+    token: null,
+    isAuthenticated: false
+}
+
+interface AuthContextType extends AuthState {
+    authDispatch: React.Dispatch<{ type: string; payload: AuthState }>;
 }
 
 const AuthContext = createContext<AuthContextType>({
-    isAuthenticated: false,
-    user: null,
-    token: null,
-    login: () => { },
-    logout: () => { },
+    ...initialAuthState,
+    authDispatch: () => {}
 });
 
+const authReducer = (state: AuthState, action: { type: string, payload: AuthState }) => {
+    switch (action.type) {
+        case "LOGIN":
+            return {
+                ...state,
+                user: action.payload.user,
+                token: action.payload.token,
+                isAuthenticated: true,
+            };
+        case "LOGOUT":
+            return {
+                ...state,
+                user: null,
+                token: null,
+                isAuthenticated: false,
+            };
+
+        default:
+            return state;
+    }
+}
+
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const navigate = useNavigate();
-    const [user, setUser] = useState<User | null>(null);
-    const [token, setToken] = useState<string | null>(null);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-    const login = useCallback(({ user, token }: ISuccessfulLoginResponse) => {
-        sessionStorage.setItem('loggedInUser', JSON.stringify({ user, token }));
-        setUser(user);
-        setToken(token);
-        setIsAuthenticated(true);
-    }, []);
-
-    const logout = useCallback(() => {
-        sessionStorage.clear();
-        setUser(null);
-        setToken(null);
-        setIsAuthenticated(false);
-        navigate("/login")
-    }, [navigate]);
-
-    const loadUserFromSession = useCallback(() => {
-        const stored = sessionStorage.getItem('loggedInUser');
-
-        if (!stored) return;
-
-        try {
-            const parsed = JSON.parse(stored);
-            if (parsed?.user && parsed?.token) {
-                setUser(parsed.user);
-                setToken(parsed.token);
-                setIsAuthenticated(true);
-            }
-        } catch (err) {
-            console.error('Invalid session data:', err);
-        }
-    }, []);
+    const [authState, dispatch] = useReducer(authReducer, initialAuthState);
 
     useEffect(() => {
-        loadUserFromSession();
-    }, [loadUserFromSession]);
+        const storedAuth: AuthState = readSession('loggedInUser');
+
+        if (storedAuth && !authState.isAuthenticated) {
+            dispatch({ type: "LOGIN", payload: storedAuth})
+        } else if (authState.isAuthenticated) {
+            writeSession("loggedInUser", authState)
+        }
+
+    }, [authState])
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, user, token, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated: authState.isAuthenticated, user: authState.user, token: authState.token, authDispatch: dispatch }}>
             {children}
         </AuthContext.Provider>
     );

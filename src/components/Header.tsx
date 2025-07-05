@@ -7,11 +7,11 @@ import { useNavigate } from 'react-router-dom';
 import ProductService from '../services/ProductService';
 import { IProduct } from '../interfaces/Product';
 import { useThrottle } from '../hooks/useThrottle';
-import { useAuth } from '../context/AuthContext';
+import { initialAuthState, useAuth } from '../context/AuthContext';
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
-    const { user, token, logout } = useAuth();
+    const { user, token, authDispatch } = useAuth();
     const [field, setField] = useState<string>("all");
     const [keyword, setKeyword] = useState<string>("");
     const throttledKeyword = useThrottle(keyword, 500);
@@ -105,7 +105,11 @@ const Header: React.FC = () => {
                             <span className="header__cart-text">Cart</span>
                         </div>
                         <div className="header__auth">
-                            <Button onClick={logout} variant='contained'>logout</Button>
+                            <Button onClick={() => {
+                                sessionStorage.removeItem("loggedInUser");
+                                authDispatch({ type: "LOGOUT", payload: initialAuthState });
+                                navigate("/login");
+                            }} variant='contained'>logout</Button>
                         </div>
                     </div>
                     :
