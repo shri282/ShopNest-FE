@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ProductService from '../services/ProductService';
 import { IProduct } from '../interfaces/Product';
 import ErrorSnackbar from '../common/ErrorSnackBar';
@@ -12,7 +12,7 @@ const Products: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
 
-    const fetchProducts = useCallback(async () => {
+    const fetchProducts = async () => {
         setLoading(true);
 
         try {
@@ -24,11 +24,11 @@ const Products: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    }, [])
+    }
 
     useEffect(() => {
         fetchProducts();
-    }, [fetchProducts]);
+    }, []);
 
     return (
         <div>
