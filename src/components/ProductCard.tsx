@@ -14,6 +14,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <div className='product-container' onClick={() => navigate(`/product/${product.id}`)}>
       <ProgressiveImage
+        width='100%'
+        height='200px'
         src={product.imageURL}
         alt="Product"
       />
