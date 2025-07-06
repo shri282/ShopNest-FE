@@ -17,6 +17,11 @@
     flex-direction: column;
 }
 
+.login-form-fields {
+    display: flex;
+    flex-direction: column;
+}
+
 .login-form h2 {
     margin-bottom: 20px;
     color: #333;

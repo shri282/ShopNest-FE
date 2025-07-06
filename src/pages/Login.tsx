@@ -9,30 +9,29 @@ import ErrorSnackbar from '../common/ErrorSnackBar';
 import { Button } from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonIcon from '@mui/icons-material/Person';
+import { useForm } from 'react-hook-form';
 
 const Login: React.FC = () => {
     const { authDispatch } = useAuth();
-    const [formData, setFormData] = useState<ILoginRequest>({
-        username: '',
-        password: '',
-        role: Role.USER
+    const { register, control, handleSubmit, setValue, reset } = useForm<ILoginRequest>({
+        defaultValues: {
+            username: "",
+            password: "",
+            role: Role.USER
+        }
     });
     const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
     const [error, setError] = useState<any>(null);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const navigate = useNavigate();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    const onSubmit = async (loginForm: ILoginRequest) => {
         try {
             setIsLoggingIn(true);
-            e.preventDefault();
-            const loginResp = await AuthService.login(formData);
-            authDispatch({ type: "LOGIN", payload: {...loginResp, isAuthenticated: true} })
-            if (formData.role === "user") {
+            const loginResp = await AuthService.login(loginForm);
+            reset();
+            authDispatch({ type: "LOGIN", payload: { ...loginResp, isAuthenticated: true } })
+            if (loginForm.role === "user") {
                 navigate("/");
             } else {
                 navigate("/admin/dashboard");
@@ -48,32 +47,42 @@ const Login: React.FC = () => {
 
     return (
         <div className="login-container">
-            <form className="login-form" onSubmit={handleSubmit}>
+            <form className="login-form"
+                onSubmit={handleSubmit(onSubmit)}
+            >
                 <h2>Login</h2>
-                <label>Username</label>
-                <input
-                    type="text"
-                    name="username"
-                    placeholder="Enter your email"
-                    value={formData.username}
-                    onChange={handleChange}
-                    required
-                />
-                <label>Password</label>
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Enter your password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                />
-                <label>Role</label>
-                <select name="role" value={formData.role} onChange={handleChange}>
-                    <option value={Role.USER}>User</option>
-                    <option value={Role.ADMIN}>Admin</option>
-                    <option value={Role.SELLER}>Seller</option>
-                </select>
+                <div className='login-form-fields'>
+                    <label>Username</label>
+                    <input
+                        {...register("username", {
+                            required: "username is required"
+                        })}
+                        type="text"
+                        name="username"
+                        placeholder="Enter your email"
+                        required
+                    />
+                </div>
+                <div className='login-form-fields'>
+                    <label>Password</label>
+                    <input
+                        {...register("password", {
+                            required: "password is required"
+                        })}
+                        type="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required
+                    />
+                </div>
+                <div className='login-form-fields'>
+                    <label>Role</label>
+                    <select {...register("role")} name="role">
+                        <option value={Role.USER}>User</option>
+                        <option value={Role.ADMIN}>Admin</option>
+                        <option value={Role.SELLER}>Seller</option>
+                    </select>
+                </div>
                 <Button
                     fullWidth
                     type='submit'
@@ -97,9 +106,11 @@ const Login: React.FC = () => {
 
                 <Button
                     fullWidth
-                    onClick={() => setFormData({
-                        username: "tharun", password: "tharun123", role: "user"
-                    })}
+                    onClick={() => {
+                        setValue("username", "tharun")
+                        setValue("password", "tharun123")
+                        setValue("role", "user")
+                    }}
                     sx={{
                         backgroundColor: '#9c27b0',
                         color: 'white',
