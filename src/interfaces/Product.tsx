@@ -7,9 +7,6 @@ export interface IProduct {
     brand: string;
     category: string;
     description: string;
-    updatetedAt: Date;
-    createdAt: Date;
-    image: String;
     imageType: String;
     imageName: String;
     imageURL: string;
