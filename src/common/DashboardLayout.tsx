@@ -14,7 +14,6 @@ import {
     Typography,
 } from '@mui/material';
 import Header from '../components/Header';
-import { NavTag } from '../enum/NavTag';
 import { NavItem } from '../interfaces/User';
 import { useAuth } from '../context/AuthContext';
 

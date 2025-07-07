@@ -8,7 +8,6 @@ import { AppBar, Badge, Link, Box, Divider, IconButton, InputBase, List, ListIte
 import { AccountCircle } from "@mui/icons-material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import MenuIcon from '@mui/icons-material/Menu';
-import { NavItem } from "../interfaces/User";
 
 
 const Search = styled('div')(({ theme }) => ({

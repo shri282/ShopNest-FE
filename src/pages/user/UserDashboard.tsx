@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import DashboardLayout from '../../common/DashboardLayout';
-import Cart from '../Cart';
 import { NavItem } from '../../interfaces/User';
 import Products from '../../components/Products';
 

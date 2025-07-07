@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import "../css/user-dashboard.css"
 import ProductListTable from '../../components/admin/ProductsListTable';
 import DashboardLayout from '../../common/DashboardLayout';
-import Cart from '../Cart';
 import { NavTag } from '../../enum/NavTag';
 import { NavItem } from '../../interfaces/User';
 
