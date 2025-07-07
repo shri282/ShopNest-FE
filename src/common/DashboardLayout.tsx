@@ -162,7 +162,7 @@ export default function DashboardLayout(props: Props) {
                 component="main"
                 sx={{
                     flexGrow: 1,
-                    paddingTop: '100px',
+                    paddingTop: '65px',
                     width: '100%',
                     height: '1200px'
                 }}
