@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import Header from '../components/Header'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IProduct } from '../interfaces/Product';
 import FallBackWrapper from '../common/FallBackWrapper';
@@ -14,6 +13,7 @@ import { useAuth } from '../context/AuthContext';
 import CartService from '../services/CartService';
 import InfoSnackbar from '../common/InfoSnackBar';
 import ErrorSnackbar from '../common/ErrorSnackBar';
+import Header from '../components/Header';
 
 const Product = () => {
     const { id } = useParams();

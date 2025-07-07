@@ -30,3 +30,18 @@ export interface UserAddress {
     isDefault: boolean,
     addressType: AddressType
 }
+
+export interface NavItem {
+  id: number;
+  name: string;
+  component: React.ReactNode;
+  icon: string;
+}
+
+
+export interface NavItem {
+  id: number;
+  name: string;
+  component: React.ReactNode;
+  icon: string;
+}

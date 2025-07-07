@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import ErrorSnackbar from '../common/ErrorSnackBar';
-import Header from '../components/Header';
 import {
     Box,
     Button,
@@ -15,6 +14,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { ICheckoutSession } from '../interfaces/Cart';
 import CartService from '../services/CartService';
 import LoadingOverlay from '../common/LoadingOverlay';
+import Header from '../components/Header';
 
 const Cart: React.FC = () => {
     const { user } = useAuth();
@@ -40,7 +40,7 @@ const Cart: React.FC = () => {
             setIsApiLoading(false);
         }
 
-    }, [cart]); 
+    }, [cart]);
 
     return (
         <div className="user-dashboard">
@@ -73,7 +73,7 @@ const Cart: React.FC = () => {
                     </Box>
                 }
             />
-            
+
             <LoadingOverlay loading={isApiLoading} />
             <ErrorSnackbar
                 open={errorPopupOpen}

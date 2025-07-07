@@ -1,33 +1,30 @@
-import React from 'react';
-import "../css/user-dashboard.css"
-import SideDrawer from '../../common/SideDrawer';
-import Header from '../../components/Header';
+import React, { useState } from 'react';
+import DashboardLayout from '../../common/DashboardLayout';
+import Cart from '../Cart';
+import { NavItem } from '../../interfaces/User';
 import Products from '../../components/Products';
 
 const navs = [
   {
     id: 1,
-    name: 'orders',
-    component: <div>orders</div>,
-    iconSrc: 'images/order.png',
-    default: false
-  },
-  {
-    id: 2,
-    name: 'products',
-    component: <Products />,
-    iconSrc: 'images/collection.png',
-    default: true
-  },
-]
+    name: 'Orders',
+    component: <div>Orders Component</div>,
+    icon: 'images/order.png',
+  }
+];
 
 const UserDashboard: React.FC = () => {
+  const [selectedNav, setSelectedNav] = useState<NavItem | null>(null);
 
   return (
-    <div className='user-dashboard'>
-      <SideDrawer navs={navs} Header={<Header />}></SideDrawer>
-    </div>
+    <DashboardLayout
+      navs={navs}
+      selectedNav={selectedNav}
+      onSelectNav={setSelectedNav}
+    >
+      <Products />
+    </DashboardLayout>
   );
-}
+};
 
 export default UserDashboard;

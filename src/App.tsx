@@ -8,6 +8,7 @@ import AuthProvider from './context/AuthContext';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import UserDashboard from './pages/user/UserDashboard';
 import Cart from './pages/Cart';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
           <Route path="/product/:id" element={<Product />} />
           <Route path="/search-results" element={<SearchResults />} />
 
-          <Route path="/user/cart" element={<Cart />} />
+          <Route path="/user/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
         </Routes>
       </AuthProvider>
     </div>
