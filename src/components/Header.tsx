@@ -50,7 +50,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
     const navigate = useNavigate();
-    const { user, token } = useAuth();
+    const { user, token, authDispatch } = useAuth();
     const [field, setField] = useState<string>("all");
     const [keyword, setKeyword] = useState<string>("");
     const throttledKeyword = useThrottle(keyword, 500);
@@ -85,6 +85,11 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
                         (user && token) ? <Box display="flex" gap={2}>
                             <Typography variant="body2">Hello, {user?.username}</Typography>
                             <Typography variant="body2">Returns & Orders</Typography>
+                            <Typography onClick={() => {
+                                sessionStorage.removeItem("loggedInUser");
+                                authDispatch({ type: "LOGOUT" });
+                                navigate("/login");
+                            }} sx={{ cursor: 'pointer' }} color="green" variant="body2">Logout</Typography>
                         </Box> :
                             <Box display={'flex'} color={'lightblue'} alignItems={'center'} gap={1}>
                                 <Typography onClick={() => navigate("/login")} sx={{ ":hover": { cursor: 'pointer' } }} variant="body2">Sign in</Typography>
