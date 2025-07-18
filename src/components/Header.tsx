@@ -8,6 +8,7 @@ import { AppBar, Badge, Link, Box, Divider, IconButton, InputBase, List, ListIte
 import { AccountCircle } from "@mui/icons-material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -64,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
         }
 
         const products = await ProductService.searchProducts(field, throttledKeyword);
-        const searchRes = ProductService.mapProductToSearchResults(field, throttledKeyword, products);
+        const searchRes = ProductService.getSearchResultMap(throttledKeyword, products);
 
         setSearchResults(searchRes);
         setShowDropdown(true);
@@ -73,7 +74,8 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
     useEffect(() => {
         searchProducts();
     }, [searchProducts]);
-
+    console.log("searchresults", searchResults);
+    
     return (
         <AppBar position="sticky" color="primary" sx={{ height: '100%', width: '100%', backgroundColor: '#111827' }}>
             <Toolbar sx={{ flexDirection: 'column', alignItems: 'stretch' }}>
@@ -174,7 +176,7 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
                                 }}
                             />
                             <SearchIconWrapper>
-                                <SearchIconWrapper sx={{ color: '#fff' }} />
+                                <SearchIcon sx={{ color: '#fff' }} />
                             </SearchIconWrapper>
 
                             {/* MUI Dropdown */}
