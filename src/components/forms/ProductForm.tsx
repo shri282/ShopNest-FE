@@ -160,24 +160,28 @@ const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, setVa
             </div>
 
             <div className="input-group">
-                {watch('image') && (
-                    <img
-                        src={watch('imageURL') ? watch('imageURL') : URL.createObjectURL(watch('image'))}
-                        alt="Preview"
-                        className="image-preview"
-                    />
+                {(watch('imageURL') || watch('image')) && (
+                    <>
+                        <img
+                            src={watch('imageURL') ? watch('imageURL') : URL.createObjectURL(watch('image'))}
+                            alt="Preview"
+                            className="image-preview"
+                        />
+                        <button
+                            type="button"
+                            className="remove-image-button"
+                            onClick={() => {
+                                setValue('image', null);
+                                setValue('imageURL', "");
+                                const input = document.getElementById('image') as HTMLInputElement;
+                                if (input) input.value = '';
+                            }}
+                        >
+                            Remove
+                        </button>
+                        <br />
+                    </>
                 )}
-                <button
-                    type="button"
-                    className="remove-image-button"
-                    onClick={() => {
-                        setValue('image', null);
-                        const input = document.getElementById('image') as HTMLInputElement;
-                        if (input) input.value = '';
-                    }}
-                >
-                    Remove
-                </button><br />
                 <span className="image-label">Upload Image </span>
                 <Controller
                     name="image"
@@ -192,6 +196,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, setVa
                                     field.onChange(e.target.files[0]);
                                 } else {
                                     field.onChange(null);
+                                    setValue('imageURL', "");
                                 }
                             }}
                         />
