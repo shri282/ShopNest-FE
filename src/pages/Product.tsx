@@ -279,7 +279,7 @@ const Product = () => {
                                 </div>
                             </div>
                             <div className='prod-popups'>
-                                <UpdateProductPopup onUpdated={(product) => setProduct(product)} open={updatePopupOpen} setOpen={setUpdatePopupOpen} product={product} />
+                                {updatePopupOpen && <UpdateProductPopup onUpdated={(product) => setProduct(product)} open={updatePopupOpen} setOpen={setUpdatePopupOpen} product={product} />}
                             </div>
                         </div>
                     )

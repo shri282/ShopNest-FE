@@ -13,7 +13,7 @@ interface UpdateProductPopupProps {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     open: boolean;
     product: IProduct;
-    onUpdated?: (product: IProduct) => void;
+    onUpdated: (product: IProduct) => void;
 }
 
 const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, product, onUpdated }) => {
@@ -47,7 +47,7 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, 
 
         try {
             const product = await ProductService.updateProduct(data);
-            if (onUpdated) onUpdated(product.data);
+            onUpdated(product.data);
             handleClose();
         } catch (error: any) {
             alert('Error updating product: ' + error.message);
