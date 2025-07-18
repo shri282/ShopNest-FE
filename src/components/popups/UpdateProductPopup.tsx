@@ -23,7 +23,8 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, 
             name: product.name,
             description: product.description,
             brand: product.brand,
-            category: product.category,
+            categoryId: product.categoryId,
+            categoryName: product.categoryName,
             availability: product.availability,
             prize: product.prize,
             quantity: product.quantity,
@@ -69,7 +70,7 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, 
 
             <form onSubmit={handleSubmit(onSubmit)} action="">
                 <DialogContent className='dialog-content'>
-                    <ProductForm setValue={setValue} watch={watch} control={control} errors={errors} defaultValues={{}} />
+                    <ProductForm setValue={setValue} watch={watch} control={control} errors={errors} />
                 </DialogContent>
 
                 <DialogActions className="dialog-actions">

@@ -1,11 +1,16 @@
-import { IProduct, IAddProduct, IUpdateProduct, IProductFilter } from '../interfaces/Product';
+import { IProduct, IAddProduct, IUpdateProduct, IProductFilter, IProductCategory } from '../interfaces/Product';
 import { apiPrivate, apiPrivateMultiPart } from '../config/axios';
-import { GET_PAGINATED_PRODUCTS, PRODUCTS_ENDPOINT, SEARCH_PRODUCT } from '../constants/apiEndPoints';
+import { GET_PAGINATED_PRODUCTS, PRODUCTS_CATEGORIES_ENDPOINT, PRODUCTS_ENDPOINT, SEARCH_PRODUCT } from '../constants/apiEndPoints';
 
 class ProductService {
     
     static async getProducts() {
         const response = await apiPrivate.get<IProduct[]>(PRODUCTS_ENDPOINT);
+        return response.data;
+    }
+
+    static async getProductsCategories() {
+        const response = await apiPrivate.get<IProductCategory[]>(PRODUCTS_CATEGORIES_ENDPOINT);
         return response.data;
     }
     

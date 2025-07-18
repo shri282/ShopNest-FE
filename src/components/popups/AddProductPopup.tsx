@@ -24,7 +24,8 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ setOpen, open }) => {
             name: "",
             brand: "",
             availability: false,
-            category: "",
+            categoryName: "",
+            categoryId: 1,
             description: "",
             prize: 0,
             quantity: 0,
@@ -39,7 +40,7 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ setOpen, open }) => {
 
     const onSubmit = async (data: IAddProduct) => {
         try {
-            const product = await ProductService.addProduct(data);
+            await ProductService.addProduct(data);
             handleClose();
             alert("Product added successfully");
         } catch (error: any) {
@@ -61,7 +62,7 @@ const AddProductPopup: React.FC<AddProductPopupProps> = ({ setOpen, open }) => {
 
             <form onSubmit={handleSubmit(onSubmit)} action="">
                 <DialogContent className='dialog-content'>
-                    <ProductForm setValue={setValue} watch={watch} control={control} errors={errors} defaultValues={{}} />
+                    <ProductForm setValue={setValue} watch={watch} control={control} errors={errors} />
                 </DialogContent>
 
                 <DialogActions className="dialog-actions">

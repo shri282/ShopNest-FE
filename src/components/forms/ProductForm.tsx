@@ -1,16 +1,34 @@
 // components/Product/ProductForm.tsx
 import { Controller, UseFormSetValue } from 'react-hook-form';
-import { TextField } from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { IProductCategory } from '../../interfaces/Product';
+import ProductService from '../../services/ProductService';
 
 interface ProductFormProps {
     control: any;
     errors: any;
-    defaultValues: any;
     watch: any;
     setValue: UseFormSetValue<any>;
 }
 
-const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, defaultValues, setValue }) => {
+const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, setValue }) => {
+
+    const [productCategories, setProductCategories] = useState<IProductCategory[]>([]);
+
+    useEffect(() => {
+        const fetchProductCategories = async () => {
+            try {
+                const prodCatgy: IProductCategory[] = await ProductService.getProductsCategories();
+                setProductCategories(prodCatgy);
+            } catch (error) {
+                console.log("something went wrong in product form", error);
+            }
+        }
+
+        fetchProductCategories();
+    }, []); 
+
     return (
         <>
             <div className="input-row">
@@ -19,7 +37,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, defau
                         name="name"
                         control={control}
                         rules={{ required: 'Name is required' }}
-                        defaultValue={defaultValues.name}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -36,7 +53,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, defau
                         name="brand"
                         control={control}
                         rules={{ required: 'Brand is required' }}
-                        defaultValue={defaultValues.brand}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -55,7 +71,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, defau
                     <Controller
                         name="description"
                         control={control}
-                        defaultValue={defaultValues.description}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -69,20 +84,35 @@ const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, defau
                 </div>
                 <div className="input-group">
                     <Controller
-                        name="category"
+                        name="categoryName"
                         control={control}
                         rules={{ required: 'Category is required' }}
-                        defaultValue={defaultValues.category}
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                select
                                 label="Category"
                                 fullWidth
                                 error={!!errors.category}
                                 helperText={errors.category?.message}
-                            />
+                                onChange={(e) => {
+                                    const selectedName = e.target.value;
+                                    const selectedCategory = productCategories.find(cat => cat.name === selectedName);
+                                    field.onChange(selectedName);
+                                    if (selectedCategory) {
+                                        setValue('categoryId', selectedCategory.id);
+                                    }
+                                }}
+                            >
+                                {productCategories?.map((cat) => (
+                                    <MenuItem key={cat.id} value={cat.name}>
+                                        {cat.name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
                         )}
                     />
+
                 </div>
             </div>
 
@@ -95,7 +125,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, defau
                             required: 'Price is required',
                             min: { value: 0, message: 'Price must be positive' },
                         }}
-                        defaultValue={defaultValues.prize}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -116,7 +145,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, defau
                             required: 'Quantity is required',
                             min: { value: 0, message: 'Quantity must be positive' },
                         }}
-                        defaultValue={defaultValues.quantity}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -176,7 +204,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, defau
                 <Controller
                     name="availability"
                     control={control}
-                    defaultValue={defaultValues.availability}
                     render={({ field }) => (
                         <label className="toggle-switch">
                             <input

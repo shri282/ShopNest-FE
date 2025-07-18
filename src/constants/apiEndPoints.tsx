@@ -18,6 +18,7 @@ export const addUserAddressesURL = (userId: number) => {
 // product module
 
 export const PRODUCTS_ENDPOINT = "/products";
+export const PRODUCTS_CATEGORIES_ENDPOINT = "/products/category";
 export const GET_PAGINATED_PRODUCTS = "/products/paginated";
 export const SEARCH_PRODUCT = "/products/search";
 
