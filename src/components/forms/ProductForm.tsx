@@ -1,9 +1,11 @@
 // components/Product/ProductForm.tsx
 import { Controller, UseFormSetValue } from 'react-hook-form';
-import { MenuItem, TextField } from '@mui/material';
+import { Button, MenuItem, Stack, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { IProductCategory } from '../../interfaces/Product';
 import ProductService from '../../services/ProductService';
+import UploadIcon from '@mui/icons-material/Upload';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface ProductFormProps {
     control: any;
@@ -167,41 +169,51 @@ const ProductForm: React.FC<ProductFormProps> = ({ control, errors, watch, setVa
                             alt="Preview"
                             className="image-preview"
                         />
-                        <button
-                            type="button"
-                            className="remove-image-button"
-                            onClick={() => {
-                                setValue('image', null);
-                                setValue('imageURL', "");
-                                const input = document.getElementById('image') as HTMLInputElement;
-                                if (input) input.value = '';
-                            }}
-                        >
-                            Remove
-                        </button>
-                        <br />
+
+                        <Stack direction="row" spacing={2} mt={1}>
+                            <Button
+                                variant="outlined"
+                                color="error"
+                                startIcon={<DeleteIcon />}
+                                onClick={() => {
+                                    setValue('image', null);
+                                    setValue('imageURL', "");
+                                    const input = document.getElementById('image') as HTMLInputElement;
+                                    if (input) input.value = '';
+                                }}
+                            >
+                                Remove Image
+                            </Button>
+                        </Stack>
                     </>
                 )}
-                <span className="image-label">Upload Image </span>
-                <Controller
-                    name="image"
-                    control={control}
-                    render={({ field }) => (
+
+                <Stack direction="row" alignItems="center" spacing={2} mt={2}>
+                    <span className="image-label">Upload Image</span>
+                    <label htmlFor="image">
                         <input
                             type="file"
                             id="image"
                             className="input-file"
+                            style={{ display: 'none' }}
                             onChange={(e) => {
                                 if (e.target.files && e.target.files.length > 0) {
-                                    field.onChange(e.target.files[0]);
+                                    setValue('image', e.target.files[0]);
                                 } else {
-                                    field.onChange(null);
+                                    setValue('image', null);
                                     setValue('imageURL', "");
                                 }
                             }}
                         />
-                    )}
-                />
+                        <Button
+                            variant="contained"
+                            component="span"
+                            startIcon={<UploadIcon />}
+                        >
+                            Upload
+                        </Button>
+                    </label>
+                </Stack>
             </div>
 
             <div className="availability-toggle">
