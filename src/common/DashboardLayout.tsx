@@ -13,7 +13,7 @@ import {
     Tooltip,
     Typography,
 } from '@mui/material';
-import Header from '../components/Header';
+import Header from '../roles/user/Header';
 import { NavItem } from '../interfaces/User';
 import { useAuth } from '../context/AuthContext';
 

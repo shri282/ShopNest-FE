@@ -2,12 +2,12 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Product from './pages/Product';
-import SearchResults from './pages/SearchResults';
+import Product from './roles/user/pages/Product';
+import SearchResults from './roles/user/pages/SearchResults';
 import AuthProvider from './context/AuthContext';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import UserDashboard from './pages/user/UserDashboard';
-import Cart from './pages/Cart';
+import AdminDashboard from './roles/seller/pages/AdminDashboard';
+import UserDashboard from './roles/user/pages/UserDashboard';
+import Cart from './roles/user/pages/Cart';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
