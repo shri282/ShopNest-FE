@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DashboardLayout from '../../../common/DashboardLayout';
+import UserLayout from '../../../layouts/UserLayout';
 import { NavItem } from '../../../interfaces/User';
 import { Box } from '@mui/material';
 import PromotionalBanner from '../../../common/PromotionalBanner';
@@ -18,7 +18,7 @@ const UserDashboard: React.FC = () => {
   const [selectedNav, setSelectedNav] = useState<NavItem | null>(null);
 
   return (
-    <DashboardLayout
+    <UserLayout
       navs={navs}
       selectedNav={selectedNav}
       onSelectNav={setSelectedNav}
@@ -36,7 +36,7 @@ const UserDashboard: React.FC = () => {
         />
       </Box>
       <Products />
-    </DashboardLayout>
+    </UserLayout>
   );
 };
 

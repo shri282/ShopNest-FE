@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import "../../user/css/user-dashboard.css"
 import ProductListTable from '../components/ProductsListTable';
-import DashboardLayout from '../../../common/DashboardLayout';
+import DashboardLayout from '../../../layouts/UserLayout';
 import { NavTag } from '../../../enum/NavTag';
 import { NavItem } from '../../../interfaces/User';
 

@@ -27,7 +27,7 @@ interface Props {
     children?: ReactNode
 }
 
-export default function DashboardLayout(props: Props) {
+export default function UserLayout(props: Props) {
     const { window, navs, selectedNav, onSelectNav, children } = props;
     const [open, setOpen] = React.useState(false);
     const { user } = useAuth();
