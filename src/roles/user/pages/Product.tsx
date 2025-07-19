@@ -13,7 +13,6 @@ import { useAuth } from '../../../context/AuthContext';
 import CartService from '../../../services/CartService';
 import InfoSnackbar from '../../../common/InfoSnackBar';
 import ErrorSnackbar from '../../../common/ErrorSnackBar';
-import Header from '../Header';
 
 const Product = () => {
     const { id } = useParams();
@@ -82,7 +81,6 @@ const Product = () => {
 
     return (
         <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
-            <Header />
             <FallBackWrapper
                 fallback={() => !Boolean(product)}
                 fallbackComponent={

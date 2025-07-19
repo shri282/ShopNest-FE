@@ -34,14 +34,6 @@ export interface UserAddress {
 export interface NavItem {
   id: number;
   name: string;
-  component: React.ReactNode;
-  icon: string;
-}
-
-
-export interface NavItem {
-  id: number;
-  name: string;
-  component: React.ReactNode;
+  path: string;
   icon: string;
 }

@@ -13,7 +13,6 @@ import { loadStripe } from '@stripe/stripe-js';
 import { ICheckoutSession } from '../../../interfaces/Cart';
 import CartService from '../../../services/CartService';
 import LoadingOverlay from '../../../common/LoadingOverlay';
-import Header from '../Header';
 import ShoppingCartList from '../features/cart/ShoppingCartList';
 
 const Cart: React.FC = () => {
@@ -44,7 +43,6 @@ const Cart: React.FC = () => {
 
     return (
         <div className="user-dashboard">
-            <Header />
             <DataState
                 data={cart}
                 error={error}
