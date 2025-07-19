@@ -9,7 +9,6 @@ import Cart from './roles/user/pages/Cart';
 import PrivateRoute from './components/PrivateRoute';
 import UserLayout from './layouts/UserLayout';
 import UserDashboard from './roles/user/pages/UserDashboard';
-import SellerDashboard from './roles/seller/pages/SellerDashboard';
 import ProductListTable from './roles/seller/components/ProductsListTable';
 
 function App() {
