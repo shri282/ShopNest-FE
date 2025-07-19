@@ -9,6 +9,7 @@ import { AccountCircle } from "@mui/icons-material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import { useCartItemCount } from "../hooks/useCartItemCount";
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -52,6 +53,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
     const navigate = useNavigate();
     const { user, token, authDispatch } = useAuth();
+    const cartItemsCount = useCartItemCount(user?.id);  
     const [field, setField] = useState<string>("all");
     const [keyword, setKeyword] = useState<string>("");
     const throttledKeyword = useThrottle(keyword, 500);
@@ -237,7 +239,7 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
                             }
                             return navigate("/login");
                         }} color="inherit">
-                            <Badge badgeContent={3} color="secondary">
+                            <Badge badgeContent={cartItemsCount} color="secondary">
                                 <ShoppingCartIcon />
                             </Badge>
                         </IconButton>

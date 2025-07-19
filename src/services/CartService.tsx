@@ -31,6 +31,11 @@ class CartService {
         return resp.data;
     }
 
+    static async getUserCartItemsTotal(userId: Number) {
+        const resp: AxiosResponse<{ totalItems: number }> = await apiPrivate.get<{ totalItems: number }>(userCartURL(userId) + "/count");
+        return resp.data;
+    }
+
 }
 
 export default CartService;
