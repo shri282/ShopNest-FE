@@ -101,6 +101,7 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
                             <Typography variant="body2">Returns & Orders</Typography>
                             <Typography onClick={() => {
                                 sessionStorage.removeItem("loggedInUser");
+                                dispatch({ type: "LOGOUT" });
                                 authDispatch({ type: "LOGOUT" });
                                 navigate("/login");
                             }} sx={{ cursor: 'pointer' }} color="green" variant="body2">Logout</Typography>
