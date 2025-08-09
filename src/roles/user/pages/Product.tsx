@@ -13,11 +13,15 @@ import { useAuth } from '../../../context/AuthContext';
 import CartService from '../../../services/CartService';
 import InfoSnackbar from '../../../common/InfoSnackBar';
 import ErrorSnackbar from '../../../common/ErrorSnackBar';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../redux/store';
+import * as cartItemsCountTypes from '../../../redux/cartItemsCount/types';
 
 const Product = () => {
     const { id } = useParams();
     const { user } = useAuth();
     const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
     const [product, setProduct] = useState<IProduct | null>(null);
     const [isAddingCartInProgress, setIsAddingCartInProgress] = useState(false);
     const [openInfoSnackBar, setOpenInfoSnackBar] = useState<boolean>(false);
@@ -45,6 +49,7 @@ const Product = () => {
 
         try {
             await CartService.addItemToCart(user.id, product);
+            dispatch({ type: cartItemsCountTypes.INCREMENT })
             setOpenInfoSnackBar(true);
             setMessage("cart added successfully");
         } catch (error: any) {

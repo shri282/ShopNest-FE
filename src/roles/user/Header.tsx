@@ -10,6 +10,10 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { useCartItemCount } from "./hooks/useCartItemCount";
+import { AppDispatch, RootState } from "../../redux/store";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import * as cartItemsCountActionTypes from "../../redux/cartItemsCount/types";
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -53,7 +57,9 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
     const navigate = useNavigate();
     const { user, token, authDispatch } = useAuth();
-    const cartItemsCount = useCartItemCount(user?.id);
+    const cartItemsCountInit = useCartItemCount(user?.id);
+    const cartItemsCount = useSelector((state: RootState) => state.cartItemsCount.value);
+    const dispatch = useDispatch<AppDispatch>();
     const [field, setField] = useState<string>("all");
     const [keyword, setKeyword] = useState<string>("");
     const throttledKeyword = useThrottle(keyword, 500);
@@ -76,6 +82,10 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
     useEffect(() => {
         searchProducts();
     }, [searchProducts]);
+
+    useEffect(() => {
+        dispatch({ type: cartItemsCountActionTypes.ADD, payload: cartItemsCountInit })
+    }, [cartItemsCountInit, dispatch])
     console.log("searchresults", searchResults);
 
     return (

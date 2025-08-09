@@ -5,6 +5,9 @@ import { useAuth } from '../../../../context/AuthContext';
 import CartService from '../../../../services/CartService';
 import InfoSnackbar from '../../../../common/InfoSnackBar';
 import ErrorSnackbar from '../../../../common/ErrorSnackBar';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../../redux/store';
+import * as cartItemsCountTypes from '../../../../redux/cartItemsCount/types';
 
 interface ShoppingCartListProps {
     setIsLoading: (flag: boolean) => void
@@ -15,6 +18,7 @@ interface ShoppingCartListProps {
 const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ setIsLoading, cart, setCart }) => {
 
     const { user } = useAuth();
+    const dispatch = useDispatch<AppDispatch>();
     const [openInfoSnackBar, setOpenInfoSnackBar] = useState<boolean>(false);
     const [openErrorSnackBar, setOpenErrorSnackBar] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
@@ -44,6 +48,7 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ setIsLoading, cart,
 
         try {
             const updatedCart: ICart = await CartService.removeCartItem(user.id, itemId);
+            dispatch({ type: cartItemsCountTypes.DECREMENT });
             setCart(updatedCart);
             setOpenInfoSnackBar(true);
             setMessage('item removed successfully');
