@@ -10,6 +10,9 @@ interface ShopByCategoryProps {
 
 const ShopByCategory: React.FC<ShopByCategoryProps> = ({ setSelectedCategory }) => {
     const [productCategories, setProductCategories] = useState<IProductCategory[]>([]);
+    const [showLeftArrow, setShowLeftArrow] = useState(false);
+    const [showRightArrow, setShowRightArrow] = useState(false);
+
     const scrollRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -24,10 +27,35 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({ setSelectedCategory }) 
         fetchProductCategories();
     }, []);
 
+    // Check for overflow & update arrow visibility
+    const updateArrows = () => {
+        if (scrollRef.current) {
+            const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+            setShowLeftArrow(scrollLeft > 0);
+            setShowRightArrow(scrollLeft + clientWidth < scrollWidth);
+        }
+    };
+
+    // Run when scroll happens
+    useEffect(() => {
+        const el = scrollRef.current;
+        if (!el) return;
+
+        updateArrows(); // initial check
+
+        el.addEventListener("scroll", updateArrows);
+        window.addEventListener("resize", updateArrows);
+
+        return () => {
+            el.removeEventListener("scroll", updateArrows);
+            window.removeEventListener("resize", updateArrows);
+        };
+    }, [productCategories]);
+
     // Scroll function
     const scroll = (direction: "left" | "right") => {
         if (scrollRef.current) {
-            const scrollAmount = 200; // adjust how much to scroll
+            const scrollAmount = 200;
             scrollRef.current.scrollBy({
                 left: direction === "left" ? -scrollAmount : scrollAmount,
                 behavior: "smooth",
@@ -55,9 +83,11 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({ setSelectedCategory }) 
             {/* Wrapper with arrows */}
             <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
                 {/* Left arrow */}
-                <IconButton onClick={() => scroll("left")}>
-                    <ArrowBackIos />
-                </IconButton>
+                {showLeftArrow && (
+                    <IconButton onClick={() => scroll("left")}>
+                        <ArrowBackIos />
+                    </IconButton>
+                )}
 
                 {/* Scrollable categories */}
                 <Box
@@ -68,7 +98,7 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({ setSelectedCategory }) 
                         scrollBehavior: "smooth",
                         gap: 4,
                         flex: 1,
-                        "&::-webkit-scrollbar": { display: "none" }, // hide scrollbar
+                        "&::-webkit-scrollbar": { display: "none" },
                     }}
                 >
                     {productCategories.map((cat, index) => (
@@ -116,9 +146,11 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({ setSelectedCategory }) 
                 </Box>
 
                 {/* Right arrow */}
-                <IconButton onClick={() => scroll("right")}>
-                    <ArrowForwardIos />
-                </IconButton>
+                {showRightArrow && (
+                    <IconButton onClick={() => scroll("right")}>
+                        <ArrowForwardIos />
+                    </IconButton>
+                )}
             </Box>
         </Box>
     );
