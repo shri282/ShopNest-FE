@@ -1,5 +1,5 @@
 import React from 'react'
-import { IProduct } from '../../../../interfaces/Product';
+import { IProduct } from '../../interfaces/Product';
 import ProductCard from './ProductCard';
 import "../../css/productCards.css"
 

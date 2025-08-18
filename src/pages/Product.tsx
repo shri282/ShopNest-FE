@@ -1,21 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { IProduct } from '../../../interfaces/Product';
-import FallBackWrapper from '../../../common/FallBackWrapper';
-import ProductService from '../../../services/ProductService';
 import "../css/product.css";
 import { Button, Chip, Rating, Skeleton, Typography } from '@mui/material';
 import { ShoppingCart, FavoriteBorder, Favorite, StarBorder } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/system';
-import UpdateProductPopup from '../../seller/components/UpdateProductPopup';
-import { useAuth } from '../../../context/AuthContext';
-import CartService from '../../../services/CartService';
-import InfoSnackbar from '../../../common/InfoSnackBar';
-import ErrorSnackbar from '../../../common/ErrorSnackBar';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../redux/store';
-import * as cartItemsCountTypes from '../../../redux/cartItemsCount/types';
+import { useAuth } from '../context/AuthContext';
+import { AppDispatch } from '../redux/store';
+import { IProduct } from '../interfaces/Product';
+import ProductService from '../services/ProductService';
+import CartService from '../services/CartService';
+import FallBackWrapper from '../common/FallBackWrapper';
+import InfoSnackbar from '../common/InfoSnackBar';
+import ErrorSnackbar from '../common/ErrorSnackBar';
+import UpdateProductPopup from '../components/UpdateProductPopup';
+import * as cartItemsCountTypes from "../redux/cartItemsCount/types"
 
 const Product = () => {
     const { id } = useParams();

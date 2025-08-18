@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import CartService from '../../../services/CartService';
+import CartService from '../services/CartService';
 
 export function useCartItemCount(userId?: number) {
     const [totalItems, setTotalItems] = useState<number | null>(null);

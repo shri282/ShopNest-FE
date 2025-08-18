@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Box, Button, TextField } from '@mui/material'
-import { FormMode } from '../../../enum/FormMode';
-import { UserAddress } from '../../../interfaces/User';
-import { useAuth } from '../../../context/AuthContext';
-import { UserService } from '../../../services/UserService';
-import LoadingOverlay from '../../../common/LoadingOverlay';
+import { FormMode } from '../enum/FormMode';
+import { UserAddress } from '../interfaces/User';
+import { useAuth } from '../context/AuthContext';
+import { UserService } from '../services/UserService';
+import LoadingOverlay from '../common/LoadingOverlay';
 
 interface UserAddressFormProps {
     mode: FormMode,

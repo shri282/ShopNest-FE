@@ -1,18 +1,18 @@
 import React, { useCallback, useState } from 'react';
-import { useAuth } from '../../../context/AuthContext';
-import ErrorSnackbar from '../../../common/ErrorSnackBar';
+import { useAuth } from '../context/AuthContext';
+import ErrorSnackbar from '../common/ErrorSnackBar';
 import {
     Box,
     Button,
 } from '@mui/material';
 import { useUserCart } from '../hooks/useUserCart';
-import DataState from '../../../common/DataState';
+import DataState from '../common/DataState';
 import OrderSummary from '../features/order/OrderSummary';
 import { useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
-import { ICheckoutSession } from '../../../interfaces/Cart';
-import CartService from '../../../services/CartService';
-import LoadingOverlay from '../../../common/LoadingOverlay';
+import { ICheckoutSession } from '../interfaces/Cart';
+import CartService from '../services/CartService';
+import LoadingOverlay from '../common/LoadingOverlay';
 import ShoppingCartList from '../features/cart/ShoppingCartList';
 
 const Cart: React.FC = () => {

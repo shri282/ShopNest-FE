@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { IProduct, IUpdateProduct } from '../../../interfaces/Product';
+import { IProduct, IUpdateProduct } from '../interfaces/Product';
 import "../css/addProductPopup.css";
-import ProductService from '../../../services/ProductService';
-import LoadingOverlay from '../../../common/LoadingOverlay';
-import { useAuth } from '../../../context/AuthContext';
+import ProductService from '../services/ProductService';
+import LoadingOverlay from '../common/LoadingOverlay';
+import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import ProductForm from './ProductForm';
 

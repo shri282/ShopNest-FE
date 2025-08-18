@@ -1,7 +1,7 @@
 import React from 'react'
-import ProductCards from '../features/products/ProductCards';
 import { useLocation } from 'react-router-dom';
 import Header from '../Header';
+import ProductCards from '../features/product/ProductCards';
 
 const SearchResults: React.FC = () => {
 

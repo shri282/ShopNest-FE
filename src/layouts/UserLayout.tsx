@@ -4,7 +4,7 @@ import {
     CssBaseline,
     Toolbar
 } from '@mui/material';
-import Header from '../roles/user/Header';
+import Header from '../Header';
 import { NavItem } from '../interfaces/User';
 import { Outlet } from 'react-router-dom';
 import SideDrawer from '../common/SideDrawer';

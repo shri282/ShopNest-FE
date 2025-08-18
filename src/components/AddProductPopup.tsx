@@ -2,8 +2,8 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import "../css/addProductPopup.css";
-import { IAddProduct } from '../../../interfaces/Product';
-import ProductService from '../../../services/ProductService';
+import { IAddProduct } from '../interfaces/Product';
+import ProductService from '../services/ProductService';
 import ProductForm from './ProductForm';
 
 interface AddProductPopupProps {

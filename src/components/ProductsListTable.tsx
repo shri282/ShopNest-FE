@@ -4,11 +4,11 @@ import Paper from '@mui/material/Paper';
 import { Box } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
-import { IProduct } from '../../../interfaces/Product';
-import UpdateProductPopup from './UpdateProductPopup';
 import { useNavigate } from 'react-router-dom';
-import ErrorSnackbar from '../../../common/ErrorSnackBar';
-import ProductService from '../../../services/ProductService';
+import { IProduct } from '../interfaces/Product';
+import ProductService from '../services/ProductService';
+import UpdateProductPopup from './UpdateProductPopup';
+import ErrorSnackbar from '../common/ErrorSnackBar';
 
 const ProductListTable: React.FC = () => {
 

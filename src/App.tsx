@@ -2,14 +2,14 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Product from './roles/user/pages/Product';
-import SearchResults from './roles/user/pages/SearchResults';
 import AuthProvider from './context/AuthContext';
-import Cart from './roles/user/pages/Cart';
+import Cart from './pages/Cart';
 import PrivateRoute from './components/PrivateRoute';
 import UserLayout from './layouts/UserLayout';
-import UserDashboard from './roles/user/pages/UserDashboard';
-import ProductListTable from './roles/seller/components/ProductsListTable';
+import UserDashboard from './pages/UserDashboard';
+import SearchResults from './pages/SearchResults';
+import Product from './pages/Product';
+import ProductListTable from './components/ProductsListTable';
 
 function App() {
   return (

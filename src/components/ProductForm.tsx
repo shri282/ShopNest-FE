@@ -3,8 +3,8 @@ import { Button, MenuItem, Stack, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import UploadIcon from '@mui/icons-material/Upload';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IProductCategory } from '../../../interfaces/Product';
-import ProductService from '../../../services/ProductService';
+import { IProductCategory } from '../interfaces/Product';
+import ProductService from '../services/ProductService';
 
 interface ProductFormProps {
     control: any;

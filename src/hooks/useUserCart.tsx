@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import CartService from '../../../services/CartService';
-import { ICart } from '../../../interfaces/Cart';
+import { ICart } from '../interfaces/Cart';
+import CartService from '../services/CartService';
 
 export function useUserCart(userId?: number) {
     const [cart, setCart] = useState<ICart | null>(null);

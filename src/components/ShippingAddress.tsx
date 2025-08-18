@@ -1,10 +1,10 @@
 import { Box, Button, Typography } from '@mui/material'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useAuth } from '../../../context/AuthContext';
-import { UserService } from '../../../services/UserService';
-import { UserAddress } from '../../../interfaces/User';
-import { FormMode } from '../../../enum/FormMode';
-import LoadingOverlay from '../../../common/LoadingOverlay';
+import { useAuth } from '../context/AuthContext';
+import { UserService } from '../services/UserService';
+import { UserAddress } from '../interfaces/User';
+import { FormMode } from '../enum/FormMode';
+import LoadingOverlay from '../common/LoadingOverlay';
 import UserAddressForm from './UserAddressForm';
 
 const ShippingAddress = () => {

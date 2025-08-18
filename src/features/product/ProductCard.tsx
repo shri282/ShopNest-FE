@@ -1,8 +1,8 @@
 import React from 'react'
-import { IProduct } from '../../../../interfaces/Product'
 import "../../css/productCard.css"
-import ProgressiveImage from '../../../../common/ProgressiveImage';
 import { useNavigate } from 'react-router-dom';
+import { IProduct } from '../../interfaces/Product';
+import ProgressiveImage from '../../common/ProgressiveImage';
 
 interface ProductCardProps {
   product: IProduct;
