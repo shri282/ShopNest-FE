@@ -8,7 +8,6 @@ import React, { useEffect, useState } from "react";
 import FeaturedProductCard from "../../product/components/FeaturedProductCard";
 import { IProduct } from "../../../interfaces/Product";
 import ProductService from "../../../services/ProductService";
-import { useNavigate } from "react-router-dom";
 
 interface OurProductsProps {
     category: string | undefined;

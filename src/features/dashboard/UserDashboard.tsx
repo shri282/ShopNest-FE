@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Box } from '@mui/material';
 import PromotionalBanner from '../../common/PromotionalBanner';
-import Products from '../product/components/Products';
 import ShopByCategory from './components/ShopByCategory';
 import NewArrivals from './components/NewArrivals';
 import OurProducts from './components/OurProducts';
