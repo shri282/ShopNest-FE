@@ -2,6 +2,9 @@ import React from 'react';
 import { Box } from '@mui/material';
 import PromotionalBanner from '../../common/PromotionalBanner';
 import Products from '../product/components/Products';
+import ShopByCategory from './components/ShopByCategory';
+import NewArrivals from './components/NewArrivals';
+import OurProducts from './components/OurProducts';
 
 const UserDashboard: React.FC = () => {
 
@@ -19,6 +22,9 @@ const UserDashboard: React.FC = () => {
           textColor="white"
         />
       </Box>
+      <ShopByCategory />
+      <NewArrivals />
+      <OurProducts />
       <Products />
     </Box>
   );
