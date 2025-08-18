@@ -38,7 +38,6 @@ const UserDashboard: React.FC = () => {
       <div ref={ourProductsRef}>
         <OurProducts category={selectedCategory} />
       </div>
-      <Products />
     </Box>
   );
 };
