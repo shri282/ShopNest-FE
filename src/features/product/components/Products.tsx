@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { IProduct } from '../../interfaces/Product';
-import ProductService from '../../services/ProductService';
-import DataState from '../../common/DataState';
+import { IProduct } from '../../../interfaces/Product';
+import ProductService from '../../../services/ProductService';
+import DataState from '../../../common/DataState';
 import ProductCards from './ProductCards';
-import ErrorSnackbar from '../../common/ErrorSnackBar';
+import ErrorSnackbar from '../../../common/ErrorSnackBar';
 
 const Products: React.FC = () => {
 

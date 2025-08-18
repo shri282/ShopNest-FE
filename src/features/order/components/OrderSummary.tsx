@@ -1,6 +1,6 @@
 import { Box, Button, Divider, MenuItem, TextField, Typography } from '@mui/material'
 import React from 'react'
-import { ICart } from '../../interfaces/Cart';
+import { ICart } from '../../../interfaces/Cart';
 
 interface OrderSummaryProps {
     cart: ICart

@@ -3,12 +3,12 @@ import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AuthProvider from './context/AuthContext';
-import Cart from './pages/Cart';
+import Cart from './features/cart/Cart';
 import PrivateRoute from './components/PrivateRoute';
 import UserLayout from './layouts/UserLayout';
-import UserDashboard from './pages/UserDashboard';
+import UserDashboard from './features/dashboard/UserDashboard';
 import SearchResults from './pages/SearchResults';
-import Product from './pages/Product';
+import Product from './features/product/Product';
 import ProductListTable from './components/ProductsListTable';
 
 function App() {

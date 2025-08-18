@@ -1,13 +1,13 @@
 import { Box, Button, CardMedia, Divider, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import { ICart, ICartItem } from '../../interfaces/Cart';
-import { useAuth } from '../../context/AuthContext';
-import CartService from '../../services/CartService';
-import InfoSnackbar from '../../common/InfoSnackBar';
-import ErrorSnackbar from '../../common/ErrorSnackBar';
+import { ICart, ICartItem } from '../../../interfaces/Cart';
+import { useAuth } from '../../../context/AuthContext';
+import CartService from '../../../services/CartService';
+import InfoSnackbar from '../../../common/InfoSnackBar';
+import ErrorSnackbar from '../../../common/ErrorSnackBar';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../redux/store';
-import * as cartItemsCountTypes from '../../redux/cartItemsCount/types';
+import { AppDispatch } from '../../../redux/store';
+import * as cartItemsCountTypes from '../../../redux/cartItemsCount/types';
 
 interface ShoppingCartListProps {
     setIsLoading: (flag: boolean) => void

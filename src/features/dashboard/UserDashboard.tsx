@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import PromotionalBanner from '../common/PromotionalBanner';
-import Products from '../features/product/Products';
+import PromotionalBanner from '../../common/PromotionalBanner';
+import Products from '../product/components/Products';
 
 const UserDashboard: React.FC = () => {
 
