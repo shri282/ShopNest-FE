@@ -5,7 +5,7 @@ import {
     Box,
     Button,
 } from '@mui/material';
-import { useUserCart } from '../../hooks/useUserCart';
+import { useUserCart } from './hooks/useUserCart';
 import DataState from '../../common/DataState';
 import OrderSummary from '../order/components/OrderSummary';
 import { useNavigate } from 'react-router-dom';

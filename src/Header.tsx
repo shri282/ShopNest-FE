@@ -9,7 +9,7 @@ import { AccountCircle } from "@mui/icons-material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import { useCartItemCount } from "./hooks/useCartItemCount";
+import { useCartItemCount } from "./features/cart/hooks/useCartItemCount";
 import { AppDispatch, RootState } from "./redux/store";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
