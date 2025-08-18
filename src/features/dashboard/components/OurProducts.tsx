@@ -4,86 +4,47 @@ import {
     Tabs,
     Tab,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FeaturedProductCard from "../../product/components/FeaturedProductCard";
 import { IProduct } from "../../../interfaces/Product";
+import ProductService from "../../../services/ProductService";
+import { useNavigate } from "react-router-dom";
 
-const products: IProduct[] = [
-    {
-        id: 1,
-        name: "Coach Pillows Sofa",
-        prize: 730,
-        quantity: 10,
-        availability: true,
-        brand: "ComfortLine",
-        categoryId: 1,
-        categoryName: "Sofa",
-        description: "A stylish modern sofa with plush cushions for maximum comfort.",
-        imageType: "jpg",
-        imageName: "coach-pillows-sofa",
-        imageURL: "images/sofa-coach-pillows.jpg",
-    },
-    {
-        id: 2,
-        name: "Muse Classical Chair",
-        prize: 420,
-        quantity: 15,
-        availability: true,
-        brand: "HeritageWood",
-        categoryId: 2,
-        categoryName: "Chair",
-        description: "Elegant wooden classical chair with soft fabric upholstery.",
-        imageType: "jpg",
-        imageName: "muse-classical-chair",
-        imageURL: "images/muse-classical-chair.jpg",
-    },
-    {
-        id: 3,
-        name: "Bedroom Furniture Set",
-        prize: 710,
-        quantity: 5,
-        availability: true,
-        brand: "DreamSpace",
-        categoryId: 3,
-        categoryName: "Bedroom",
-        description: "Complete bedroom furniture set including bed, side tables, and wardrobe.",
-        imageType: "jpg",
-        imageName: "bedroom-furniture-set",
-        imageURL: "images/bedroom-furniture-set.jpg",
-    },
-    {
-        id: 4,
-        name: "Egg Garden Chair",
-        prize: 230,
-        quantity: 20,
-        availability: true,
-        brand: "GardenEase",
-        categoryId: 2,
-        categoryName: "Chair",
-        description: "Comfortable egg-shaped hanging chair, perfect for outdoor relaxation.",
-        imageType: "jpg",
-        imageName: "egg-garden-chair",
-        imageURL: "images/egg-garden-chair.jpg",
-    },
-    {
-        id: 5,
-        name: "Office Desk",
-        prize: 520,
-        quantity: 8,
-        availability: true,
-        brand: "WorkSmart",
-        categoryId: 4,
-        categoryName: "Office",
-        description: "Spacious office desk with drawers, designed for productivity and style.",
-        imageType: "jpg",
-        imageName: "office-desk",
-        imageURL: "images/office-desk.jpg",
-    },
-];
+interface OurProductsProps {
+    category: string | undefined;
+}
 
-function OurProducts() {
+const OurProducts: React.FC<OurProductsProps> = ({ category }) => {
     const [tab, setTab] = useState(0);
+    const [filter, setFilter] = useState<any>();
+    const [products, setProducts] = useState<IProduct[]>([]);
 
+    useEffect(() => {
+        setFilter((prev: any) => {
+            if (category) {
+                return {
+                    ...prev,
+                    category: category
+                }
+            }
+
+            return prev;
+        })
+    }, [tab, category])
+
+    useEffect(() => {
+        const fetchProductsByTab = async () => {
+            try {
+                const data = await ProductService.getProducts(filter);
+                setProducts(data);
+            } catch (error) {
+                console.log("error in get products");
+            }
+        }
+
+        fetchProductsByTab();
+    }, [tab, filter]);
+    
     return (
         <Box sx={{ px: 8, py: 6 }}>
             {/* Heading */}
@@ -92,7 +53,7 @@ function OurProducts() {
             </Typography>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 4 }}>
                 <Typography sx={{ fontSize: "32px", fontWeight: "bold" }}>
-                    Best Modern Furniture
+                    Top { category ? category : "Products" }
                 </Typography>
 
                 {/* Tabs */}

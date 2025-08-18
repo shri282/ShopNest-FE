@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Box } from '@mui/material';
 import PromotionalBanner from '../../common/PromotionalBanner';
 import Products from '../product/components/Products';
@@ -6,7 +6,18 @@ import ShopByCategory from './components/ShopByCategory';
 import NewArrivals from './components/NewArrivals';
 import OurProducts from './components/OurProducts';
 
+// TODO: filter for our products tab, wishlist, new arrival API.
 const UserDashboard: React.FC = () => {
+  const [selectedCategory, setSelectedCategory] = useState<string>();
+  const ourProductsRef = useRef<HTMLDivElement | null>(null);
+
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category);
+
+    if (ourProductsRef.current) {
+      ourProductsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   return (
     <Box>
@@ -22,9 +33,11 @@ const UserDashboard: React.FC = () => {
           textColor="white"
         />
       </Box>
-      <ShopByCategory />
+      <ShopByCategory setSelectedCategory={handleCategorySelect} />
       <NewArrivals />
-      <OurProducts />
+      <div ref={ourProductsRef}>
+        <OurProducts category={selectedCategory} />
+      </div>
       <Products />
     </Box>
   );

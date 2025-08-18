@@ -1,16 +1,28 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { IProductCategory } from "../../../interfaces/Product";
+import ProductService from "../../../services/ProductService";
 
-const categories = [
-    { name: "Bedroom", products: 16, img: "images/jakob-owens-O_bhy3TnSYU-unsplash.jpg" },
-    { name: "Bathroom", products: 8, img: "images/jakob-owens-O_bhy3TnSYU-unsplash.jpg" },
-    { name: "Dining Room", products: 7, img: "images/jakob-owens-O_bhy3TnSYU-unsplash.jpg" },
-    { name: "Chair", products: 24, img: "images/jakob-owens-O_bhy3TnSYU-unsplash.jpg" },
-    { name: "Sofa", products: 14, img: "images/jakob-owens-O_bhy3TnSYU-unsplash.jpg" },
-    { name: "Kitchen", products: 12, img: "images/jakob-owens-O_bhy3TnSYU-unsplash.jpg" },
-];
+interface ShopByCategoryProps {
+    setSelectedCategory: (category: string) => void;
+}
 
-function ShopByCategory() {
+const ShopByCategory: React.FC<ShopByCategoryProps> = ({ setSelectedCategory }) => {
+    const [productCategories, setProductCategories] = useState<IProductCategory[]>([]);
+
+    useEffect(() => {
+        const fetchProductCategories = async () => {
+            try {
+                const productCategoriesResp = await ProductService.getProductsCategories();
+                setProductCategories(productCategoriesResp);
+            } catch {
+                console.log("error in product categories");
+            }
+        }
+
+        fetchProductCategories();
+    }, []);
+
     return (
         <Box
             sx={{
@@ -30,15 +42,17 @@ function ShopByCategory() {
 
             {/* Category List */}
             <Box sx={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center" }}>
-                {categories.map((cat, index) => (
+                {productCategories.map((cat, index) => (
                     <Box
                         key={index}
+                        onClick={() => setSelectedCategory(cat.name)}
                         sx={{
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "center",
                             textAlign: "center",
                             width: "150px",
+                            cursor: 'pointer'
                         }}
                     >
                         <Box
@@ -56,7 +70,7 @@ function ShopByCategory() {
                         >
                             <img
                                 style={{ width: '100%', objectFit:'cover' }}
-                                src={cat.img}
+                                src={cat.imageUrl}
                                 alt={cat.name}
                             />
                         </Box>
@@ -64,7 +78,7 @@ function ShopByCategory() {
                             {cat.name}
                         </Typography>
                         <Typography sx={{ fontSize: "14px", color: "gray" }}>
-                            {cat.products} Products
+                            12 Products
                         </Typography>
                     </Box>
                 ))}

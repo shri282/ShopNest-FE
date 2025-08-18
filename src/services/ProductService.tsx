@@ -4,8 +4,10 @@ import { GET_PAGINATED_PRODUCTS, PRODUCTS_CATEGORIES_ENDPOINT, PRODUCTS_ENDPOINT
 
 class ProductService {
 
-    static async getProducts() {
-        const response = await apiPrivate.get<IProduct[]>(PRODUCTS_ENDPOINT);
+    static async getProducts(filter: any = null) {
+        const response = await apiPrivate.get<IProduct[]>(PRODUCTS_ENDPOINT, {
+            params: filter
+        });
         return response.data;
     }
 
