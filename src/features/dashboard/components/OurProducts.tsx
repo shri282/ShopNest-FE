@@ -8,6 +8,8 @@ import React, { useEffect, useState } from "react";
 import FeaturedProductCard from "../../product/components/FeaturedProductCard";
 import { IProduct } from "../../../interfaces/Product";
 import ProductService from "../../../services/ProductService";
+import DataState from "../../../common/DataState";
+import ErrorSnackbar from "../../../common/ErrorSnackBar";
 
 interface OurProductsProps {
     category: string | undefined;
@@ -16,6 +18,9 @@ interface OurProductsProps {
 const OurProducts: React.FC<OurProductsProps> = ({ category }) => {
     const [tab, setTab] = useState(0);
     const [filter, setFilter] = useState<any>();
+    const [error, setError] = useState<any>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
     const [products, setProducts] = useState<IProduct[]>([]);
 
     useEffect(() => {
@@ -33,17 +38,22 @@ const OurProducts: React.FC<OurProductsProps> = ({ category }) => {
 
     useEffect(() => {
         const fetchProductsByTab = async () => {
+            setLoading(true);
+
             try {
                 const data = await ProductService.getProducts(filter);
                 setProducts(data);
-            } catch (error) {
-                console.log("error in get products");
+            } catch (error: any) {
+                setError(error);
+                setErrorPopupOpen(true);
+            } finally {
+                setLoading(false);
             }
         }
 
         fetchProductsByTab();
     }, [tab, filter]);
-    
+
     return (
         <Box sx={{ px: 8, py: 6 }}>
             {/* Heading */}
@@ -52,7 +62,7 @@ const OurProducts: React.FC<OurProductsProps> = ({ category }) => {
             </Typography>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 4 }}>
                 <Typography sx={{ fontSize: "32px", fontWeight: "bold" }}>
-                    Top { category ? category : "Products" }
+                    Top {category ? category : "Products"}
                 </Typography>
 
                 {/* Tabs */}
@@ -70,17 +80,26 @@ const OurProducts: React.FC<OurProductsProps> = ({ category }) => {
             </Box>
 
             {/* Product Grid */}
-            <Box
-                sx={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-                    gap: 4,
-                }}
-            >
-                {products.map((product) => (
-                    <FeaturedProductCard product={product} />
-                ))}
-            </Box>
+            <DataState
+                data={products}
+                error={error}
+                loaderStyle={{ height: '400px' }}
+                loading={loading}
+                render={(products) =>
+                    <Box
+                        sx={{
+                            display: "grid",
+                            gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+                            gap: 4,
+                        }}
+                    >
+                        {products.map((product) => (
+                            <FeaturedProductCard key={product.id} product={product} />
+                        ))}
+                    </Box>
+                }
+            />
+            <ErrorSnackbar open={errorPopupOpen} message={error?.message} onClose={() => setErrorPopupOpen(false)} />
         </Box>
     );
 }
