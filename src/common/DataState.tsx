@@ -5,6 +5,7 @@ interface DataStateProps<T> {
     data: T | null;
     loading: boolean;
     error: Error | null;
+    loaderStyle?: any;
     render: (data: T) => React.ReactElement;
     fallback?: React.ReactElement;
 }
@@ -12,6 +13,7 @@ interface DataStateProps<T> {
 const DataState = <T,>({
     data,
     loading,
+    loaderStyle = {},
     error,
     render,
     fallback = <Typography>No data found.</Typography>,
@@ -23,7 +25,8 @@ const DataState = <T,>({
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                mt: 4
+                mt: 4,
+                ...loaderStyle
             }}>
                 <CircularProgress />
             </Box>

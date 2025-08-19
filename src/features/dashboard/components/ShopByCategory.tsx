@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { IProductCategory } from "../../../interfaces/Product";
 import ProductService from "../../../services/ProductService";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+import DataState from "../../../common/DataState";
+import ErrorSnackbar from "../../../common/ErrorSnackBar";
 
 interface ShopByCategoryProps {
     setSelectedCategory: (category: string) => void;
@@ -10,6 +12,9 @@ interface ShopByCategoryProps {
 
 const ShopByCategory: React.FC<ShopByCategoryProps> = ({ setSelectedCategory }) => {
     const [productCategories, setProductCategories] = useState<IProductCategory[]>([]);
+    const [error, setError] = useState<any>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
     const [showLeftArrow, setShowLeftArrow] = useState(false);
     const [showRightArrow, setShowRightArrow] = useState(false);
 
@@ -17,11 +22,16 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({ setSelectedCategory }) 
 
     useEffect(() => {
         const fetchProductCategories = async () => {
+            setLoading(true);
+            
             try {
                 const productCategoriesResp = await ProductService.getProductsCategories();
                 setProductCategories(productCategoriesResp);
-            } catch {
-                console.log("error in product categories");
+            } catch (error: any) {
+                setError(error);
+                setErrorPopupOpen(true);
+            } finally {
+                setLoading(false);
             }
         };
         fetchProductCategories();
@@ -81,77 +91,86 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({ setSelectedCategory }) 
             </Typography>
 
             {/* Wrapper with arrows */}
-            <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
-                {/* Left arrow */}
-                {showLeftArrow && (
-                    <IconButton onClick={() => scroll("left")}>
-                        <ArrowBackIos />
-                    </IconButton>
-                )}
+            <DataState
+                data={productCategories}
+                error={error}
+                loaderStyle={{ height: '50px' }}
+                loading={loading}
+                render={(productCategories) =>
+                    <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
+                        {/* Left arrow */}
+                        {showLeftArrow && (
+                            <IconButton onClick={() => scroll("left")}>
+                                <ArrowBackIos />
+                            </IconButton>
+                        )}
 
-                {/* Scrollable categories */}
-                <Box
-                    ref={scrollRef}
-                    sx={{
-                        display: "flex",
-                        overflowX: "auto",
-                        scrollBehavior: "smooth",
-                        gap: 4,
-                        flex: 1,
-                        "&::-webkit-scrollbar": { display: "none" },
-                    }}
-                >
-                    {productCategories.map((cat, index) => (
+                        {/* Scrollable categories */}
                         <Box
-                            key={index}
-                            onClick={() => setSelectedCategory(cat.name)}
+                            ref={scrollRef}
                             sx={{
                                 display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                textAlign: "center",
-                                width: "150px",
-                                flexGrow: 1,
-                                cursor: "pointer",
-                                flexShrink: 0,
+                                overflowX: "auto",
+                                scrollBehavior: "smooth",
+                                gap: 4,
+                                flex: 1,
+                                "&::-webkit-scrollbar": { display: "none" },
                             }}
                         >
-                            <Box
-                                sx={{
-                                    width: "120px",
-                                    height: "120px",
-                                    borderRadius: "50%",
-                                    overflow: "hidden",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    mb: 2,
-                                    border: "1px solid #eee",
-                                }}
-                            >
-                                <img
-                                    style={{ width: "100%", objectFit: "cover" }}
-                                    src={cat.imageUrl}
-                                    alt={cat.name}
-                                />
-                            </Box>
-                            <Typography sx={{ fontSize: "18px", fontWeight: "500" }}>
-                                {cat.name}
-                            </Typography>
-                            <Typography sx={{ fontSize: "14px", color: "gray" }}>
-                                12 Products
-                            </Typography>
+                            {productCategories.map((cat, index) => (
+                                <Box
+                                    key={index}
+                                    onClick={() => setSelectedCategory(cat.name)}
+                                    sx={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                        textAlign: "center",
+                                        width: "150px",
+                                        flexGrow: 1,
+                                        cursor: "pointer",
+                                        flexShrink: 0,
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            width: "120px",
+                                            height: "120px",
+                                            borderRadius: "50%",
+                                            overflow: "hidden",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            mb: 2,
+                                            border: "1px solid #eee",
+                                        }}
+                                    >
+                                        <img
+                                            style={{ width: "100%", objectFit: "cover" }}
+                                            src={cat.imageUrl}
+                                            alt={cat.name}
+                                        />
+                                    </Box>
+                                    <Typography sx={{ fontSize: "18px", fontWeight: "500" }}>
+                                        {cat.name}
+                                    </Typography>
+                                    <Typography sx={{ fontSize: "14px", color: "gray" }}>
+                                        12 Products
+                                    </Typography>
+                                </Box>
+                            ))}
                         </Box>
-                    ))}
-                </Box>
 
-                {/* Right arrow */}
-                {showRightArrow && (
-                    <IconButton onClick={() => scroll("right")}>
-                        <ArrowForwardIos />
-                    </IconButton>
-                )}
-            </Box>
+                        {/* Right arrow */}
+                        {showRightArrow && (
+                            <IconButton onClick={() => scroll("right")}>
+                                <ArrowForwardIos />
+                            </IconButton>
+                        )}
+                    </Box>
+                }
+            />
+            <ErrorSnackbar open={errorPopupOpen} message={error?.message} onClose={() => setErrorPopupOpen(false)} />
         </Box>
     );
 };
