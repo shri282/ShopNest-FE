@@ -59,7 +59,7 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({ product }) =>
                     {product.name}
                 </Typography>
                 <Typography sx={{ fontSize: "18px", fontWeight: "bold", mb: 1 }}>
-                    {product.prize}
+                    ${product.prize}
                 </Typography>
                 <Typography sx={{ fontSize: "14px", color: "goldenrod" }}>
                     {"★".repeat(3)}
