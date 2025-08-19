@@ -43,7 +43,7 @@ function NewArrivals() {
                     Discover Our Latest Arrivals
                 </Typography>
                 <Typography sx={{ color: "gray", fontSize: "15px", mb: 4 }}>
-                    Exciting new furniture is here! Don’t miss out on the newest trends and
+                    Exciting new products is here! Don’t miss out on the newest trends and
                     unique pieces added to our collection. Shop the latest now.
                 </Typography>
                 <Button
