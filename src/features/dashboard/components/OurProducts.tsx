@@ -24,16 +24,16 @@ const OurProducts: React.FC<OurProductsProps> = ({ category }) => {
     const [products, setProducts] = useState<IProduct[]>([]);
 
     useEffect(() => {
-        setFilter((prev: any) => {
-            if (category) {
-                return {
-                    ...prev,
-                    category: category
-                }
-            }
+        const newFilter: any = {};
+        if (category) {
+            newFilter['category'] = category;
+        }
 
-            return prev;
-        })
+        if (tab === 1) newFilter['newArrivals'] = true;
+        else if (tab === 2) newFilter['bestSellers'] = true;
+        else if (tab === 3) newFilter['saleItems'] = true;
+
+        setFilter(newFilter);
     }, [tab, category])
 
     useEffect(() => {

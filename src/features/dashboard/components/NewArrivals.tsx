@@ -1,55 +1,36 @@
 import { Box, Typography, Button } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FeaturedProductCard from "../../product/components/FeaturedProductCard";
 import { IProduct } from "../../../interfaces/Product";
-
-const products: IProduct[] = [
-    {
-        id: 1,
-        name: "Coach Pillows Sofa",
-        prize: 730,
-        quantity: 10,
-        availability: true,
-        brand: "ComfortLine",
-        categoryId: 1,
-        categoryName: "Sofa",
-        description: "A stylish modern sofa with plush cushions for maximum comfort.",
-        imageType: "jpg",
-        imageName: "coach-pillows-sofa",
-        imageURL: "images/jakob-owens-O_bhy3TnSYU-unsplash.jpg",
-    },
-    {
-        id: 2,
-        name: "Muse Classical Chair",
-        prize: 420,
-        quantity: 15,
-        availability: true,
-        brand: "HeritageWood",
-        categoryId: 2,
-        categoryName: "Chair",
-        description: "Elegant wooden classical chair with soft fabric upholstery.",
-        imageType: "jpg",
-        imageName: "muse-classical-chair",
-        imageURL: "images/jakob-owens-O_bhy3TnSYU-unsplash.jpg",
-    },
-    {
-        id: 3,
-        name: "Bedroom Furniture Set",
-        prize: 710,
-        quantity: 5,
-        availability: true,
-        brand: "DreamSpace",
-        categoryId: 3,
-        categoryName: "Bedroom",
-        description: "Complete bedroom furniture set including bed, side tables, and wardrobe.",
-        imageType: "jpg",
-        imageName: "bedroom-furniture-set",
-        imageURL: "images/jakob-owens-O_bhy3TnSYU-unsplash.jpg",
-    }
-];
+import ProductService from "../../../services/ProductService";
+import ErrorSnackbar from "../../../common/ErrorSnackBar";
+import DataState from "../../../common/DataState";
 
 function NewArrivals() {
+    const [products, setProducts] = useState<IProduct[]>([]);
+    const [error, setError] = useState<any>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
+
+    useEffect(() => {
+        const fetchProductsByTab = async () => {
+            setLoading(true);
+
+            try {
+                const data = await ProductService.getProducts({ newArrivals: true });
+                setProducts(data);
+            } catch (error: any) {
+                setError(error);
+                setErrorPopupOpen(true);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchProductsByTab();
+    }, []);
+
     return (
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", px: 8, py: 6 }}>
 
@@ -83,11 +64,21 @@ function NewArrivals() {
             </Box>
 
             {/* RIGHT SIDE - PRODUCT CARDS */}
-            <Box sx={{ display: "flex", gap: 4 }}>
-                {products.map((product) => (
-                    <FeaturedProductCard product={product} />
-                ))}
-            </Box>
+            <DataState
+                data={products}
+                error={error}
+                loaderStyle={{ width: '500px', height: '250px' }}
+                loading={loading}
+                render={(products: IProduct[]) =>
+                    <Box sx={{ display: "flex", gap: 4 }}>
+                        {products.map((product) => (
+                            <FeaturedProductCard product={product} />
+                        ))}
+                    </Box>
+                }
+            />
+
+            <ErrorSnackbar open={errorPopupOpen} message={error?.message} onClose={() => setErrorPopupOpen(false)} />
         </Box>
     );
 }

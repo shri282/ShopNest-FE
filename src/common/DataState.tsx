@@ -1,11 +1,17 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
 import React from 'react';
 
+interface DataStateLoaderStyle {
+    width?: string;
+    height?: string;
+    backgroundColor?: string;
+}
+
 interface DataStateProps<T> {
     data: T | null;
     loading: boolean;
     error: Error | null;
-    loaderStyle?: any;
+    loaderStyle?: DataStateLoaderStyle;
     render: (data: T) => React.ReactElement;
     fallback?: React.ReactElement;
 }
