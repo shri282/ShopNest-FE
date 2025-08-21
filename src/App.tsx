@@ -11,6 +11,8 @@ import SearchResults from './pages/SearchResults';
 import Product from './features/product/Product';
 import ProductListTable from './components/ProductsListTable';
 
+// #TODO: wishlist, specifications for product, review for products, coupon apply and shipping cost feature
+// order summary, charges, order tracking, delivery partner assignment.
 function App() {
   return (
     <div className="App">

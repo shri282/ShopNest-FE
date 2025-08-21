@@ -5,7 +5,6 @@ import ShopByCategory from './components/ShopByCategory';
 import NewArrivals from './components/NewArrivals';
 import OurProducts from './components/OurProducts';
 
-// TODO: filter for our products tab, wishlist, new arrival API.
 const UserDashboard: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>();
   const ourProductsRef = useRef<HTMLDivElement | null>(null);
