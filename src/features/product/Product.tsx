@@ -1,21 +1,32 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import "../../css/product.css"
-import { Button, Chip, Rating, Skeleton, Typography } from '@mui/material';
+import { Box, Button, Chip, List, ListItem, ListItemText, MenuItem, Paper, Rating, Select, Stack, Typography } from '@mui/material';
 import { ShoppingCart, FavoriteBorder, Favorite, StarBorder } from '@mui/icons-material';
-import { useTheme } from '@mui/material/styles';
-import { styled } from '@mui/system';
 import { useDispatch } from 'react-redux';
 import { useAuth } from '../../context/AuthContext';
 import { AppDispatch } from '../../redux/store';
 import { IProduct } from '../../interfaces/Product';
 import ProductService from '../../services/ProductService';
 import CartService from '../../services/CartService';
-import FallBackWrapper from '../../common/FallBackWrapper';
 import InfoSnackbar from '../../common/InfoSnackBar';
 import ErrorSnackbar from '../../common/ErrorSnackBar';
 import UpdateProductPopup from '../../components/UpdateProductPopup';
 import * as cartItemsCountTypes from "../../redux/cartItemsCount/types"
+import DataState from '../../common/DataState';
+import styled from '@emotion/styled';
+
+
+const StyledButton = styled(Button)({
+    padding: '12px 24px',
+    borderRadius: '8px',
+    fontWeight: '600',
+    textTransform: 'none',
+    transition: 'all 0.3s ease',
+    '&:hover': {
+        transform: 'translateY(-1px)'
+    }
+});
 
 const Product = () => {
     const { id } = useParams();
@@ -23,20 +34,25 @@ const Product = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const [product, setProduct] = useState<IProduct | null>(null);
+    const [error, setError] = useState<any>(null);
+    const [loading, setLoading] = useState<boolean>(false);
     const [isAddingCartInProgress, setIsAddingCartInProgress] = useState(false);
     const [openInfoSnackBar, setOpenInfoSnackBar] = useState<boolean>(false);
     const [openErrorSnackBar, setOpenErrorSnackBar] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
     const [isFavorite, setIsFavorite] = useState(false);
     const [updatePopupOpen, setUpdatePopupOpen] = useState<boolean>(false);
-    const theme = useTheme();
 
     const getProduct = useCallback(async () => {
+        setLoading(true);
+
         try {
             const productObj = await ProductService.getProduct(Number(id));
             setProduct(productObj);
         } catch (error) {
-            console.log(error);
+            setError(error);
+        } finally {
+            setLoading(false);
         }
     }, [id])
 
@@ -66,17 +82,6 @@ const Product = () => {
         getProduct();
     }, [id, getProduct])
 
-    const StyledButton = styled(Button)({
-        padding: '12px 24px',
-        borderRadius: '8px',
-        fontWeight: '600',
-        textTransform: 'none',
-        transition: 'all 0.3s ease',
-        '&:hover': {
-            transform: 'translateY(-1px)'
-        }
-    });
-
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -86,210 +91,197 @@ const Product = () => {
 
     return (
         <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
-            <FallBackWrapper
-                fallback={() => !Boolean(product)}
-                fallbackComponent={
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: '60vh',
-                        padding: '50px 50px'
-                    }}>
-                        <div style={{ width: '100%', maxWidth: '1200px' }}>
-                            <Skeleton variant="rectangular" width="100%" height={400} />
-                        </div>
-                    </div>
-                }
-            >
-                {
-                    product && (
-                        <div className="prod-container">
-                            <div className="img-div">
-                                <img
-                                    className='prod-img'
-                                    src={product.imageURL}
-                                    alt={product.name}
-                                    loading="lazy"
-                                />
-                                <div style={{
-                                    display: 'flex',
-                                    gap: '10px',
-                                    marginTop: '20px',
-                                    justifyContent: 'center'
-                                }}>
-                                    {[1, 2, 3, 4].map((i) => (
-                                        <div key={i} style={{
-                                            width: '80px',
-                                            height: '80px',
-                                            border: '1px solid #ddd',
-                                            borderRadius: '8px',
-                                            overflow: 'hidden',
-                                            cursor: 'pointer'
-                                        }}>
-                                            <img
-                                                src={product.imageURL}
-                                                alt={`Thumbnail ${i}`}
-                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+            <DataState
+                data={product}
+                error={error}
+                loaderStyle={{ height: '50px' }}
+                loading={loading}
+                render={(product) =>
+                    <Box className="prod-container" display="flex" gap={4}>
 
-                            <div className="product-details">
-                                <Chip
-                                    label={product.brand}
-                                    color="primary"
-                                    size="medium"
-                                    style={{ marginBottom: '16px' }}
-                                />
+                        {/* Left - Images */}
+                        <Box className="img-div">
+                            <Box
+                                component="img"
+                                src={product.imageURL}
+                                alt={product.name}
+                                loading="lazy"
+                                sx={{ width: "100%", borderRadius: 2 }}
+                            />
 
-                                <Typography variant="h4" component="h1" gutterBottom>
-                                    {product.name}
-                                </Typography>
-
-                                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
-                                    <Rating
-                                        value={4.5}
-                                        precision={0.5}
-                                        readOnly
-                                        emptyIcon={<StarBorder fontSize="inherit" />}
-                                    />
-                                    <Typography variant="body2" color="text.secondary" style={{ marginLeft: '8px' }}>
-                                        (24 reviews)
-                                    </Typography>
-                                </div>
-
-                                <Typography variant="h5" component="div" gutterBottom style={{ marginBottom: '0px', color: theme.palette.primary.main }}>
-                                    {formatPrice(product.prize)}
-                                    <Typography
-                                        variant="body2"
-                                        component="span"
-                                        style={{
-                                            textDecoration: 'line-through',
-                                            color: '#999',
-                                            marginLeft: '8px',
+                            {/* Thumbnails */}
+                            <Stack direction="row" spacing={2} mt={2} justifyContent="center">
+                                {[1, 2, 3, 4].map((i) => (
+                                    <Paper
+                                        key={i}
+                                        sx={{
+                                            width: 80,
+                                            height: 80,
+                                            border: "1px solid #ddd",
+                                            borderRadius: 2,
+                                            overflow: "hidden",
+                                            cursor: "pointer"
                                         }}
                                     >
-                                        {formatPrice(100)}
-                                    </Typography>
+                                        <Box
+                                            component="img"
+                                            src={product.imageURL}
+                                            alt={`Thumbnail ${i}`}
+                                            sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                        />
+                                    </Paper>
+                                ))}
+                            </Stack>
+                        </Box>
+
+                        {/* Right - Details */}
+                        <Box className="product-details" flex={1}>
+
+                            <Chip label={product.brand} color="primary" sx={{ mb: 2 }} />
+
+                            <Typography variant="h4" component="h1" gutterBottom>
+                                {product.name}
+                            </Typography>
+
+                            <Stack direction="row" alignItems="center" mb={2}>
+                                <Rating
+                                    value={4.5}
+                                    precision={0.5}
+                                    readOnly
+                                    emptyIcon={<StarBorder fontSize="inherit" />}
+                                />
+                                <Typography variant="body2" color="text.secondary" ml={1}>
+                                    (24 reviews)
                                 </Typography>
-                                <p style={{ marginTop: '0px', fontSize: '14px' }}>(16 % off)</p>
+                            </Stack>
 
-                                <Typography variant="body1" style={{ marginBottom: '24px' }}>
-                                    {product.description}
-                                </Typography>
-
-                                <div style={{ marginBottom: '24px' }}>
-                                    <Typography variant="subtitle1" gutterBottom>
-                                        Specifications:
-                                    </Typography>
-                                    <ul style={{
-                                        paddingLeft: '20px',
-                                        margin: 0,
-                                        color: '#555'
-                                    }}>
-                                        <li>Material: High-quality fabric</li>
-                                        <li>Dimensions: 10 x 5 x 3 inches</li>
-                                        <li>Weight: 0.5 kg</li>
-                                        <li>Color: Black</li>
-                                    </ul>
-                                </div>
-
-                                <div style={{
-                                    display: 'flex',
-                                    gap: '16px',
-                                    marginBottom: '24px',
-                                    alignItems: 'center'
-                                }}>
-                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                        <Typography variant="subtitle1" style={{ marginRight: '8px' }}>
-                                            Quantity:
-                                        </Typography>
-                                        <select
-                                            style={{
-                                                padding: '8px 12px',
-                                                borderRadius: '4px',
-                                                border: '1px solid #ddd'
-                                            }}
-                                        >
-                                            {[1, 2, 3, 4, 5].map(num => (
-                                                <option key={num} value={num}>{num}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    {product.quantity < 1000 && (
-                                        <Typography variant="body2" color="error">
-                                            Only {product.quantity} left in stock - order soon!
-                                        </Typography>
-                                    )}
-                                </div>
-
-                                {!product.availability ? (
-                                    <Typography variant="h6" color="error" gutterBottom>
-                                        Currently out of stock
-                                    </Typography>
-                                ) : (
-                                    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                                        <StyledButton
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={addToCartHandler}
-                                            startIcon={<ShoppingCart />}
-                                            loading={isAddingCartInProgress}
-                                            loadingPosition="end"
-                                            size="large"
-                                        >
-                                            {isAddingCartInProgress ? "Adding..." : "Add to Cart"}
-                                        </StyledButton>
-
-                                        <StyledButton
-                                            variant="outlined"
-                                            color="primary"
-                                            onClick={() => setIsFavorite(!isFavorite)}
-                                            startIcon={isFavorite ? <Favorite color="error" /> : <FavoriteBorder />}
-                                            size="large"
-                                        >
-                                            {isFavorite ? 'Saved' : 'Save'}
-                                        </StyledButton>
-
-                                    </div>
-                                )}
-
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    size="large"
-                                    onClick={() => setUpdatePopupOpen(true)}
-                                    style={{ marginTop: '10px', textTransform: 'none' }}
+                            <Typography variant="h5" gutterBottom sx={{ color: "primary.main", mb: 0 }}>
+                                {formatPrice(product.prize)}
+                                <Typography
+                                    variant="body2"
+                                    component="span"
+                                    sx={{
+                                        textDecoration: "line-through",
+                                        color: "text.secondary",
+                                        ml: 1
+                                    }}
                                 >
-                                    Update
-                                </Button>
+                                    {formatPrice(100)}
+                                </Typography>
+                            </Typography>
+                            <Typography variant="caption" display="block" sx={{ mt: 0 }}>
+                                (16 % off)
+                            </Typography>
 
-                                <div style={{
-                                    marginTop: '32px',
-                                    padding: '16px',
-                                    backgroundColor: '#f5f5f5',
-                                    borderRadius: '8px'
-                                }}>
-                                    <Typography variant="body2">
-                                        <strong>Free shipping</strong> on orders over $50.
-                                        <strong> 30-day</strong> returns.
-                                        <strong> 24/7</strong> customer support.
+                            <Typography variant="body1" sx={{ mb: 3 }}>
+                                {product.description}
+                            </Typography>
+
+                            {/* Specifications */}
+                            <Box mb={3}>
+                                <Typography variant="subtitle1" gutterBottom>
+                                    Specifications:
+                                </Typography>
+                                <List dense sx={{ pl: 2 }}>
+                                    <ListItem><ListItemText primary="Material: High-quality fabric" /></ListItem>
+                                    <ListItem><ListItemText primary="Dimensions: 10 x 5 x 3 inches" /></ListItem>
+                                    <ListItem><ListItemText primary="Weight: 0.5 kg" /></ListItem>
+                                    <ListItem><ListItemText primary="Color: Black" /></ListItem>
+                                </List>
+                            </Box>
+
+                            {/* Quantity & Stock */}
+                            <Stack direction="row" spacing={2} alignItems="center" mb={3}>
+                                <Stack direction="row" alignItems="center">
+                                    <Typography variant="subtitle1" mr={1}>
+                                        Quantity:
                                     </Typography>
-                                </div>
-                            </div>
-                            <div className='prod-popups'>
-                                {updatePopupOpen && <UpdateProductPopup onUpdated={(product) => setProduct(product)} open={updatePopupOpen} setOpen={setUpdatePopupOpen} product={product} />}
-                            </div>
-                        </div>
-                    )
+                                    <Select
+                                        defaultValue={1}
+                                        size="small"
+                                        sx={{ minWidth: 80 }}
+                                    >
+                                        {[1, 2, 3, 4, 5].map(num => (
+                                            <MenuItem key={num} value={num}>{num}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </Stack>
+
+                                {product.quantity < 1000 && (
+                                    <Typography variant="body2" color="error">
+                                        Only {product.quantity} left in stock - order soon!
+                                    </Typography>
+                                )}
+                            </Stack>
+
+                            {/* Availability */}
+                            {!product.availability ? (
+                                <Typography variant="h6" color="error" gutterBottom>
+                                    Currently out of stock
+                                </Typography>
+                            ) : (
+                                <Stack direction="row" spacing={2} flexWrap="wrap">
+                                    <StyledButton
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={addToCartHandler}
+                                        startIcon={<ShoppingCart />}
+                                        loading={isAddingCartInProgress}
+                                        loadingPosition="end"
+                                        size="large"
+                                    >
+                                        {isAddingCartInProgress ? "Adding..." : "Add to Cart"}
+                                    </StyledButton>
+
+                                    <Button
+                                        variant="outlined"
+                                        color="primary"
+                                        onClick={() => setIsFavorite(!isFavorite)}
+                                        startIcon={isFavorite ? <Favorite color="error" /> : <FavoriteBorder />}
+                                        size="large"
+                                    >
+                                        {isFavorite ? "Saved" : "Save"}
+                                    </Button>
+                                </Stack>
+                            )}
+
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                size="large"
+                                onClick={() => setUpdatePopupOpen(true)}
+                                sx={{ mt: 2, textTransform: "none" }}
+                            >
+                                Update
+                            </Button>
+
+                            {/* Extra Info */}
+                            <Paper sx={{ mt: 4, p: 2, bgcolor: "#f5f5f5", borderRadius: 2 }}>
+                                <Typography variant="body2">
+                                    <strong>Free shipping</strong> on orders over $50.
+                                    <strong> 30-day</strong> returns.
+                                    <strong> 24/7</strong> customer support.
+                                </Typography>
+                            </Paper>
+                        </Box>
+
+                        {/* Popups */}
+                        <Box className="prod-popups">
+                            {updatePopupOpen && (
+                                <UpdateProductPopup
+                                    onUpdated={(product) => setProduct(product)}
+                                    open={updatePopupOpen}
+                                    setOpen={setUpdatePopupOpen}
+                                    product={product}
+                                />
+                            )}
+                        </Box>
+                    </Box>
+
                 }
-                <InfoSnackbar open={openInfoSnackBar} message={message} onClose={() => setOpenInfoSnackBar(false)} />
-                <ErrorSnackbar open={openErrorSnackBar} message={message} onClose={() => setOpenErrorSnackBar(false)} />
-            </FallBackWrapper>
+            />
+            <InfoSnackbar open={openInfoSnackBar} message={message} onClose={() => setOpenInfoSnackBar(false)} />
+            <ErrorSnackbar open={openErrorSnackBar} message={message} onClose={() => setOpenErrorSnackBar(false)} />
         </div>
     )
 }
