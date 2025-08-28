@@ -98,7 +98,7 @@ const Product = () => {
             loaderStyle={{ height: '50px' }}
             loading={loading}
             render={(product) =>
-                <Box sx={{ padding: 3 }}>
+                <Box sx={{ padding: 4 }}>
 
                     { /* Product container */}
                     <Box className="prod-container" display="flex" gap={4}>
@@ -281,12 +281,33 @@ const Product = () => {
                         </Box>
                     </Box>
 
-                    { /* Product reviews */}
-                    <Box sx={{ backgroundColor: 'white', display: 'flex', gap: 2 }}>
-                        <Box flex={1}>
+                    {/* Product reviews */}
+                    <Box
+                        sx={{
+                            backgroundColor: 'white',
+                            display: 'flex',
+                            gap: 2,
+                            flexWrap: 'wrap',            // ensures content wraps on small screens
+                            alignItems: 'flex-start',
+                            mt: 10,
+                        }}
+                    >
+                        {/* Left - Write Review */}
+                        <Box sx={{ flex: 1, minWidth: 350, maxWidth: 500 }}>
                             <WriteReview product={product} />
                         </Box>
-                        <Box flex={2}>
+
+                        {/* Right - Customer Reviews */}
+                        <Box
+                            sx={{
+                                flex: 2,
+                                minWidth: 400,
+                                maxHeight: 600,
+                                overflowY: 'auto',
+                                p: 1,
+                                borderRadius: 2,
+                            }}
+                        >
                             <CustomerReviews productId={product.id} />
                         </Box>
                     </Box>
