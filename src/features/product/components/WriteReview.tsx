@@ -130,6 +130,93 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product }) => {
                   rows={4}
                 />
 
+                {/* Photos */}
+                <Box>
+                  <Typography sx={{ marginBottom: 1 }}>Upload Photos</Typography>
+                  <Controller
+                    name="media"
+                    control={control}
+                    render={({ field }) => (
+                      <>
+                        <Button
+                          variant="outlined"
+                          component="label"
+                          sx={{ textTransform: 'none' }}
+                        >
+                          Choose Files
+                          <input
+                            hidden
+                            accept="image/*"
+                            multiple
+                            type="file"
+                            onChange={(e) => {
+                              if (!e.target.files) return;
+                              const newFiles = Array.from(e.target.files);
+                              const updatedFiles = [...(field.value || []), ...newFiles];
+                              field.onChange(updatedFiles);
+                            }}
+                          />
+                        </Button>
+
+                        {/* Preview */}
+                        {field.value && field.value.length > 0 && (
+                          <Box mt={2} sx={{ p: 2, backgroundColor: '#f7f7f7', borderRadius: 2 }}>
+                            <Stack direction="row" spacing={2} flexWrap="wrap">
+                              {field.value.map((file: File, index: number) => (
+                                <Box
+                                  key={index}
+                                  sx={{
+                                    position: 'relative',
+                                    width: 90,
+                                    height: 90,
+                                    borderRadius: 1,
+                                    border: '1px solid #ddd',
+                                    overflow: 'hidden',
+                                    backgroundColor: '#fff',
+                                  }}
+                                >
+                                  {/* Remove Button */}
+                                  <IconButton
+                                    size="small"
+                                    sx={{
+                                      position: 'absolute',
+                                      top: 2,
+                                      right: 2,
+                                      bgcolor: 'rgba(0,0,0,0.6)',
+                                      color: '#fff',
+                                      '&:hover': { bgcolor: 'rgba(0,0,0,0.8)' },
+                                      zIndex: 2,
+                                    }}
+                                    onClick={() => {
+                                      const updatedFiles = field.value.filter((_, i) => i !== index);
+                                      field.onChange(updatedFiles);
+                                    }}
+                                  >
+                                    <CloseIcon fontSize="small" />
+                                  </IconButton>
+
+                                  {/* Image */}
+                                  <Box
+                                    component="img"
+                                    src={URL.createObjectURL(file)}
+                                    alt={`preview-${index}`}
+                                    sx={{
+                                      width: '100%',
+                                      height: '100%',
+                                      objectFit: 'cover',
+                                      borderRadius: 1,
+                                    }}
+                                  />
+                                </Box>
+                              ))}
+                            </Stack>
+                          </Box>
+                        )}
+                      </>
+                    )}
+                  />
+                </Box>
+
                 {/* Submit */}
                 <Button
                   type="submit"

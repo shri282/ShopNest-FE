@@ -78,3 +78,10 @@ export interface IProductReview {
     helpfulCount: number;
     reportCount: number;
 }
+
+export interface IProductReviewStats {
+    averageRating: number;
+    totalRatings: number;
+    counts: { [key: number]: number };
+    percentages: { [key: number]: number };
+}

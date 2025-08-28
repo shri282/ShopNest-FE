@@ -17,6 +17,7 @@ import DataState from '../../common/DataState';
 import styled from '@emotion/styled';
 import CustomerReviews from './components/CustomerReviews';
 import WriteReview from './components/WriteReview';
+import ProductReviewStats from './components/ProductReviewStats';
 
 
 const StyledButton = styled(Button)({
@@ -287,13 +288,14 @@ const Product = () => {
                             backgroundColor: 'white',
                             display: 'flex',
                             gap: 2,
-                            flexWrap: 'wrap',            // ensures content wraps on small screens
+                            flexWrap: 'wrap',
                             alignItems: 'flex-start',
                             mt: 10,
                         }}
                     >
                         {/* Left - Write Review */}
-                        <Box sx={{ flex: 1, minWidth: 350, maxWidth: 500 }}>
+                        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 350, gap: 3, maxWidth: 500 }}>
+                            <ProductReviewStats productId={product.id} />
                             <WriteReview product={product} />
                         </Box>
 

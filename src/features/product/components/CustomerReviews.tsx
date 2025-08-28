@@ -50,7 +50,7 @@ const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId }) => {
                   <Typography variant="subtitle1" fontWeight="bold">
                     {review.reviewer?.username ?? 'Anonymous'}
                   </Typography>
-                  <Rating value={review.rating ?? 0} readOnly size="small" />
+                  <Rating value={review.rating ?? 0} precision={0.5} readOnly size="small" />
                 </Box>
                 <Divider sx={{ my: 1 }} />
                 <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
