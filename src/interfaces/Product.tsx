@@ -57,3 +57,10 @@ export interface IProductFilter {
     brand: string;
     categoryName: string;
 }
+
+export interface IProductReviewForm {
+    starRate: number;
+    title: string;
+    review: string;
+    photos: any[];
+}

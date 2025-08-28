@@ -15,6 +15,8 @@ import UpdateProductPopup from '../../components/UpdateProductPopup';
 import * as cartItemsCountTypes from "../../redux/cartItemsCount/types"
 import DataState from '../../common/DataState';
 import styled from '@emotion/styled';
+import CustomerReviews from './components/CustomerReviews';
+import WriteReview from './components/WriteReview';
 
 
 const StyledButton = styled(Button)({
@@ -90,15 +92,16 @@ const Product = () => {
     };
 
     return (
-        <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
-            <DataState
-                data={product}
-                error={error}
-                loaderStyle={{ height: '50px' }}
-                loading={loading}
-                render={(product) =>
-                    <Box className="prod-container" display="flex" gap={4}>
+        <DataState
+            data={product}
+            error={error}
+            loaderStyle={{ height: '50px' }}
+            loading={loading}
+            render={(product) =>
+                <Box sx={{ padding: 3 }}>
 
+                    { /* Product container */}
+                    <Box className="prod-container" display="flex" gap={4}>
                         {/* Left - Images */}
                         <Box className="img-div">
                             <Box
@@ -278,11 +281,22 @@ const Product = () => {
                         </Box>
                     </Box>
 
-                }
-            />
-            <InfoSnackbar open={openInfoSnackBar} message={message} onClose={() => setOpenInfoSnackBar(false)} />
-            <ErrorSnackbar open={openErrorSnackBar} message={message} onClose={() => setOpenErrorSnackBar(false)} />
-        </div>
+                    { /* Product reviews */}
+                    <Box sx={{ backgroundColor: 'white', display: 'flex', gap: 2 }}>
+                        <Box flex={1}>
+                            <WriteReview />
+                        </Box>
+                        <Box flex={2}>
+                            <CustomerReviews />
+                        </Box>
+                    </Box>
+
+                    <InfoSnackbar open={openInfoSnackBar} message={message} onClose={() => setOpenInfoSnackBar(false)} />
+                    <ErrorSnackbar open={openErrorSnackBar} message={message} onClose={() => setOpenErrorSnackBar(false)} />
+                </Box>
+
+            }
+        />
     )
 }
 
