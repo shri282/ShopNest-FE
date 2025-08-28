@@ -284,10 +284,10 @@ const Product = () => {
                     { /* Product reviews */}
                     <Box sx={{ backgroundColor: 'white', display: 'flex', gap: 2 }}>
                         <Box flex={1}>
-                            <WriteReview />
+                            <WriteReview product={product} />
                         </Box>
                         <Box flex={2}>
-                            <CustomerReviews />
+                            <CustomerReviews productId={product.id} />
                         </Box>
                     </Box>
 

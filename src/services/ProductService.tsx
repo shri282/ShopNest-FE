@@ -1,18 +1,16 @@
-import { IProduct, IAddProduct, IUpdateProduct, IProductCategory } from '../interfaces/Product';
+import { IProduct, IAddProduct, IUpdateProduct, IProductCategory, IProductReviewForm, IProductReview } from '../interfaces/Product';
 import { apiPrivate, apiPrivateMultiPart } from '../config/axios';
 import { GET_PAGINATED_PRODUCTS, PRODUCTS_CATEGORIES_ENDPOINT, PRODUCTS_ENDPOINT, SEARCH_PRODUCT } from '../constants/apiEndPoints';
 
 class ProductService {
 
+
+    /*===================================== Product API's ========================================== */
+
     static async getProducts(filter: any = null) {
         const response = await apiPrivate.get<IProduct[]>(PRODUCTS_ENDPOINT, {
             params: filter
         });
-        return response.data;
-    }
-
-    static async getProductsCategories() {
-        const response = await apiPrivate.get<IProductCategory[]>(PRODUCTS_CATEGORIES_ENDPOINT);
         return response.data;
     }
 
@@ -64,6 +62,72 @@ class ProductService {
 
         return product;
     }
+
+    /*===================================== Product API's Ends ========================================== */
+
+
+
+
+
+    /*===================================== Product categories API's ========================================== */
+
+    static async getProductsCategories() {
+        const response = await apiPrivate.get<IProductCategory[]>(PRODUCTS_CATEGORIES_ENDPOINT);
+        return response.data;
+    }
+
+    /*===================================== Product categories API's Ends ========================================== */
+
+
+
+
+
+    /*===================================== Product Review API's ========================================== */
+
+    static async addReviewForProduct(
+        userId: number,
+        productId: number,
+        productReview: IProductReviewForm
+    ) {
+        const formData = new FormData();
+
+        const { media, ...productReviewObj } = productReview;
+
+        formData.append(
+            'review',
+            new Blob([JSON.stringify(productReviewObj)], {
+                type: 'application/json',
+            })
+        );
+
+        if (media && media.length) {
+            media.forEach((file) => {
+                formData.append('media', file);
+            });
+        }
+
+        const product = await apiPrivateMultiPart.post(
+            `/products/${productId}/reviews`,
+            formData, {
+            params: {
+                reviewerId: userId
+            }
+        }
+        );
+
+        return product;
+    }
+
+    static async fetchProductReviews(productId: number) {
+        const response = await apiPrivate.get<IProductReview[]>(`/products/${productId}/reviews`);
+        return response.data;
+    }
+
+    /*===================================== Product Review API's Ends ========================================== */
+
+
+
+
 
     static getSearchResultMap(keyword: string, products: IProduct[]): Map<string, IProduct[]> {
         const searchRes = ProductService.mapToName(products);

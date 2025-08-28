@@ -1,3 +1,5 @@
+import { User } from "./User";
+
 export interface IProduct {
     id: number;
     name: string;
@@ -59,8 +61,20 @@ export interface IProductFilter {
 }
 
 export interface IProductReviewForm {
-    starRate: number;
+    rating: number;
     title: string;
-    review: string;
-    photos: any[];
+    content: string;
+    media: any[];
+}
+
+export interface IProductReview {
+    id: number;
+    reviewer: User;
+    rating: number;
+    title: string;
+    content: string;
+    mediaUrls: string;
+    verifiedPurchase: boolean;
+    helpfulCount: number;
+    reportCount: number;
 }

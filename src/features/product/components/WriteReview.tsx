@@ -1,23 +1,38 @@
 import React from 'react';
 import { Box, Button, Rating, TextField, Typography, Paper, Stack } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
-import { IProductReviewForm } from '../../../interfaces/Product';
+import { IProduct, IProductReviewForm } from '../../../interfaces/Product';
 import CloseIcon from '@mui/icons-material/Close';
 import { IconButton } from '@mui/material';
+import ProductService from '../../../services/ProductService';
+import { useAuth } from '../../../context/AuthContext';
 
-function WriteReview() {
+interface WriteReviewProps {
+  product: IProduct;
+}
+
+const WriteReview: React.FC<WriteReviewProps> = ({ product }) => {
+  const { user } = useAuth();
   const { control, register, handleSubmit, reset } = useForm<IProductReviewForm>({
     defaultValues: {
-      starRate: 0,
+      rating: 0,
       title: '',
-      review: '',
-      photos: [],
+      content: '',
+      media: [],
     },
   });
 
-  const onSubmit = (data: IProductReviewForm) => {
+  const onSubmit = async (data: IProductReviewForm) => {
     console.log('Review Submitted:', data);
-    reset();
+    if(!user) return;
+
+    try {
+      const resp = await ProductService.addReviewForProduct(user.id, product.id, data);
+    } catch (error: any) {
+      console.log(error.message);
+    } finally {
+      reset();
+    }
   };
 
   return (
@@ -30,7 +45,7 @@ function WriteReview() {
               Overall Rating
             </Typography>
             <Controller
-              name="starRate"
+              name="rating"
               control={control}
               rules={{ required: 'Rating is required' }}
               render={({ field }) => (
@@ -60,7 +75,7 @@ function WriteReview() {
           <Box>
             <Typography sx={{ marginBottom: 1 }}>Review</Typography>
             <TextField
-              {...register('review', { required: 'Review is required' })}
+              {...register('content', { required: 'Review is required' })}
               placeholder="Tell others about your experience. What did you like or dislike?"
               fullWidth
               multiline
@@ -73,7 +88,7 @@ function WriteReview() {
           <Box>
             <Typography sx={{ marginBottom: 1 }}>Upload Photos</Typography>
             <Controller
-              name="photos"
+              name="media"
               control={control}
               render={({ field }) => (
                 <>
