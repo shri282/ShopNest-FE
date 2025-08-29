@@ -45,6 +45,7 @@ const Product = () => {
     const [message, setMessage] = useState<string>("");
     const [isFavorite, setIsFavorite] = useState(false);
     const [updatePopupOpen, setUpdatePopupOpen] = useState<boolean>(false);
+    const [reviewSubmitted, setReviewSubmitted] = useState<boolean>(false); 
 
     const getProduct = useCallback(async () => {
         setLoading(true);
@@ -295,8 +296,8 @@ const Product = () => {
                     >
                         {/* Left - Write Review */}
                         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 350, gap: 3, maxWidth: 500 }}>
-                            <ProductReviewStats productId={product.id} />
-                            <WriteReview product={product} />
+                            <ProductReviewStats productId={product.id} reviewSubmitted={reviewSubmitted} />
+                            <WriteReview product={product} onReviewSubmit={() => setReviewSubmitted(!reviewSubmitted)} />
                         </Box>
 
                         {/* Right - Customer Reviews */}
@@ -310,7 +311,7 @@ const Product = () => {
                                 borderRadius: 2,
                             }}
                         >
-                            <CustomerReviews productId={product.id} />
+                            <CustomerReviews productId={product.id} reviewSubmitted={reviewSubmitted} />
                         </Box>
                     </Box>
 

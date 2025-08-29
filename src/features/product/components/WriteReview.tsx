@@ -12,9 +12,10 @@ import ErrorSnackbar from '../../../common/ErrorSnackBar';
 
 interface WriteReviewProps {
   product: IProduct;
+  onReviewSubmit: () => void;
 }
 
-const WriteReview: React.FC<WriteReviewProps> = ({ product }) => {
+const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) => {
   const { user } = useAuth();
   const { control, register, handleSubmit, reset } = useForm<IProductReviewForm>({
     defaultValues: {
@@ -39,6 +40,7 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product }) => {
       await ProductService.addReviewForProduct(user.id, product.id, data);
       reset();
       setMessage("Review submitted successfully!");
+      onReviewSubmit();
       setOpenInfoSnackBar(true);
       setOpenForm(false); // collapse after submit
     } catch (error: any) {

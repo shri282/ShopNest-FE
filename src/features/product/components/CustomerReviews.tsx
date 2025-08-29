@@ -5,9 +5,10 @@ import { IProductReview } from '../../../interfaces/Product';
 
 interface CustomerReviewsProps {
   productId: number;
+  reviewSubmitted: boolean;
 }
 
-const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId }) => {
+const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId, reviewSubmitted }) => {
   const [reviews, setReviews] = useState<IProductReview[]>([]);
 
   useEffect(() => {
@@ -21,7 +22,7 @@ const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId }) => {
     };
 
     fetchReviews();
-  }, [productId]);
+  }, [productId, reviewSubmitted]);
 
   return (
     <Box sx={{ width: '100%' }}>

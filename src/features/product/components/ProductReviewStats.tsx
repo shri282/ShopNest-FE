@@ -5,7 +5,7 @@ import DataState from '../../../common/DataState'
 import ErrorSnackbar from '../../../common/ErrorSnackBar'
 import ProductService from '../../../services/ProductService'
 
-function ProductReviewStats({ productId }: { productId: number }) {
+function ProductReviewStats({ productId, reviewSubmitted }: { productId: number, reviewSubmitted: boolean }) {
     const [productReviewStats, setProductReviewStats] = useState<IProductReviewStats | null>(null)
     const [error, setError] = useState<any>(null)
     const [loading, setLoading] = useState<boolean>(false)
@@ -28,7 +28,7 @@ function ProductReviewStats({ productId }: { productId: number }) {
         }
 
         fetchReviewStats()
-    }, [productId])
+    }, [productId, reviewSubmitted])
 
     return (
         <Box>
