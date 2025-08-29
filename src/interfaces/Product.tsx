@@ -77,6 +77,7 @@ export interface IProductReview {
     verifiedPurchase: boolean;
     helpfulCount: number;
     reportCount: number;
+    createdAt: string;
 }
 
 export interface IProductReviewStats {
