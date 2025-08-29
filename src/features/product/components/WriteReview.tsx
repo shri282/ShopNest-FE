@@ -107,7 +107,6 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
                         {...field}
                         value={Number(field.value)}
                         onChange={(_, value) => field.onChange(value)}
-                        precision={0.5}
                         size="large"
                       />
                     )}
