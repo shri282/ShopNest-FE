@@ -11,7 +11,7 @@ import SearchResults from './pages/SearchResults';
 import Product from './features/product/Product';
 import ProductListTable from './components/ProductsListTable';
 
-// #TODO: wishlist, specifications for product, review remainings(instant update on customer reviews when review submitted, review card UI, add media in review card), coupon apply and shipping cost feature
+// #TODO: wishlist, specifications for product, review remainings(add media in review card), coupon apply and shipping cost feature
 // order summary, charges, order tracking, delivery partner assignment.
 function App() {
   return (
