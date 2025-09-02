@@ -12,6 +12,7 @@ import {
   ToggleButtonGroup,
   ToggleButton,
   IconButton,
+  Grid,
 } from '@mui/material';
 import { ThumbUpOutlined, ThumbDownOutlined, CheckCircle } from '@mui/icons-material';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -174,6 +175,31 @@ const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId, reviewSubm
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, whiteSpace: 'pre-wrap' }}>
                   {review.content}
                 </Typography>
+                
+                {/* Media Section */}
+                {review.mediaUrls && review.mediaUrls.length > 0 && (
+                  <Grid container spacing={2} mt={1}>
+                    {review.mediaUrls.split(',').map((url, idx) => (
+                      <Grid size={{ xs: 1.5, md: 1.7 }} key={idx}>
+                        <Paper
+                          variant="outlined"
+                          sx={{
+                            borderRadius: 2,
+                            overflow: 'hidden',
+                            cursor: 'pointer',
+                            '&:hover': { opacity: 0.8 },
+                          }}
+                        >
+                          <img
+                            src={url}
+                            alt={`review-media-${idx}`}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          />
+                        </Paper>
+                      </Grid>
+                    ))}
+                  </Grid>
+                )}
 
                 <Divider sx={{ my: 1 }} />
 
