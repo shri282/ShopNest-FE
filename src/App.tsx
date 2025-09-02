@@ -10,8 +10,9 @@ import UserDashboard from './features/dashboard/UserDashboard';
 import SearchResults from './pages/SearchResults';
 import Product from './features/product/Product';
 import ProductListTable from './components/ProductsListTable';
+import Wishlist from './features/wishlist/Wishlist';
 
-// #TODO: wishlist, specifications for product, review remainings(add media in review card), coupon apply and shipping cost feature
+// #TODO: wishlist, specifications for product, coupon apply and shipping cost feature
 // order summary, charges, order tracking, delivery partner assignment.
 function App() {
   return (
@@ -24,7 +25,8 @@ function App() {
           <Route path="/" element={<UserLayout />}>
             <Route index element={<UserDashboard />} />
             <Route path="/search-results" element={<SearchResults />} />
-            <Route path="/orders" element={<div>sdfghjgfd</div>} />
+            <Route path="/orders" element={<div>orders.....</div>} />
+            <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/product/:id" element={<Product />} />
             <Route path="/user/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
           </Route>

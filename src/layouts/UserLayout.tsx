@@ -15,6 +15,12 @@ const navs: NavItem[] = [
         name: 'Orders',
         path: "/orders",
         icon: 'images/order.png',
+    },
+    {
+        id: 2,
+        name: 'Wishlist',
+        path: "/wishlist",
+        icon: 'images/wishlist.png',
     }
 ];
 
