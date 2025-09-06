@@ -8,6 +8,8 @@ import ErrorSnackbar from '../../../common/ErrorSnackBar';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../redux/store';
 import * as cartItemsCountTypes from '../../../redux/cartItemsCount/types';
+import { ISnackbarState } from '../../../common/types';
+import SnackBar from '../../../common/SnackBar';
 
 interface ShoppingCartListProps {
     setIsLoading: (flag: boolean) => void
@@ -19,9 +21,11 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ setIsLoading, cart,
 
     const { user } = useAuth();
     const dispatch = useDispatch<AppDispatch>();
-    const [openInfoSnackBar, setOpenInfoSnackBar] = useState<boolean>(false);
-    const [openErrorSnackBar, setOpenErrorSnackBar] = useState<boolean>(false);
-    const [message, setMessage] = useState<string>("");
+    const [snackbar, setSnackbar] = useState<ISnackbarState>({
+        open: false,
+        message: "",
+        status: "Info"
+    });
 
     const updateItemQuantityHandler = async (item: ICartItem, quantity: number) => {
         if (!user?.id) return;
@@ -31,12 +35,17 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ setIsLoading, cart,
         try {
             const updatedCart: ICart = await CartService.updateCartItemQuantity(user.id, item.id, quantity);
             setCart(updatedCart);
-            setOpenInfoSnackBar(true);
-            setMessage(`1 quantity ${quantity > 0 ? 'added' : 'removed'} successfully`);
+            setSnackbar({
+                open: true,
+                message: `1 quantity ${quantity > 0 ? 'added' : 'removed'} successfully`,
+                status: "Info"
+            })
         } catch (error: any) {
-            console.log(error);
-            setOpenErrorSnackBar(true);
-            setMessage(error.message)
+            setSnackbar({
+                open: true,
+                message: error.message,
+                status: "Error"
+            })
         } finally {
             setIsLoading(false);
         }
@@ -50,12 +59,18 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ setIsLoading, cart,
             const updatedCart: ICart = await CartService.removeCartItem(user.id, itemId);
             dispatch({ type: cartItemsCountTypes.DECREMENT });
             setCart(updatedCart);
-            setOpenInfoSnackBar(true);
-            setMessage('item removed successfully');
+            setSnackbar({
+                open: true,
+                message: 'item removed successfully',
+                status: "Info"
+            })
         } catch (error: any) {
             console.log(error);
-            setOpenErrorSnackBar(true);
-            setMessage(error.message);
+            setSnackbar({
+                open: true,
+                message: error.message,
+                status: "Error"
+            })
         } finally {
             setIsLoading(false);
         }
@@ -177,8 +192,7 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ setIsLoading, cart,
                     </Box>
                 ))}
             </Box>
-            <InfoSnackbar open={openInfoSnackBar} message={message} onClose={() => setOpenInfoSnackBar(false)} />
-            <ErrorSnackbar open={openErrorSnackBar} message={message} onClose={() => setOpenErrorSnackBar(false)} />
+            <SnackBar state={snackbar} onClose={() => setSnackbar((prev) => ({ ...prev, open: false }))} />
         </Box>
     )
 }
