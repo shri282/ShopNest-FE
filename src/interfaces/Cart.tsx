@@ -28,6 +28,7 @@ export interface ICheckoutSession {
 export interface IWishlistSummary {
     id: number;
     name: string;
+    default: boolean;
 }
 
 export interface IWishlistDetail {

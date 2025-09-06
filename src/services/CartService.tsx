@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { apiPrivate } from "../config/axios";
-import { ICart, ICheckoutSession, IWishlistSummary } from "../interfaces/Cart";
+import { ICart, ICheckoutSession, IWishlistDetail, IWishlistSummary } from "../interfaces/Cart";
 import { IProduct } from "../interfaces/Product";
 import { userCartCheckoutURL, userCartItemURL, userCartURL } from "../constants/apiEndPoints";
 
@@ -38,6 +38,11 @@ class CartService {
 
     static async getAllWishlistSummary(userId: number) {
         const resp: AxiosResponse<IWishlistSummary[]> = await apiPrivate.get<IWishlistSummary[]>(`/user/${userId}/wishlists/summary`);
+        return resp.data;
+    }
+
+    static async addItemToWishlist(userId: number, item: any) {
+        const resp: AxiosResponse<IWishlistDetail> = await apiPrivate.post<IWishlistDetail>(`/user/${userId}/wishlists/addItem`, item);
         return resp.data;
     }
 

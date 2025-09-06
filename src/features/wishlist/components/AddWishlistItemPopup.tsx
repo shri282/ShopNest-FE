@@ -9,11 +9,13 @@ import {
     Button,
     FormControl,
     InputLabel,
-    Modal
+    Modal,
+    LinearProgress,
 } from '@mui/material'
 import { useAuth } from '../../../context/AuthContext'
 import { IWishlistSummary } from '../../../interfaces/Cart'
 import CartService from '../../../services/CartService'
+import ErrorSnackbar from '../../../common/ErrorSnackBar'
 
 interface AddWishlistItemFormProps {
     product: IProduct
@@ -22,129 +24,166 @@ interface AddWishlistItemFormProps {
 }
 
 const AddWishlistItemPopup: React.FC<AddWishlistItemFormProps> = ({ product, open, onClose }) => {
-    const [wishlistsSummary, setWishlistsSummary] = useState<IWishlistSummary[]>([]);
-    const [note, setNote] = useState('');
-    const [priority, setPriority] = useState('3');
-    const [wishlistId, setWishlistId] = useState('');
-    const { user } = useAuth();
+    const [wishlistsSummary, setWishlistsSummary] = useState<IWishlistSummary[]>([])
+    const [note, setNote] = useState('')
+    const [priority, setPriority] = useState('3')
+    const [wishlistId, setWishlistId] = useState<string | undefined>(undefined)
+
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState<any>(null)
+    const [errorPopupOpen, setErrorPopupOpen] = useState(false)
+
+    const { user } = useAuth()
 
     useEffect(() => {
         const getAllWishlistSummary = async () => {
-            if (!user) return;
+            if (!user) return
 
+            setLoading(true)
             try {
-                const wishlistSummary = await CartService.getAllWishlistSummary(user.id);
-                setWishlistsSummary(wishlistSummary);
-            } catch (error) {
-                console.log(error);
+                const wishlistSummaryData: IWishlistSummary[] =
+                    await CartService.getAllWishlistSummary(user.id)
+
+                setWishlistsSummary(wishlistSummaryData)
+
+                if (wishlistSummaryData.length) {
+                    const defaultWishlist = wishlistSummaryData.find((w) => w.default)
+                    if (defaultWishlist) {
+                        setWishlistId(defaultWishlist.id.toString())
+                    }
+                }
+            } catch (error: any) {
+                setError(error)
+                setErrorPopupOpen(true)
+            } finally {
+                setLoading(false)
             }
         }
 
         if (open) {
-            getAllWishlistSummary();
+            getAllWishlistSummary()
         }
-    }, [user, open]);
+    }, [user, open])
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log({ productId: product.id, note, priority, wishlistId });
-        onClose(); // close popup after submit
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!user) return
+
+        try {
+            const req: any = {
+                productId: product.id,
+                notes: note,
+                priority: priority,
+            }
+
+            if (wishlistId) req.wishlistId = Number(wishlistId)
+
+            await CartService.addItemToWishlist(user.id, req)
+            onClose()
+        } catch (error: any) {
+            setError(error)
+            setErrorPopupOpen(true)
+        }
     }
 
     return (
-        <Modal
-            open={open}
-            onClose={onClose}
-            aria-labelledby="wishlist-modal-title"
-            aria-describedby="wishlist-modal-description"
-        >
-            <Box
-                sx={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    transform: 'translate(-50%, -50%)',
-                    width: '100%',
-                    maxWidth: 450,
-                    bgcolor: 'background.paper',
-                    boxShadow: 24,
-                    borderRadius: 2,
-                    p: 3,
-                }}
+        <>
+            <Modal
+                open={open}
+                onClose={onClose}
+                aria-labelledby="wishlist-modal-title"
+                aria-describedby="wishlist-modal-description"
             >
-                <Typography id="wishlist-modal-title" variant="h6" gutterBottom>
-                    Add Product to Wishlist
-                </Typography>
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        transform: 'translate(-50%, -50%)',
+                        width: '100%',
+                        maxWidth: 450,
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        borderRadius: 2,
+                        p: 3,
+                    }}
+                >
+                    <Typography id="wishlist-modal-title" variant="h6" gutterBottom>
+                        Add Product to Wishlist
+                    </Typography>
 
-                <form onSubmit={handleSubmit}>
-                    {/* Note */}
-                    <TextField
-                        fullWidth
-                        label="Note"
-                        variant="outlined"
-                        margin="normal"
-                        size="small"
-                        value={note}
-                        onChange={(e) => setNote(e.target.value)}
-                    />
+                    {loading && <LinearProgress sx={{ mb: 2 }} />}
 
-                    {/* Priority */}
-                    <Box sx={{ display: 'flex', gap: 3 }}>
-                        <FormControl fullWidth margin="normal">
-                            <InputLabel>Priority</InputLabel>
-                            <Select
-                                value={priority}
+                    {!loading && (
+                        <form onSubmit={handleSubmit}>
+                            {/* Note */}
+                            <TextField
+                                fullWidth
+                                label="Note"
+                                variant="outlined"
+                                margin="normal"
                                 size="small"
-                                onChange={(e) => setPriority(e.target.value)}
-                                label="Priority"
-                            >
-                                <MenuItem value="1">High</MenuItem>
-                                <MenuItem value="2">Medium</MenuItem>
-                                <MenuItem value="3">Low</MenuItem>
-                            </Select>
-                        </FormControl>
+                                value={note}
+                                onChange={(e) => setNote(e.target.value)}
+                            />
 
-                        {/* Wishlist Dropdown */}
-                        <FormControl fullWidth margin="normal">
-                            <InputLabel>Wishlist</InputLabel>
-                            <Select
-                                size="small"
-                                value={wishlistId}
-                                onChange={(e) => setWishlistId(e.target.value)}
-                                label="Wishlist"
-                            >
-                                {wishlistsSummary.map((wishlist) => (
-                                    <MenuItem key={wishlist.id} value={wishlist.id}>
-                                        {wishlist.name}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Box>
+                            {/* Priority & Wishlist */}
+                            <Box sx={{ display: 'flex', gap: 3 }}>
+                                <FormControl fullWidth margin="normal">
+                                    <InputLabel>Priority</InputLabel>
+                                    <Select
+                                        value={priority}
+                                        size="small"
+                                        onChange={(e) => setPriority(e.target.value)}
+                                        label="Priority"
+                                    >
+                                        <MenuItem value="1">High</MenuItem>
+                                        <MenuItem value="2">Medium</MenuItem>
+                                        <MenuItem value="3">Low</MenuItem>
+                                    </Select>
+                                </FormControl>
 
-                    {/* Buttons */}
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 2 }}>
-                        <Button
-                            variant="outlined"
-                            color="secondary"
-                            onClick={onClose}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                        >
-                            Add
-                        </Button>
-                    </Box>
-                </form>
-            </Box>
-        </Modal>
-    );
+                                <FormControl fullWidth margin="normal">
+                                    <InputLabel>Wishlist</InputLabel>
+                                    <Select
+                                        size="small"
+                                        value={wishlistId ?? ''}
+                                        onChange={(e) => setWishlistId(e.target.value)}
+                                        label="Wishlist"
+                                    >
+                                        {wishlistsSummary.map((wishlist) => (
+                                            <MenuItem key={wishlist.id} value={wishlist.id.toString()}>
+                                                {wishlist.name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </Box>
+
+                            {/* Buttons */}
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 2 }}>
+                                <Button variant="outlined" color="secondary" onClick={onClose}>
+                                    Cancel
+                                </Button>
+                                <Button type="submit" variant="contained" color="primary">
+                                    Add
+                                </Button>
+                            </Box>
+                        </form>
+                    )}
+                </Box>
+            </Modal>
+
+            {/* Error Snackbar */}
+            <ErrorSnackbar
+                open={errorPopupOpen}
+                message={error?.message ?? 'Something went wrong'}
+                onClose={() => setErrorPopupOpen(false)}
+            />
+        </>
+    )
 }
 
 export default AddWishlistItemPopup;
