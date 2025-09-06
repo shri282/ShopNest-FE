@@ -24,3 +24,24 @@ export interface ICartItem {
 export interface ICheckoutSession {
     sessionId: string;
 }
+
+export interface IWishlistSummary {
+    id: number;
+    name: string;
+}
+
+export interface IWishlistDetail {
+    id: number;
+    name: string;
+    wishlistItems: IWishlistItems;
+}
+
+export interface IWishlistItems {
+    id: number;
+    wishlistId: number;
+    productId: number;
+    productName: string;
+    priority: number;
+    notes: string;
+    addedAt: Date;
+}

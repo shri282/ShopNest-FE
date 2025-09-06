@@ -1,9 +1,10 @@
 import { Box, Card, CardContent, CardMedia, IconButton, Typography } from '@mui/material';
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import React from 'react';
+import React, { useState } from 'react';
 import { IProduct } from '../../../interfaces/Product';
 import { useNavigate } from 'react-router-dom';
+import AddWishlistItemPopup from '../../wishlist/components/AddWishlistItemPopup';
 
 interface FeaturedProductCardProps {
     product: IProduct
@@ -11,6 +12,11 @@ interface FeaturedProductCardProps {
 
 const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({ product }) => {
     const navigate = useNavigate();
+    const [openAddWlPopup, setOpenAddWlPopup] = useState<boolean>(false);
+
+    const addToWlHandler = () => {
+        setOpenAddWlPopup(true);
+    }
 
     return (
         <Card
@@ -41,7 +47,7 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({ product }) =>
             </Box>
 
             {/* Wishlist Icon */}
-            <IconButton sx={{ position: "absolute", top: 15, right: 15, color: "gray" }}>
+            <IconButton onClick={addToWlHandler} sx={{ position: "absolute", top: 15, right: 15, color: "gray" }}>
                 <FavoriteBorderIcon />
             </IconButton>
 
@@ -85,6 +91,7 @@ const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({ product }) =>
             >
                 <ArrowForwardIcon sx={{ color: "white" }} />
             </Box>
+            {openAddWlPopup && <AddWishlistItemPopup product={product} open={openAddWlPopup} onClose={() => setOpenAddWlPopup(false)} />}
         </Card>
     )
 }
