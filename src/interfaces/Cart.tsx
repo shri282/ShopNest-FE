@@ -34,14 +34,17 @@ export interface IWishlistSummary {
 export interface IWishlistDetail {
     id: number;
     name: string;
-    wishlistItems: IWishlistItems;
+    wishlistItems: IWishlistItem[];
 }
 
-export interface IWishlistItems {
+export interface IWishlistItem {
     id: number;
     wishlistId: number;
     productId: number;
     productName: string;
+    productDescription: string;
+    productPrize: number;
+    productImageUrl: string;
     priority: number;
     notes: string;
     addedAt: Date;

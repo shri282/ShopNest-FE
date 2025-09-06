@@ -46,6 +46,11 @@ class CartService {
         return resp.data;
     }
 
+    static async getDefaultWishlist(userId: number) {
+        const resp: AxiosResponse<IWishlistDetail> = await apiPrivate.get<IWishlistDetail>(`/user/${userId}/wishlists/default`);
+        return resp.data;
+    }
+
 }
 
 export default CartService;

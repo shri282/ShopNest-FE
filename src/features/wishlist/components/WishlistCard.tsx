@@ -11,9 +11,10 @@ import {
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import React from "react";
+import { IWishlistItem } from "../../../interfaces/Cart";
 
 interface WishlistCardProps {
-    item: any;
+    item: IWishlistItem;
 }
 
 const WishlistCard: React.FC<WishlistCardProps> = ({ item }) => {
@@ -68,8 +69,8 @@ const WishlistCard: React.FC<WishlistCardProps> = ({ item }) => {
             {/* Product Image */}
             <CardMedia
                 component="img"
-                image={"images/will-suddreth-1pjRN2kphIs-unsplash.jpg"}
-                alt={item.name}
+                image={item.productImageUrl}
+                alt={item.productName}
                 sx={{
                     height: 180,
                     objectFit: "contain",
@@ -83,7 +84,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({ item }) => {
                     sx={{ fontWeight: "bold", fontSize: "16px", mb: 0.5 }}
                     noWrap
                 >
-                    {item.name}
+                    {item.productName}
                 </Typography>
                 <Typography
                     sx={{
@@ -93,12 +94,12 @@ const WishlistCard: React.FC<WishlistCardProps> = ({ item }) => {
                         minHeight: "36px",
                     }}
                 >
-                    {item.description}
+                    {item.productDescription}
                 </Typography>
                 <Typography
                     sx={{ fontSize: "18px", fontWeight: "bold", color: "primary.main" }}
                 >
-                    ${item.price}
+                    ${item.productPrize}
                 </Typography>
             </CardContent>
 
