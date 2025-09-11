@@ -74,7 +74,7 @@ const AddWishlistItemPopup: React.FC<AddWishlistItemFormProps> = ({ product, ope
         if (open) {
             getAllWishlistSummary()
         }
-    }, [user, open])
+    }, [user, open, navigate])
 
     const handleSubmit = async (e: React.FormEvent) => {
         if (!user) return navigate("login");

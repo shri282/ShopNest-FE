@@ -9,8 +9,6 @@ import { AppDispatch } from '../../redux/store';
 import { IProduct } from '../../interfaces/Product';
 import ProductService from '../../services/ProductService';
 import CartService from '../../services/CartService';
-import InfoSnackbar from '../../common/InfoSnackBar';
-import ErrorSnackbar from '../../common/ErrorSnackBar';
 import UpdateProductPopup from '../../components/UpdateProductPopup';
 import * as cartItemsCountTypes from "../../redux/cartItemsCount/types"
 import DataState from '../../common/DataState';

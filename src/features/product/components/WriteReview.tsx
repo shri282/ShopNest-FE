@@ -7,8 +7,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { IProduct, IProductReviewForm } from '../../../interfaces/Product';
 import ProductService from '../../../services/ProductService';
 import { useAuth } from '../../../context/AuthContext';
-import InfoSnackbar from '../../../common/InfoSnackBar';
-import ErrorSnackbar from '../../../common/ErrorSnackBar';
 import SnackBar from '../../../common/SnackBar';
 import { ISnackbarState } from '../../../common/types';
 

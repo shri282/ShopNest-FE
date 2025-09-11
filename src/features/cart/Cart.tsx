@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import ErrorSnackbar from '../../common/ErrorSnackBar';
 import {
     Box,
     Button,

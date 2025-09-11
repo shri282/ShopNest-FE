@@ -5,10 +5,8 @@ import {
     CardActions,
     CardContent,
     CardMedia,
-    IconButton,
     Typography,
 } from "@mui/material";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import React from "react";
 import { IWishlistItem } from "../../../interfaces/Cart";
