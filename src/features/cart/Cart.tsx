@@ -14,13 +14,22 @@ import { ICheckoutSession } from '../../interfaces/Cart';
 import CartService from '../../services/CartService';
 import LoadingOverlay from '../../common/LoadingOverlay';
 import ShoppingCartList from './components/ShoppingCartList';
+import { ISnackbarState } from '../../common/types';
+import SnackBar from '../../common/SnackBar';
 
 const Cart: React.FC = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
+
+    // Init
     const { cart, setCart, error, loading } = useUserCart(user?.id);
+
     const [isApiLoading, setIsApiLoading] = useState(false);
-    const [errorPopupOpen, setErrorPopupOpen] = useState(false);
+    const [snackbar, setSnackbar] = useState<ISnackbarState>({
+        open: false,
+        message: "",
+        status: "Info"
+    });
 
     const handleCheckout = useCallback(async () => {
         if (!cart?.id) return;
@@ -33,8 +42,12 @@ const Cart: React.FC = () => {
             stripe?.redirectToCheckout({
                 sessionId: checkoutSession.sessionId,
             })
-        } catch (error) {
-            console.log(error);
+        } catch (error: any) {
+            setSnackbar({
+                open: true,
+                message: error.message,
+                status: "Error"
+            })
         } finally {
             setIsApiLoading(false);
         }
@@ -73,11 +86,7 @@ const Cart: React.FC = () => {
             />
 
             <LoadingOverlay loading={isApiLoading} />
-            <ErrorSnackbar
-                open={errorPopupOpen}
-                message={error?.message || 'An unexpected error occurred.'}
-                onClose={() => setErrorPopupOpen(false)}
-            />
+            <SnackBar state={snackbar} onClose={() => setSnackbar((prev) => ({ ...prev, open: false }))} />
         </div>
     );
 };

@@ -9,8 +9,9 @@ import DataState from "../../../common/DataState";
 
 function NewArrivals() {
     const [products, setProducts] = useState<IProduct[]>([]);
-    const [error, setError] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<any>(null);
+    
     const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
 
     useEffect(() => {

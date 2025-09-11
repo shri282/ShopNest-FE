@@ -16,12 +16,14 @@ interface OurProductsProps {
 }
 
 const OurProducts: React.FC<OurProductsProps> = ({ category }) => {
+    const [products, setProducts] = useState<IProduct[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<any>(null);
+
     const [tab, setTab] = useState(0);
     const [filter, setFilter] = useState<any>();
-    const [error, setError] = useState<any>(null);
-    const [loading, setLoading] = useState<boolean>(false);
+    
     const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
-    const [products, setProducts] = useState<IProduct[]>([]);
 
     useEffect(() => {
         const newFilter: any = {};

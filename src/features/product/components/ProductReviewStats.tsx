@@ -9,6 +9,7 @@ function ProductReviewStats({ productId, reviewSubmitted }: { productId: number,
     const [productReviewStats, setProductReviewStats] = useState<IProductReviewStats | null>(null)
     const [error, setError] = useState<any>(null)
     const [loading, setLoading] = useState<boolean>(false)
+    
     const [errorPopupOpen, setErrorPopupOpen] = React.useState(false)
 
     useEffect(() => {

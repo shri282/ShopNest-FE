@@ -18,7 +18,9 @@ interface ShoppingCartListProps {
 const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ setIsLoading, cart, setCart }) => {
 
     const { user } = useAuth();
+    
     const dispatch = useDispatch<AppDispatch>();
+
     const [snackbar, setSnackbar] = useState<ISnackbarState>({
         open: false,
         message: "",

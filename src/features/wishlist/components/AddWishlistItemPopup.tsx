@@ -27,10 +27,12 @@ interface AddWishlistItemFormProps {
 
 const AddWishlistItemPopup: React.FC<AddWishlistItemFormProps> = ({ product, open, onClose }) => {
     const navigate = useNavigate();
+
     const [wishlistsSummary, setWishlistsSummary] = useState<IWishlistSummary[]>([])
+
+    const [wishlistId, setWishlistId] = useState<string | undefined>(undefined)
     const [note, setNote] = useState('')
     const [priority, setPriority] = useState('3')
-    const [wishlistId, setWishlistId] = useState<string | undefined>(undefined)
 
     const [loading, setLoading] = useState(false)
     const [snackbar, setSnackbar] = useState<ISnackbarState>({

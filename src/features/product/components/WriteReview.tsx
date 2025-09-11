@@ -9,6 +9,8 @@ import ProductService from '../../../services/ProductService';
 import { useAuth } from '../../../context/AuthContext';
 import InfoSnackbar from '../../../common/InfoSnackBar';
 import ErrorSnackbar from '../../../common/ErrorSnackBar';
+import SnackBar from '../../../common/SnackBar';
+import { ISnackbarState } from '../../../common/types';
 
 interface WriteReviewProps {
   product: IProduct;
@@ -27,10 +29,12 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
   });
 
   const [submitLoader, setSubmitLoader] = useState<boolean>(false);
-  const [openInfoSnackBar, setOpenInfoSnackBar] = useState<boolean>(false);
-  const [openErrorSnackBar, setOpenErrorSnackBar] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
   const [openForm, setOpenForm] = useState<boolean>(false);
+  const [snackbar, setSnackbar] = useState<ISnackbarState>({
+    open: false,
+    message: "",
+    status: "Info"
+  });
 
   const onSubmit = async (data: IProductReviewForm) => {
     if (!user) return;
@@ -39,13 +43,19 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
     try {
       await ProductService.addReviewForProduct(user.id, product.id, data);
       reset();
-      setMessage("Review submitted successfully!");
+      setSnackbar({
+        open: true,
+        message: "Review submitted successfully!",
+        status: "Info"
+      })
       onReviewSubmit();
-      setOpenInfoSnackBar(true);
-      setOpenForm(false); // collapse after submit
+      setOpenForm(false);
     } catch (error: any) {
-      setMessage(error.message);
-      setOpenErrorSnackBar(true);
+      setSnackbar({
+        open: true,
+        message: error.message,
+        status: "Error"
+      })
     } finally {
       setSubmitLoader(false);
     }
@@ -235,8 +245,7 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
         )}
       </Collapse>
 
-      <InfoSnackbar open={openInfoSnackBar} message={message} onClose={() => setOpenInfoSnackBar(false)} />
-      <ErrorSnackbar open={openErrorSnackBar} message={message} onClose={() => setOpenErrorSnackBar(false)} />
+      <SnackBar state={snackbar} onClose={() => setSnackbar((prev) => ({ ...prev, open: false }))} />
     </Paper>
   );
 };

@@ -18,6 +18,8 @@ import styled from '@emotion/styled';
 import CustomerReviews from './components/CustomerReviews';
 import WriteReview from './components/WriteReview';
 import ProductReviewStats from './components/ProductReviewStats';
+import SnackBar from '../../common/SnackBar';
+import { ISnackbarState } from '../../common/types';
 
 
 const StyledButton = styled(Button)({
@@ -40,12 +42,15 @@ const Product = () => {
     const [error, setError] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [isAddingCartInProgress, setIsAddingCartInProgress] = useState(false);
-    const [openInfoSnackBar, setOpenInfoSnackBar] = useState<boolean>(false);
-    const [openErrorSnackBar, setOpenErrorSnackBar] = useState<boolean>(false);
-    const [message, setMessage] = useState<string>("");
     const [isFavorite, setIsFavorite] = useState(false);
+    const [reviewSubmitted, setReviewSubmitted] = useState<boolean>(false);
+
     const [updatePopupOpen, setUpdatePopupOpen] = useState<boolean>(false);
-    const [reviewSubmitted, setReviewSubmitted] = useState<boolean>(false); 
+    const [snackbar, setSnackbar] = useState<ISnackbarState>({
+        open: false,
+        message: "",
+        status: "Info"
+    });
 
     const getProduct = useCallback(async () => {
         setLoading(true);
@@ -70,12 +75,17 @@ const Product = () => {
         try {
             await CartService.addItemToCart(user.id, product);
             dispatch({ type: cartItemsCountTypes.INCREMENT })
-            setOpenInfoSnackBar(true);
-            setMessage("cart added successfully");
+            setSnackbar({
+                open: true,
+                message: "cart added successfully",
+                status: "Info"
+            })
         } catch (error: any) {
-            console.log(error);
-            setOpenErrorSnackBar(true);
-            setMessage(error.message);
+            setSnackbar({
+                open: true,
+                message: error.message,
+                status: "Error"
+            })
         } finally {
             setIsAddingCartInProgress(false);
         }
@@ -315,8 +325,7 @@ const Product = () => {
                         </Box>
                     </Box>
 
-                    <InfoSnackbar open={openInfoSnackBar} message={message} onClose={() => setOpenInfoSnackBar(false)} />
-                    <ErrorSnackbar open={openErrorSnackBar} message={message} onClose={() => setOpenErrorSnackBar(false)} />
+                    <SnackBar state={snackbar} onClose={() => setSnackbar((prev) => ({ ...prev, open: false }))} />
                 </Box>
 
             }

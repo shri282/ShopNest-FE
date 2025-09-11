@@ -7,6 +7,7 @@ import OurProducts from './components/OurProducts';
 
 const UserDashboard: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>();
+  
   const ourProductsRef = useRef<HTMLDivElement | null>(null);
 
   const handleCategorySelect = (category: string) => {

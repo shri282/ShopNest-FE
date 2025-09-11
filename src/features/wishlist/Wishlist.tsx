@@ -10,9 +10,11 @@ import ErrorSnackbar from '../../common/ErrorSnackBar'
 
 const Wishlist = () => {
     const { user } = useAuth()
+
     const [wishlist, setWishlist] = useState<IWishlistDetail | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<any>(null)
+    
     const [errorPopupOpen, setErrorPopupOpen] = useState(false)
 
     useEffect(() => {

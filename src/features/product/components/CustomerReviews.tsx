@@ -19,6 +19,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import ProductService from '../../../services/ProductService';
 import { IProductReview } from '../../../interfaces/Product';
 import { formatDate } from '../../../utils/date';
+import DataState from '../../../common/DataState';
 
 interface CustomerReviewsProps {
   productId: number;
@@ -27,16 +28,23 @@ interface CustomerReviewsProps {
 
 const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId, reviewSubmitted }) => {
   const [reviews, setReviews] = useState<IProductReview[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<any>(null);
+
   const [sort, setSort] = useState<'newest' | 'oldest' | 'lowest rating' | 'highest rating'>('newest');
   const [filter, setFilter] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchReviews = async () => {
+      setLoading(true);
+
       try {
         const reviewsData = await ProductService.fetchProductReviews(productId);
         setReviews(reviewsData);
       } catch (error) {
-        console.error(error);
+        setError(error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -130,97 +138,116 @@ const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId, reviewSubm
           p: 1,
         }}
       >
-        {sortedReviews.length > 0 ? (
-          <Stack spacing={2}>
-            {sortedReviews.map((review, index) => (
-              <Paper
-                key={index}
-                elevation={1}
-                sx={{ p: 2, borderRadius: 2, bgcolor: 'background.paper' }}
-              >
-                {/* Header */}
-                <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Stack direction="row" spacing={2} alignItems="center">
-                    <Avatar>
-                      {review.reviewer?.username?.[0]?.toUpperCase() ?? 'A'}
-                    </Avatar>
-                    <Box>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <Typography variant="subtitle1" fontWeight="bold">
-                          {review.reviewer?.username ?? 'Anonymous'}
-                        </Typography>
-                        <Chip
-                          label="Verified"
-                          size="small"
-                          icon={<CheckCircle fontSize="small" />}
-                          color="success"
-                        />
-                      </Stack>
-                      <Typography variant="caption" color="text.secondary">
-                        {formatDate(review.createdAt, "MMMM dd, yyyy")}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                  <Rating value={review.rating ?? 0} precision={0.5} readOnly />
-                </Stack>
-
-                {/* Title */}
-                {review.title && (
-                  <Typography variant="subtitle1" fontWeight="bold" mt={1}>
-                    {review.title}
-                  </Typography>
-                )}
-
-                {/* Content */}
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, whiteSpace: 'pre-wrap' }}>
-                  {review.content}
-                </Typography>
-                
-                {/* Media Section */}
-                {review.mediaUrls && review.mediaUrls.length > 0 && (
-                  <Grid container spacing={2} mt={1}>
-                    {review.mediaUrls.split(',').map((url, idx) => (
-                      <Grid size={{ xs: 1.5, md: 1.7 }} key={idx}>
-                        <Paper
-                          variant="outlined"
-                          sx={{
-                            borderRadius: 2,
-                            overflow: 'hidden',
-                            cursor: 'pointer',
-                            '&:hover': { opacity: 0.8 },
-                          }}
-                        >
-                          <img
-                            src={url}
-                            alt={`review-media-${idx}`}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        <DataState
+          data={reviews}
+          error={error}
+          loading={loading}
+          fallback={
+            <Typography variant="body2" color="text.secondary">
+              No reviews yet.
+            </Typography>
+          }
+          render={() => (
+            <Stack spacing={2}>
+              {sortedReviews.map((review, index) => (
+                <Paper
+                  key={index}
+                  elevation={1}
+                  sx={{ p: 2, borderRadius: 2, bgcolor: 'background.paper' }}
+                >
+                  {/* Header */}
+                  <Stack direction="row" justifyContent="space-between" alignItems="center">
+                    <Stack direction="row" spacing={2} alignItems="center">
+                      <Avatar>
+                        {review.reviewer?.username?.[0]?.toUpperCase() ?? 'A'}
+                      </Avatar>
+                      <Box>
+                        <Stack direction="row" alignItems="center" spacing={1}>
+                          <Typography variant="subtitle1" fontWeight="bold">
+                            {review.reviewer?.username ?? 'Anonymous'}
+                          </Typography>
+                          <Chip
+                            label="Verified"
+                            size="small"
+                            icon={<CheckCircle fontSize="small" />}
+                            color="success"
                           />
-                        </Paper>
-                      </Grid>
-                    ))}
-                  </Grid>
-                )}
+                        </Stack>
+                        <Typography variant="caption" color="text.secondary">
+                          {formatDate(review.createdAt, 'MMMM dd, yyyy')}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                    <Rating value={review.rating ?? 0} precision={0.5} readOnly />
+                  </Stack>
 
-                <Divider sx={{ my: 1 }} />
+                  {/* Title */}
+                  {review.title && (
+                    <Typography variant="subtitle1" fontWeight="bold" mt={1}>
+                      {review.title}
+                    </Typography>
+                  )}
 
-                {/* Helpful */}
-                <Stack direction="row" spacing={2} alignItems="center">
-                  <Typography variant="body2" color="text.secondary">Was this helpful?</Typography>
-                  <IconButton size="small">
-                    <ThumbUpOutlined fontSize="small" /> <Typography variant="caption" ml={0.5}>12</Typography>
-                  </IconButton>
-                  <IconButton size="small">
-                    <ThumbDownOutlined fontSize="small" /> <Typography variant="caption" ml={0.5}>1</Typography>
-                  </IconButton>
-                </Stack>
-              </Paper>
-            ))}
-          </Stack>
-        ) : (
-          <Typography variant="body2" color="text.secondary">
-            No reviews yet.
-          </Typography>
-        )}
+                  {/* Content */}
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mt: 0.5, whiteSpace: 'pre-wrap' }}
+                  >
+                    {review.content}
+                  </Typography>
+
+                  {/* Media Section */}
+                  {review.mediaUrls && review.mediaUrls.length > 0 && (
+                    <Grid container spacing={2} mt={1}>
+                      {review.mediaUrls.split(',').map((url, idx) => (
+                        <Grid size={{ xs: 4, sm: 3, md: 2 }} key={idx}>
+                          <Paper
+                            variant="outlined"
+                            sx={{
+                              borderRadius: 2,
+                              overflow: 'hidden',
+                              cursor: 'pointer',
+                              '&:hover': { opacity: 0.8 },
+                            }}
+                          >
+                            <img
+                              src={url}
+                              alt={`review-media-${idx}`}
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                          </Paper>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  )}
+
+                  <Divider sx={{ my: 1 }} />
+
+                  {/* Helpful */}
+                  <Stack direction="row" spacing={2} alignItems="center">
+                    <Typography variant="body2" color="text.secondary">
+                      Was this helpful?
+                    </Typography>
+                    <IconButton size="small">
+                      <ThumbUpOutlined fontSize="small" />
+                      <Typography variant="caption" ml={0.5}>
+                        12
+                      </Typography>
+                    </IconButton>
+                    <IconButton size="small">
+                      <ThumbDownOutlined fontSize="small" />
+                      <Typography variant="caption" ml={0.5}>
+                        1
+                      </Typography>
+                    </IconButton>
+                  </Stack>
+                </Paper>
+              ))}
+            </Stack>
+          )}
+        />
+
       </Box>
     </Box>
   );

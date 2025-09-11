@@ -12,6 +12,7 @@ interface FeaturedProductCardProps {
 
 const FeaturedProductCard: React.FC<FeaturedProductCardProps> = ({ product }) => {
     const navigate = useNavigate();
+    
     const [openAddWlPopup, setOpenAddWlPopup] = useState<boolean>(false);
 
     const addToWlHandler = () => {

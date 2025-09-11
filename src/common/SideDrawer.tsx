@@ -14,8 +14,10 @@ interface Props {
 
 export default function SideDrawer({ navs, open, setOpen }: Props) {
     const { user } = useAuth();
-    const [selectedNav, setSelectedNav] = React.useState<NavItem | null>(null);
+
     const navigate = useNavigate();
+    
+    const [selectedNav, setSelectedNav] = React.useState<NavItem | null>(null);
 
     const drawer = (
         <Box>
