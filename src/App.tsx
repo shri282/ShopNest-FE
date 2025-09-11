@@ -12,7 +12,7 @@ import Product from './features/product/Product';
 import ProductListTable from './components/ProductsListTable';
 import Wishlist from './features/wishlist/Wishlist';
 
-// #TODO: remaining wishlist(wishlist get, post, remove APIs and table, move wislist and all to cart), specifications for product, coupon apply and shipping cost feature
+// #TODO: specifications for product, coupon apply and shipping cost feature
 // order summary, charges, order tracking, delivery partner assignment.
 function App() {
   return (
