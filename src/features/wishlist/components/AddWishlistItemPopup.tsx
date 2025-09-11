@@ -82,7 +82,7 @@ const AddWishlistItemPopup: React.FC<AddWishlistItemFormProps> = ({ product, ope
             const req: any = {
                 productId: product.id,
                 notes: note,
-                priority: priority,
+                priority: Number(priority),
             }
 
             if (wishlistId) req.wishlistId = Number(wishlistId);

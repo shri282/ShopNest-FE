@@ -68,7 +68,7 @@ const Wishlist = () => {
                         <Divider />
                         <Grid mt={2} container spacing={2}>
                             {wishlist?.wishlistItems.map((item: IWishlistItem) => (
-                                <Grid key={item.id}>
+                                <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={item.id}>
                                     <WishlistCard item={item} />
                                 </Grid>
                             ))}

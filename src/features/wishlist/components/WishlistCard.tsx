@@ -57,20 +57,6 @@ const WishlistCard: React.FC<WishlistCardProps> = ({ item }) => {
                 10% off
             </Box>
 
-            {/* Wishlist Icon */}
-            <IconButton
-                sx={{
-                    position: "absolute",
-                    top: 8,
-                    right: 8,
-                    bgcolor: "white",
-                    boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
-                    "&:hover": { bgcolor: "#f1f1f1" },
-                }}
-            >
-                <FavoriteBorderIcon color="error" />
-            </IconButton>
-
             {/* Product Image */}
             <Box
                 sx={{
