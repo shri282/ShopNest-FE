@@ -15,7 +15,9 @@ import {
 import { useAuth } from '../../../context/AuthContext'
 import { IWishlistSummary } from '../../../interfaces/Cart'
 import CartService from '../../../services/CartService'
-import ErrorSnackbar from '../../../common/ErrorSnackBar'
+import { useNavigate } from 'react-router-dom'
+import { ISnackbarState } from '../../../common/types'
+import SnackBar from '../../../common/SnackBar'
 
 interface AddWishlistItemFormProps {
     product: IProduct
@@ -24,20 +26,24 @@ interface AddWishlistItemFormProps {
 }
 
 const AddWishlistItemPopup: React.FC<AddWishlistItemFormProps> = ({ product, open, onClose }) => {
+    const navigate = useNavigate();
     const [wishlistsSummary, setWishlistsSummary] = useState<IWishlistSummary[]>([])
     const [note, setNote] = useState('')
     const [priority, setPriority] = useState('3')
     const [wishlistId, setWishlistId] = useState<string | undefined>(undefined)
 
     const [loading, setLoading] = useState(false)
-    const [error, setError] = useState<any>(null)
-    const [errorPopupOpen, setErrorPopupOpen] = useState(false)
+    const [snackbar, setSnackbar] = useState<ISnackbarState>({
+        open: false,
+        message: "",
+        status: "Info"
+    });
 
     const { user } = useAuth()
 
     useEffect(() => {
         const getAllWishlistSummary = async () => {
-            if (!user) return
+            if (!user) return navigate("login");
 
             setLoading(true)
             try {
@@ -53,8 +59,11 @@ const AddWishlistItemPopup: React.FC<AddWishlistItemFormProps> = ({ product, ope
                     }
                 }
             } catch (error: any) {
-                setError(error)
-                setErrorPopupOpen(true)
+                setSnackbar({
+                    open: true,
+                    message: error.message,
+                    status: "Error"
+                })
             } finally {
                 setLoading(false)
             }
@@ -66,9 +75,9 @@ const AddWishlistItemPopup: React.FC<AddWishlistItemFormProps> = ({ product, ope
     }, [user, open])
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        if (!user) return
+        if (!user) return navigate("login");
 
+        setLoading(true)
         try {
             const req: any = {
                 productId: product.id,
@@ -76,13 +85,23 @@ const AddWishlistItemPopup: React.FC<AddWishlistItemFormProps> = ({ product, ope
                 priority: priority,
             }
 
-            if (wishlistId) req.wishlistId = Number(wishlistId)
+            if (wishlistId) req.wishlistId = Number(wishlistId);
 
-            await CartService.addItemToWishlist(user.id, req)
-            onClose()
+            await CartService.addItemToWishlist(user.id, req);
+            setSnackbar({
+                open: true,
+                message: 'item added to wishlist successfully',
+                status: "Info"
+            })
+            setTimeout(() => onClose(), 1500);
         } catch (error: any) {
-            setError(error)
-            setErrorPopupOpen(true)
+            setSnackbar({
+                open: true,
+                message: error.message,
+                status: "Error"
+            })
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -176,12 +195,8 @@ const AddWishlistItemPopup: React.FC<AddWishlistItemFormProps> = ({ product, ope
                 </Box>
             </Modal>
 
-            {/* Error Snackbar */}
-            <ErrorSnackbar
-                open={errorPopupOpen}
-                message={error?.message ?? 'Something went wrong'}
-                onClose={() => setErrorPopupOpen(false)}
-            />
+            {/* Snackbar */}
+            <SnackBar state={snackbar} onClose={() => setSnackbar((prev) => ({ ...prev, open: false }))} />
         </>
     )
 }

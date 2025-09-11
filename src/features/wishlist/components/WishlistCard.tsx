@@ -28,6 +28,11 @@ const WishlistCard: React.FC<WishlistCardProps> = ({ item }) => {
                 backgroundColor: "#fafafa",
                 boxShadow: "0 2px 6px rgba(0,0,0,0.08)",
                 transition: "transform 0.25s ease, box-shadow 0.25s ease",
+                width: 250,
+                height: 400,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
                 "&:hover": {
                     transform: "translateY(-2px)",
                     boxShadow: "0 6px 16px rgba(0,0,0,0.12)",
@@ -67,22 +72,41 @@ const WishlistCard: React.FC<WishlistCardProps> = ({ item }) => {
             </IconButton>
 
             {/* Product Image */}
-            <CardMedia
-                component="img"
-                image={item.productImageUrl}
-                alt={item.productName}
+            <Box
                 sx={{
+                    width: "100%",
                     height: 180,
-                    objectFit: "contain",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                     pt: 2,
                 }}
-            />
+            >
+                <CardMedia
+                    component="img"
+                    image={item.productImageUrl}
+                    alt={item.productName}
+                    sx={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        objectFit: "contain",
+                    }}
+                />
+            </Box>
 
             {/* Product Details */}
-            <CardContent sx={{ textAlign: "center", px: 2 }}>
+            <CardContent sx={{ textAlign: "center", px: 2, flexGrow: 1 }}>
                 <Typography
-                    sx={{ fontWeight: "bold", fontSize: "16px", mb: 0.5 }}
-                    noWrap
+                    sx={{
+                        fontWeight: "bold",
+                        fontSize: "16px",
+                        mb: 0.5,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 1,
+                        WebkitBoxOrient: "vertical",
+                    }}
                 >
                     {item.productName}
                 </Typography>
@@ -92,12 +116,21 @@ const WishlistCard: React.FC<WishlistCardProps> = ({ item }) => {
                         fontSize: "14px",
                         mb: 1,
                         minHeight: "36px",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
                     }}
                 >
                     {item.productDescription}
                 </Typography>
                 <Typography
-                    sx={{ fontSize: "18px", fontWeight: "bold", color: "primary.main" }}
+                    sx={{
+                        fontSize: "18px",
+                        fontWeight: "bold",
+                        color: "primary.main",
+                    }}
                 >
                     ${item.productPrize}
                 </Typography>
