@@ -1,8 +1,7 @@
 import React from 'react';
 import {
     Box,
-    CssBaseline,
-    Toolbar
+    CssBaseline
 } from '@mui/material';
 import Header from '../Header';
 import { NavItem } from '../interfaces/User';
