@@ -2,7 +2,7 @@ import { useMemo, useReducer, createContext, useContext, useEffect } from "react
 import { initialAuthState, authReducer } from "./reducer.js";
 import authActions from "./actions.js";
 import authSelectors from "./selectors.js";
-import { readSession, writeSession } from "../../utils/WebStorage";
+import { readSession } from "../../utils/WebStorage";
 
 const AuthContext = createContext();
 
@@ -11,13 +11,10 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     const storedAuth = readSession("loggedInUser");
-
-    if (storedAuth && !state.isAuthenticated) {
+    if (storedAuth) {
       dispatch({ type: "LOGIN", payload: storedAuth });
-    } else if (state.isAuthenticated) {
-      writeSession("loggedInUser", state);
     }
-  }, [state]);
+  }, []);
 
   const value = useMemo(() => [state, dispatch], [state]);
 

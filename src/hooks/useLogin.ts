@@ -14,9 +14,9 @@ export const useLogin = () => {
     const login = async (formData: ILoginRequest) => {
         try {
             await asyncHandler.run(async () => {
-                const response = await AuthService.login(formData);
+                const user = await AuthService.login(formData);
     
-                authContextAction.login({...response, isAuthenticated: true });
+                authContextAction.login(user);
     
                 switch (formData.role) {
                     case Role.ADMIN:

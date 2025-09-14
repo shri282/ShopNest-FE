@@ -1,15 +1,13 @@
 import { Box, Button, Divider, Paper, Typography } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../redux/store';
 import { useAuthContext } from '../../context/auth';
 
 const AccountMenu: React.FC = () => {
-    const { authContextSelector } = useAuthContext();
+    const { authContextSelector, authContextAction } = useAuthContext();
     const user = authContextSelector.getUser();
+    
     const navigate = useNavigate();
-    const dispatch = useDispatch<AppDispatch>();
 
     const accMenuNavHandler = (event: any) => {
         switch (event.target.innerText) {
@@ -23,8 +21,7 @@ const AccountMenu: React.FC = () => {
                 navigate("/wishlist");
                 break;
             case "Logout":
-                sessionStorage.removeItem("loggedInUser");
-                dispatch({ type: "LOGOUT" });
+                authContextAction.logout();
                 navigate("/login");
                 break;
 
