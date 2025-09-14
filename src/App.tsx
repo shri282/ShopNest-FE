@@ -2,7 +2,6 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import AuthProvider from './context/AuthContext';
 import Cart from './features/cart/Cart';
 import PrivateRoute from './components/PrivateRoute';
 import UserLayout from './layouts/UserLayout';
@@ -11,6 +10,7 @@ import SearchResults from './pages/SearchResults';
 import Product from './features/product/Product';
 import ProductListTable from './components/ProductsListTable';
 import Wishlist from './features/wishlist/Wishlist';
+import { AuthProvider } from './context/auth';
 
 // #TODO: specifications for product, coupon apply and shipping cost feature
 // order summary, charges, order tracking, delivery partner assignment.

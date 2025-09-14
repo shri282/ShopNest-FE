@@ -1,13 +1,13 @@
 import { Box, Button, CardMedia, Divider, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { ICart, ICartItem } from '../../../interfaces/Cart';
-import { useAuth } from '../../../context/AuthContext';
 import CartService from '../../../services/CartService';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../redux/store';
 import * as cartItemsCountTypes from '../../../redux/cartItemsCount/types';
 import { ISnackbarState } from '../../../common/types';
 import SnackBar from '../../../common/SnackBar';
+import { useAuthContext } from '../../../context/auth';
 
 interface ShoppingCartListProps {
     setIsLoading: (flag: boolean) => void
@@ -17,7 +17,8 @@ interface ShoppingCartListProps {
 
 const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ setIsLoading, cart, setCart }) => {
 
-    const { user } = useAuth();
+    const { authContextSelector } = useAuthContext();
+    const user = authContextSelector.getUser();
     
     const dispatch = useDispatch<AppDispatch>();
 

@@ -1,11 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "./context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
 import { useThrottle } from "./hooks/useThrottle";
 import { IProduct } from "./interfaces/Product";
 import ProductService from "./services/ProductService";
 import { AppBar, Badge, Link, Box, Divider, IconButton, InputBase, List, ListItemButton, ListItemText, MenuItem, Paper, Select, styled, Toolbar, Typography, ClickAwayListener } from "@mui/material";
-import { AccountCircle } from "@mui/icons-material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
@@ -16,6 +14,7 @@ import { useDispatch } from "react-redux";
 import * as cartItemsCountActionTypes from "./redux/cartItemsCount/types";
 import AccountMenu from "./features/user/AccountMenu";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { useAuthContext } from "./context/auth";
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -58,7 +57,10 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
     const navigate = useNavigate();
-    const { user, token } = useAuth();
+    const { authContextSelector } = useAuthContext();
+    const user = authContextSelector.getUser();
+    const token = authContextSelector.getToken();
+
     const cartItemsCountInit = useCartItemCount(user?.id);
     const cartItemsCount = useSelector((state: RootState) => state.cartItemsCount.value);
     const dispatch = useDispatch<AppDispatch>();
@@ -99,7 +101,6 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
     useEffect(() => {
         dispatch({ type: cartItemsCountActionTypes.ADD, payload: cartItemsCountInit })
     }, [cartItemsCountInit, dispatch])
-    console.log("searchresults", searchResults);
 
     return (
         <AppBar position="sticky" color="primary" sx={{ height: '100%', width: '100%', backgroundColor: '#111827' }}>

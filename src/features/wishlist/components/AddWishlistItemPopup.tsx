@@ -12,12 +12,12 @@ import {
     Modal,
     LinearProgress,
 } from '@mui/material'
-import { useAuth } from '../../../context/AuthContext'
 import { IWishlistSummary } from '../../../interfaces/Cart'
 import CartService from '../../../services/CartService'
 import { useNavigate } from 'react-router-dom'
 import { ISnackbarState } from '../../../common/types'
 import SnackBar from '../../../common/SnackBar'
+import { useAuthContext } from '../../../context/auth'
 
 interface AddWishlistItemFormProps {
     product: IProduct
@@ -41,7 +41,8 @@ const AddWishlistItemPopup: React.FC<AddWishlistItemFormProps> = ({ product, ope
         status: "Info"
     });
 
-    const { user } = useAuth()
+    const { authContextSelector } = useAuthContext();
+    const user = authContextSelector.getUser();
 
     useEffect(() => {
         const getAllWishlistSummary = async () => {

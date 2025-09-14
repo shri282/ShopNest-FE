@@ -6,9 +6,9 @@ import { useForm, Controller } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
 import { IProduct, IProductReviewForm } from '../../../interfaces/Product';
 import ProductService from '../../../services/ProductService';
-import { useAuth } from '../../../context/AuthContext';
 import SnackBar from '../../../common/SnackBar';
 import { ISnackbarState } from '../../../common/types';
+import { useAuthContext } from '../../../context/auth';
 
 interface WriteReviewProps {
   product: IProduct;
@@ -16,7 +16,8 @@ interface WriteReviewProps {
 }
 
 const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) => {
-  const { user } = useAuth();
+  const { authContextSelector } = useAuthContext();
+  const user = authContextSelector.getUser();
   const { control, register, handleSubmit, reset } = useForm<IProductReviewForm>({
     defaultValues: {
       rating: 0,

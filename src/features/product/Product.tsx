@@ -4,7 +4,6 @@ import "../../css/product.css"
 import { Box, Button, Chip, List, ListItem, ListItemText, MenuItem, Paper, Rating, Select, Stack, Typography } from '@mui/material';
 import { ShoppingCart, FavoriteBorder, Favorite, StarBorder } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
-import { useAuth } from '../../context/AuthContext';
 import { AppDispatch } from '../../redux/store';
 import { IProduct } from '../../interfaces/Product';
 import ProductService from '../../services/ProductService';
@@ -18,6 +17,7 @@ import WriteReview from './components/WriteReview';
 import ProductReviewStats from './components/ProductReviewStats';
 import SnackBar from '../../common/SnackBar';
 import { ISnackbarState } from '../../common/types';
+import { useAuthContext } from '../../context/auth';
 
 
 const StyledButton = styled(Button)({
@@ -33,7 +33,8 @@ const StyledButton = styled(Button)({
 
 const Product = () => {
     const { id } = useParams();
-    const { user } = useAuth();
+    const { authContextSelector } = useAuthContext();
+    const user = authContextSelector.getUser();
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const [product, setProduct] = useState<IProduct | null>(null);

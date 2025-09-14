@@ -1,12 +1,13 @@
 import { Box, Button, Divider, Paper, Typography } from '@mui/material'
 import React from 'react'
-import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
+import { useAuthContext } from '../../context/auth';
 
 const AccountMenu: React.FC = () => {
-    const { user } = useAuth();
+    const { authContextSelector } = useAuthContext();
+    const user = authContextSelector.getUser();
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
 

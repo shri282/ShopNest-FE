@@ -4,12 +4,13 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
 import WishlistCard from './components/WishlistCard'
 import { IWishlistDetail, IWishlistItem } from '../../interfaces/Cart'
 import CartService from '../../services/CartService'
-import { useAuth } from '../../context/AuthContext'
 import DataState from '../../common/DataState'
 import ErrorSnackbar from '../../common/ErrorSnackBar'
+import { useAuthContext } from '../../context/auth'
 
 const Wishlist = () => {
-    const { user } = useAuth()
+    const { authContextSelector } = useAuthContext();
+    const user = authContextSelector.getUser();
 
     const [wishlist, setWishlist] = useState<IWishlistDetail | null>(null)
     const [loading, setLoading] = useState<boolean>(false)

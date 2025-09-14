@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
 import {
     Box,
     Button,
@@ -15,9 +14,11 @@ import LoadingOverlay from '../../common/LoadingOverlay';
 import ShoppingCartList from './components/ShoppingCartList';
 import { ISnackbarState } from '../../common/types';
 import SnackBar from '../../common/SnackBar';
+import { useAuthContext } from '../../context/auth';
 
 const Cart: React.FC = () => {
-    const { user } = useAuth();
+    const { authContextSelector } = useAuthContext();
+    const user = authContextSelector.getUser();
     const navigate = useNavigate();
 
     // Init

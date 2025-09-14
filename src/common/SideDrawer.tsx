@@ -1,8 +1,8 @@
 import { Box, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Tooltip, Typography } from '@mui/material';
 import * as React from 'react';
 import { NavItem } from '../interfaces/User';
-import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../context/auth';
 
 const drawerWidth = 240;
 
@@ -13,7 +13,8 @@ interface Props {
 }
 
 export default function SideDrawer({ navs, open, setOpen }: Props) {
-    const { user } = useAuth();
+    const { authContextSelector } = useAuthContext();
+    const user = authContextSelector.getUser();
 
     const navigate = useNavigate();
     

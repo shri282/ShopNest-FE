@@ -5,9 +5,9 @@ import { IProduct, IUpdateProduct } from '../interfaces/Product';
 import "../css/addProductPopup.css";
 import ProductService from '../services/ProductService';
 import LoadingOverlay from '../common/LoadingOverlay';
-import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import ProductForm from './ProductForm';
+import { useAuthContext } from '../context/auth';
 
 interface UpdateProductPopupProps {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,7 +33,9 @@ const UpdateProductPopup: React.FC<UpdateProductPopupProps> = ({ setOpen, open, 
         },
     });
     const [isApiLoading, setIsApiLoading] = useState(false);
-    const { user } = useAuth();
+    const { authContextSelector } = useAuthContext();
+    const user = authContextSelector.getUser();
+    
     const navigate = useNavigate();
 
     const handleClose = () => {

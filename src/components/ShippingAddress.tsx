@@ -1,14 +1,16 @@
 import { Box, Button, Typography } from '@mui/material'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useAuth } from '../context/AuthContext';
 import { UserService } from '../services/UserService';
 import { UserAddress } from '../interfaces/User';
 import { FormMode } from '../enum/FormMode';
 import LoadingOverlay from '../common/LoadingOverlay';
 import UserAddressForm from './UserAddressForm';
+import { useAuthContext } from '../context/auth';
 
 const ShippingAddress = () => {
-    const { user } = useAuth();
+    const { authContextSelector } = useAuthContext();
+    const user = authContextSelector.getUser();
+    
     const [addresses, setAddresses] = useState<UserAddress[]>([]);
     const [expandedId, setExpandedId] = useState<number | null>(null);
     const [isLoading, setIsLoading] = useState(false);
