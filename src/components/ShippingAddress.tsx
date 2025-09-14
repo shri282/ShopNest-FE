@@ -12,8 +12,9 @@ const ShippingAddress = () => {
     const user = authContextSelector.getUser();
     
     const [addresses, setAddresses] = useState<UserAddress[]>([]);
-    const [expandedId, setExpandedId] = useState<number | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+
+    const [expandedId, setExpandedId] = useState<number | null>(null);
     const [mode, setMode] = useState<FormMode | null>(null);
 
     const getAddress = useCallback(async () => {

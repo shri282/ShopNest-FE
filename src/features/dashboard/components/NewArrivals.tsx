@@ -14,6 +14,7 @@ function NewArrivals() {
     
     const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
 
+    
     useEffect(() => {
         const fetchProductsByTab = async () => {
             setLoading(true);

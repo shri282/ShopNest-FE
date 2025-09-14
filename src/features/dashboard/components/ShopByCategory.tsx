@@ -11,19 +11,17 @@ interface ShopByCategoryProps {
 }
 
 const ShopByCategory: React.FC<ShopByCategoryProps> = ({ setSelectedCategory }) => {
-    // Init (Product Categories)
     const [productCategories, setProductCategories] = useState<IProductCategory[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<any>(null);
 
-    // UI
     const [showLeftArrow, setShowLeftArrow] = useState(false);
     const [showRightArrow, setShowRightArrow] = useState(false);
     const scrollRef = useRef<HTMLDivElement | null>(null);
 
-    // Snackbar
     const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
 
+    
     useEffect(() => {
         const fetchProductCategories = async () => {
             setLoading(true);

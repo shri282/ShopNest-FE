@@ -32,24 +32,37 @@ const StyledButton = styled(Button)({
 });
 
 const Product = () => {
-    const { id } = useParams();
-    const { authContextSelector } = useAuthContext();
-    const user = authContextSelector.getUser();
-    const navigate = useNavigate();
-    const dispatch = useDispatch<AppDispatch>();
+    // Data state
     const [product, setProduct] = useState<IProduct | null>(null);
     const [error, setError] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
+
+    // Auth / User context state
+    const { authContextSelector } = useAuthContext();
+    const user = authContextSelector.getUser();
+
+    // Global state (Redux)
+    const dispatch = useDispatch<AppDispatch>();
+
+    // UI interaction state
     const [isAddingCartInProgress, setIsAddingCartInProgress] = useState(false);
     const [isFavorite, setIsFavorite] = useState(false);
     const [reviewSubmitted, setReviewSubmitted] = useState<boolean>(false);
 
+    // Routing params / navigation
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    // Popup / Dialog state
     const [updatePopupOpen, setUpdatePopupOpen] = useState<boolean>(false);
+
+    // Feedback / Notifications
     const [snackbar, setSnackbar] = useState<ISnackbarState>({
         open: false,
         message: "",
         status: "Info"
     });
+
 
     const getProduct = useCallback(async () => {
         setLoading(true);

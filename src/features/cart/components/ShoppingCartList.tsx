@@ -16,7 +16,6 @@ interface ShoppingCartListProps {
 }
 
 const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ setIsLoading, cart, setCart }) => {
-
     const { authContextSelector } = useAuthContext();
     const user = authContextSelector.getUser();
     
@@ -66,7 +65,6 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ setIsLoading, cart,
                 status: "Info"
             })
         } catch (error: any) {
-            console.log(error);
             setSnackbar({
                 open: true,
                 message: error.message,

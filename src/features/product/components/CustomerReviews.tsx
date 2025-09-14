@@ -27,12 +27,15 @@ interface CustomerReviewsProps {
 }
 
 const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId, reviewSubmitted }) => {
+  // Data State
   const [reviews, setReviews] = useState<IProductReview[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
 
+  // ui controls
   const [sort, setSort] = useState<'newest' | 'oldest' | 'lowest rating' | 'highest rating'>('newest');
   const [filter, setFilter] = useState<number | null>(null);
+
 
   useEffect(() => {
     const fetchReviews = async () => {

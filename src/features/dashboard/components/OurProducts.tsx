@@ -22,8 +22,9 @@ const OurProducts: React.FC<OurProductsProps> = ({ category }) => {
 
     const [tab, setTab] = useState(0);
     const [filter, setFilter] = useState<any>();
-    
+
     const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
+
 
     useEffect(() => {
         const newFilter: any = {};

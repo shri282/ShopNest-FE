@@ -137,7 +137,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({ item }) => {
                     }}
                 >
                     <ShoppingCartOutlinedIcon sx={{ mr: 1 }} />
-                    Add to Cart
+                    Move to Cart
                 </Button>
             </CardActions>
         </Card>

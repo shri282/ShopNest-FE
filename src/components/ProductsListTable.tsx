@@ -13,14 +13,16 @@ import ErrorSnackbar from '../common/ErrorSnackBar';
 const ProductListTable: React.FC = () => {
 
     const navigate = useNavigate();
-    const [error, setError] = React.useState<any>(null)
+
     const [paginationModel, setPaginationModel] = React.useState({
         page: 0,
         pageSize: 5,
     });
-    const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
     const [rows, setRows] = React.useState<IProduct[]>([]);
     const [rowCount, setRowCount] = React.useState(0);
+    
+    const [error, setError] = React.useState<any>(null)
+    const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     const [updatePopupOpen, setUpdatePopupOpen] = React.useState<boolean>(false);
     const [product, setProduct] = React.useState<IProduct | null>(null);

@@ -52,8 +52,6 @@ const UserAddressForm: React.FC<UserAddressFormProps> = ({ mode, address, handle
         }
     }
 
-    console.log("address state", userAddress);
-
     return (
         <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Box sx={{ display: 'flex', gap: 2 }}>

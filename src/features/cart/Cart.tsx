@@ -17,20 +17,23 @@ import SnackBar from '../../common/SnackBar';
 import { useAuthContext } from '../../context/auth';
 
 const Cart: React.FC = () => {
+    // context
     const { authContextSelector } = useAuthContext();
     const user = authContextSelector.getUser();
-    const navigate = useNavigate();
-
-    // Init
+    
+    // on mount
     const { cart, setCart, error, loading } = useUserCart(user?.id);
 
+    // others
     const [isApiLoading, setIsApiLoading] = useState(false);
     const [snackbar, setSnackbar] = useState<ISnackbarState>({
         open: false,
         message: "",
         status: "Info"
     });
+    const navigate = useNavigate();
 
+    
     const handleCheckout = useCallback(async () => {
         if (!cart?.id) return;
         setIsApiLoading(true);
