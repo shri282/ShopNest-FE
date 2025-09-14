@@ -60,11 +60,10 @@ const Cart: React.FC = () => {
                 error={error}
                 loading={loading}
                 render={(cart) =>
-                    <Box sx={{
+                    <Box p={2} paddingTop={5} sx={{
                         display: 'flex',
                         width: '100%',
                         margin: 'auto',
-                        p: 3,
                         gap: 4,
                         alignSelf: 'flex-start',
                         boxSizing: 'border-box'

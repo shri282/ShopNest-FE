@@ -59,7 +59,6 @@ export default function UserLayout() {
                     width: '100%',
                 }}
             >
-                <Toolbar />
                 <Outlet />
             </Box>
         </Box>

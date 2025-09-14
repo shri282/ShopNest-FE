@@ -108,8 +108,7 @@ const Product = () => {
             loaderStyle={{ height: '50px' }}
             loading={loading}
             render={(product) =>
-                <Box sx={{ padding: 4 }}>
-
+                <Box p={2} paddingTop={5}>
                     { /* Product container */}
                     <Box className="prod-container" display="flex" gap={4}>
                         {/* Left - Images */}

@@ -57,7 +57,7 @@ const OurProducts: React.FC<OurProductsProps> = ({ category }) => {
     }, [tab, filter]);
 
     return (
-        <Box sx={{ px: 8, py: 6 }}>
+        <Box paddingTop={10}>
             {/* Heading */}
             <Typography sx={{ color: "brown", fontSize: "14px", mb: 1 }}>
                 Our Products

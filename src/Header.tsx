@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useThrottle } from "./hooks/useThrottle";
 import { IProduct } from "./interfaces/Product";
 import ProductService from "./services/ProductService";
-import { AppBar, Badge, Link, Box, Divider, IconButton, InputBase, List, ListItemButton, ListItemText, MenuItem, Paper, Select, styled, Toolbar, Typography } from "@mui/material";
+import { AppBar, Badge, Link, Box, Divider, IconButton, InputBase, List, ListItemButton, ListItemText, MenuItem, Paper, Select, styled, Toolbar, Typography, ClickAwayListener } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -14,6 +14,8 @@ import { AppDispatch, RootState } from "./redux/store";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import * as cartItemsCountActionTypes from "./redux/cartItemsCount/types";
+import AccountMenu from "./features/user/AccountMenu";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -65,6 +67,17 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
     const throttledKeyword = useThrottle(keyword, 500);
     const [searchResults, setSearchResults] = useState<Map<string, IProduct[]>>(new Map());
     const [showDropdown, setShowDropdown] = useState(false);
+    const [openAccountMenu, setOpenAccountMenu] = useState<Boolean>(false);
+
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 0);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     const searchProducts = useCallback(async () => {
         if (!throttledKeyword.trim()) {
@@ -90,29 +103,7 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
 
     return (
         <AppBar position="sticky" color="primary" sx={{ height: '100%', width: '100%', backgroundColor: '#111827' }}>
-            <Toolbar sx={{ flexDirection: 'column', alignItems: 'stretch' }}>
-
-                {/* Top Bar */}
-                <Box display="flex" justifyContent="space-between" width="100%" py={1}>
-                    <Typography variant="body2">Deliver to New York 10001</Typography>
-                    {
-                        (user && token) ? <Box display="flex" gap={2}>
-                            <Typography variant="body2">Hello, {user?.username}</Typography>
-                            <Typography variant="body2">Returns & Orders</Typography>
-                            <Typography onClick={() => {
-                                sessionStorage.removeItem("loggedInUser");
-                                dispatch({ type: "LOGOUT" });
-                                authDispatch({ type: "LOGOUT" });
-                                navigate("/login");
-                            }} sx={{ cursor: 'pointer' }} color="green" variant="body2">Logout</Typography>
-                        </Box> :
-                            <Box display={'flex'} color={'lightblue'} alignItems={'center'} gap={1}>
-                                <Typography onClick={() => navigate("/login")} sx={{ ":hover": { cursor: 'pointer' } }} variant="body2">Sign in</Typography>
-                                <span className="header__separator">|</span>
-                                <Typography onClick={() => navigate("/register")} sx={{ ":hover": { cursor: 'pointer' } }} variant="body2">Register</Typography>
-                            </Box>
-                    }
-                </Box>
+            <Toolbar sx={{ justifyContent: 'center', flexDirection: 'column', alignItems: 'stretch' }}>
 
                 {/* Main Header */}
                 <Box display="flex" alignItems="center" justifyContent="space-between" width="100%" py={1}>
@@ -238,18 +229,51 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
                         </Search>
                     </Box>
 
-
                     {/* User & Cart */}
                     <Box display="flex" alignItems="center" gap={2}>
-                        <IconButton color="inherit">
-                            <AccountCircle />
-                        </IconButton>
-                        <IconButton onClick={() => {
-                            if (user && token) {
-                                return navigate("/user/cart");
-                            }
-                            return navigate("/login");
-                        }} color="inherit">
+                        <ClickAwayListener onClickAway={() => setOpenAccountMenu(false)}>
+                            <Box
+                                display="flex"
+                                flexDirection="column"
+                                lineHeight={1}
+                                sx={{
+                                    cursor: "pointer",
+                                    px: 1,
+                                    py: 0.5,
+                                    border: "1px solid transparent",
+                                    borderRadius: "4px",
+                                    "&:hover": {
+                                        border: "1px solid white",
+                                    },
+                                    position: "relative",
+                                }}
+                                onClick={() => setOpenAccountMenu((prev) => !prev)}
+                            >
+                                <Typography variant="body2" sx={{ fontSize: 12, lineHeight: 1 }}>
+                                    Hello, {user ? user.username : "guest"}
+                                </Typography>
+                                <Box display="flex" alignItems="center" gap={0.5}>
+                                    <Typography
+                                        variant="body2"
+                                        sx={{ fontSize: 12, fontWeight: "bold" }}
+                                    >
+                                        Accounts & Lists
+                                    </Typography>
+                                    <ArrowDropDownIcon sx={{ fontSize: 18 }} />
+                                </Box>
+                                {openAccountMenu && (<AccountMenu />)}
+                            </Box>
+                        </ClickAwayListener>
+
+                        <IconButton
+                            onClick={() => {
+                                if (user && token) {
+                                    return navigate("/user/cart");
+                                }
+                                return navigate("/login");
+                            }}
+                            color="inherit"
+                        >
                             <Badge badgeContent={cartItemsCount} color="secondary">
                                 <ShoppingCartIcon />
                             </Badge>
@@ -258,34 +282,39 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
                 </Box>
 
                 {/* Navigation Links */}
-                <Divider sx={{ borderColor: '#374151' }} />
-                <Box display="flex" height={40} alignItems={'center'} gap={3}>
-                    {
-                        handleDrawerToggle && <IconButton
-                            color="inherit"
-                            edge="start"
-                            onClick={handleDrawerToggle}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                    }
-                    {['Today\'s Deals', 'Customer Service', 'Registry', 'Gift Cards', 'Sell'].map((text) => (
-                        <Link
-                            key={text}
-                            href="#"
-                            underline="hover"
-                            color="inherit"
-                            sx={{
-                                '&:hover': {
-                                    color: '#f97316',
-                                },
-                                fontSize: '0.875rem',
-                            }}
-                        >
-                            {text}
-                        </Link>
-                    ))}
-                </Box>
+                {
+                    !scrolled && (<>
+                        <Divider sx={{ borderColor: '#374151' }} />
+                        <Box display="flex" height={40} alignItems={'center'} gap={3}>
+                            {
+                                handleDrawerToggle && <IconButton
+                                    color="inherit"
+                                    edge="start"
+                                    onClick={handleDrawerToggle}
+                                >
+                                    <MenuIcon />
+                                </IconButton>
+                            }
+                            {['Today\'s Deals', 'Customer Service', 'Registry', 'Gift Cards', 'Sell'].map((text) => (
+                                <Link
+                                    key={text}
+                                    href="#"
+                                    underline="hover"
+                                    color="inherit"
+                                    sx={{
+                                        '&:hover': {
+                                            color: '#f97316',
+                                        },
+                                        fontSize: '0.875rem',
+                                    }}
+                                >
+                                    {text}
+                                </Link>
+                            ))}
+                        </Box>
+                    </>)
+                }
+
             </Toolbar>
         </AppBar>
     );

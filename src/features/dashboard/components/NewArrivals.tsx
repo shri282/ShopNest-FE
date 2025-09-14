@@ -33,7 +33,12 @@ function NewArrivals() {
     }, []);
 
     return (
-        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", px: 8, py: 6 }}>
+        <Box
+            paddingTop={10}
+            display={'flex'}
+            alignItems={'center'}
+            justifyContent={'space-between'}
+        >
 
             {/* LEFT SIDE - TEXT */}
             <Box sx={{ maxWidth: "350px" }}>

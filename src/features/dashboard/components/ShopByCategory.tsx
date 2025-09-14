@@ -78,13 +78,11 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({ setSelectedCategory }) 
     };
 
     return (
-        <Box
-            sx={{
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "column",
-                padding: "50px",
-            }}
+        <Box 
+            paddingTop={5}
+            display={'flex'}
+            flexDirection={'column'}
+            alignItems={'center'}
         >
             {/* Heading */}
             <Typography sx={{ color: "brown", fontSize: "14px", mb: 1 }}>
