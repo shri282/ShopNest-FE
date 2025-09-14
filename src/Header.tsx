@@ -58,7 +58,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
     const navigate = useNavigate();
-    const { user, token, authDispatch } = useAuth();
+    const { user, token } = useAuth();
     const cartItemsCountInit = useCartItemCount(user?.id);
     const cartItemsCount = useSelector((state: RootState) => state.cartItemsCount.value);
     const dispatch = useDispatch<AppDispatch>();

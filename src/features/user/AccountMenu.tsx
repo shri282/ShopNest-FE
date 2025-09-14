@@ -1,9 +1,35 @@
 import { Box, Button, Divider, Paper, Typography } from '@mui/material'
 import React from 'react'
 import { useAuth } from '../../context/AuthContext'
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
 
 const AccountMenu: React.FC = () => {
     const { user } = useAuth();
+    const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
+
+    const accMenuNavHandler = (event: any) => {
+        switch (event.target.innerText) {
+            case "Profile":
+                navigate("/profile");
+                break;
+            case "Orders":
+                navigate("/orders");
+                break;
+            case "Wishlist":
+                navigate("/wishlist");
+                break;
+            case "Logout":
+                sessionStorage.removeItem("loggedInUser");
+                dispatch({ type: "LOGOUT" });
+                navigate("/login");
+                break;
+
+            default:
+        }
+    }
 
     return (
         <Paper
@@ -27,18 +53,22 @@ const AccountMenu: React.FC = () => {
                             Hi, { user.username }
                         </Typography>
                         <Divider sx={{ mb: 1 }} />
-                        <Typography variant="body2" sx={{ py: 0.5, "&:hover": { color: "primary.main" } }}>
-                            Profile
-                        </Typography>
-                        <Typography variant="body2" sx={{ py: 0.5, "&:hover": { color: "primary.main" } }}>
-                            Orders
-                        </Typography>
-                        <Typography variant="body2" sx={{ py: 0.5, "&:hover": { color: "primary.main" } }}>
-                            Wishlist
-                        </Typography>
-                        <Typography variant="body2" sx={{ py: 0.5, "&:hover": { color: "primary.main" } }}>
-                            Logout
-                        </Typography>
+
+                        {/* Actions */}
+                        <Box onClick={accMenuNavHandler}>
+                            <Typography variant="body2" sx={{ py: 0.5, "&:hover": { color: "primary.main" } }}>
+                                Profile
+                            </Typography>
+                            <Typography variant="body2" sx={{ py: 0.5, "&:hover": { color: "primary.main" } }}>
+                                Orders
+                            </Typography>
+                            <Typography variant="body2" sx={{ py: 0.5, "&:hover": { color: "primary.main" } }}>
+                                Wishlist
+                            </Typography>
+                            <Typography variant="body2" sx={{ py: 0.5, "&:hover": { color: "primary.main" } }}>
+                                Logout
+                            </Typography>
+                        </Box>
                     </Box>
                     :
                     <Box display={'flex'} flexDirection={'column'} p={2}>
