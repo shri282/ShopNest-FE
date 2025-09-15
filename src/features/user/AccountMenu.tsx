@@ -6,7 +6,7 @@ import { useAuthContext } from '../../context/auth';
 const AccountMenu: React.FC = () => {
     const { authContextSelector, authContextAction } = useAuthContext();
     const user = authContextSelector.getUser();
-    
+
     const navigate = useNavigate();
 
     const accMenuNavHandler = (event: any) => {
@@ -45,10 +45,10 @@ const AccountMenu: React.FC = () => {
         >
             {/* Example Menu Content */}
             {
-                user ? 
+                user ?
                     <Box p={2}>
                         <Typography variant="subtitle2" gutterBottom>
-                            Hi, { user.username }
+                            Hi, {user.username}
                         </Typography>
                         <Divider sx={{ mb: 1 }} />
 
@@ -74,10 +74,10 @@ const AccountMenu: React.FC = () => {
                             Your Account
                         </Typography>
                         <Divider sx={{ mb: 1 }} />
-                        <Button variant='contained'>Sign in</Button>
+                        <Button onClick={() => navigate("/login")} variant='contained'>Sign in</Button>
                     </Box>
             }
-            
+
         </Paper>
     )
 }

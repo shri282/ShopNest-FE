@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import "../../css/product.css"
-import { Box, Button, Chip, List, ListItem, ListItemText, MenuItem, Paper, Rating, Select, Stack, Typography } from '@mui/material';
+import { Box, Button, Chip, List, ListItem, ListItemText, MenuItem, Paper, Rating, Select, Skeleton, Stack, Typography } from '@mui/material';
 import { ShoppingCart, FavoriteBorder, Favorite, StarBorder } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
@@ -18,6 +18,7 @@ import ProductReviewStats from './components/ProductReviewStats';
 import SnackBar from '../../common/SnackBar';
 import { ISnackbarState } from '../../common/types';
 import { useAuthContext } from '../../context/auth';
+import ProductPageSkeletonLoader from '../../components/loaders/ProductPageSkeletonLoader';
 
 
 const StyledButton = styled(Button)({
@@ -119,8 +120,9 @@ const Product = () => {
         <DataState
             data={product}
             error={error}
-            loaderStyle={{ height: '50px' }}
+            loaderStyle={{ width: '100%', height: '100%' }}
             loading={loading}
+            loader={<ProductPageSkeletonLoader />}
             render={(product) =>
                 <Box p={2} paddingTop={5}>
                     { /* Product container */}

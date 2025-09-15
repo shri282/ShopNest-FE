@@ -38,7 +38,7 @@ const Wishlist = () => {
     }, [user])
 
     return (
-        <Box paddingTop={5}>
+        <Box p={2} paddingTop={5}>
             <DataState
                 data={wishlist}
                 error={error}

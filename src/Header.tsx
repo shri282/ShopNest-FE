@@ -118,6 +118,7 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
                                 background: 'linear-gradient(to right, #f97316, #ea580c)',
                                 WebkitBackgroundClip: 'text',
                                 color: 'transparent',
+                                cursor: 'pointer'
                             }}
                         >
                             Shopnest
