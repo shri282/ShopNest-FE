@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import "../../css/product.css"
-import { Box, Button, Chip, List, ListItem, ListItemText, MenuItem, Paper, Rating, Select, Skeleton, Stack, Typography } from '@mui/material';
+import { Box, Button, Chip, List, ListItem, ListItemText, MenuItem, Paper, Rating, Select, Stack, Typography } from '@mui/material';
 import { ShoppingCart, FavoriteBorder, Favorite, StarBorder } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
