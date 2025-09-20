@@ -9,7 +9,7 @@ export function useCheckout(cartId?: number) {
     const handleCheckout = async () => {
         if (!cartId) return;
         try {
-            const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY!);
+            const stripe = await loadStripe("pk_test_51RcRvOI2BykSxmKfjrk3CkwHOXKKXJOlWNXIEXUAoYzbkP5LUqXLHdJo4simz0NIqZOH5TIaqXdYVKWY70nXBlju00WvBXUphq");
             const session = await CartService.checkoutCart(cartId);
             await stripe?.redirectToCheckout({ sessionId: session.sessionId });
         } catch (e: any) {
