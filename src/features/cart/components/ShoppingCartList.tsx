@@ -1,8 +1,6 @@
 import { Box, Divider, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React from 'react'
 import { ICart } from '../../../interfaces/Cart';
-import { ISnackbarState } from '../../../common/types';
-import SnackBar from '../../../common/SnackBar';
 import CartItemCard from './CartItemCard';
 
 interface ShoppingCartListProps {
@@ -12,11 +10,6 @@ interface ShoppingCartListProps {
 }
 
 const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ setIsLoading, cart, setCart }) => {
-    const [snackbar, setSnackbar] = useState<ISnackbarState>({
-        open: false,
-        message: "",
-        status: "Info"
-    });
 
     return (
         <Box sx={{ width: '100%' }}>
@@ -44,12 +37,10 @@ const ShoppingCartList: React.FC<ShoppingCartListProps> = ({ setIsLoading, cart,
                             item={item} 
                             setCart={setCart} 
                             setIsLoading={setIsLoading} 
-                            setSnackbar={setSnackbar} 
                         />
                     )
                 }
             </Box>
-            <SnackBar state={snackbar} onClose={() => setSnackbar((prev) => ({ ...prev, open: false }))} />
         </Box>
     )
 }

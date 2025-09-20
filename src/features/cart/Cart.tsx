@@ -7,14 +7,10 @@ import { useUserCart } from './hooks/useUserCart';
 import DataState from '../../common/DataState';
 import OrderSummary from '../order/components/OrderSummary';
 import { useNavigate } from 'react-router-dom';
-import { loadStripe } from '@stripe/stripe-js';
-import { ICheckoutSession } from '../../interfaces/Cart';
-import CartService from '../../services/CartService';
 import LoadingOverlay from '../../common/LoadingOverlay';
 import ShoppingCartList from './components/ShoppingCartList';
-import { ISnackbarState } from '../../common/types';
-import SnackBar from '../../common/SnackBar';
 import { useAuthContext } from '../../context/auth';
+import { useCheckout } from './hooks/useCheckout';
 
 const Cart: React.FC = () => {
     // context
@@ -23,39 +19,11 @@ const Cart: React.FC = () => {
     
     // on mount
     const { cart, setCart, error, loading } = useUserCart(user?.id);
+    const { handleCheckout } = useCheckout(cart?.id);
 
     // others
     const [isApiLoading, setIsApiLoading] = useState(false);
-    const [snackbar, setSnackbar] = useState<ISnackbarState>({
-        open: false,
-        message: "",
-        status: "Info"
-    });
     const navigate = useNavigate();
-
-    
-    const handleCheckout = useCallback(async () => {
-        if (!cart?.id) return;
-        setIsApiLoading(true);
-
-        try {
-            const stripe = await loadStripe("pk_test_51RcRvOI2BykSxmKfjrk3CkwHOXKKXJOlWNXIEXUAoYzbkP5LUqXLHdJo4simz0NIqZOH5TIaqXdYVKWY70nXBlju00WvBXUphq");
-
-            const checkoutSession: ICheckoutSession = await CartService.checkoutCart(cart?.id);
-            stripe?.redirectToCheckout({
-                sessionId: checkoutSession.sessionId,
-            })
-        } catch (error: any) {
-            setSnackbar({
-                open: true,
-                message: error.message,
-                status: "Error"
-            })
-        } finally {
-            setIsApiLoading(false);
-        }
-
-    }, [cart]);
 
     return (
         <div className="user-dashboard">
@@ -88,7 +56,6 @@ const Cart: React.FC = () => {
             />
 
             <LoadingOverlay loading={isApiLoading} />
-            <SnackBar state={snackbar} onClose={() => setSnackbar((prev) => ({ ...prev, open: false }))} />
         </div>
     );
 };

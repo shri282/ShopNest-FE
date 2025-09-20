@@ -11,6 +11,7 @@ import Product from './features/product/Product';
 import ProductListTable from './components/ProductsListTable';
 import Wishlist from './features/wishlist/Wishlist';
 import { AuthProvider } from './context/auth';
+import { NotificationProvider } from './context/notification';
 
 // #TODO: specifications for product, coupon apply and shipping cost feature
 // order summary, charges, order tracking, delivery partner assignment.
@@ -18,23 +19,25 @@ function App() {
   return (
     <div className="App">
       <AuthProvider>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+        <NotificationProvider>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
-          <Route path="/" element={<UserLayout />}>
-            <Route index element={<UserDashboard />} />
-            <Route path="/search-results" element={<SearchResults />} />
-            <Route path="/orders" element={<div>orders.....</div>} />
-            <Route path="/wishlist" element={<Wishlist />} />
-            <Route path="/product/:id" element={<Product />} />
-            <Route path="/user/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
-          </Route>
+            <Route path="/" element={<UserLayout />}>
+              <Route index element={<UserDashboard />} />
+              <Route path="/search-results" element={<SearchResults />} />
+              <Route path="/orders" element={<div>orders.....</div>} />
+              <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/product/:id" element={<Product />} />
+              <Route path="/user/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
+            </Route>
 
-          <Route path="/seller/dashboard" element={<UserLayout />} >
-            <Route index element={<ProductListTable />} ></Route>
-          </Route>
-        </Routes>
+            <Route path="/seller/dashboard" element={<UserLayout />} >
+              <Route index element={<ProductListTable />} ></Route>
+            </Route>
+          </Routes>
+        </NotificationProvider>
       </AuthProvider>
     </div>
   );
