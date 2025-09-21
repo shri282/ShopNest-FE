@@ -5,11 +5,13 @@ import { Role } from '../enum/Role';
 import { useAsyncHandler } from './useAsyncHandler';
 import { ILoginRequest } from '../interfaces/Auth';
 import { useAuthContext } from '../context/auth';
+import { useNotification } from '../context/notification';
 
 export const useLogin = () => {
     const { authContextAction } = useAuthContext();
     const navigate = useNavigate();
     const asyncHandler = useAsyncHandler();
+    const { showMessage } = useNotification();
 
     const login = async (formData: ILoginRequest) => {
         try {
@@ -29,8 +31,8 @@ export const useLogin = () => {
                         navigate('/');
                 }
             });
-        } catch (error) {
-            console.log(error);
+        } catch (error: any) {
+            showMessage(error.message, "Error");
         }
     };
 

@@ -2,7 +2,6 @@ import React from 'react';
 import './css/login.css';
 import { ILoginRequest } from '../interfaces/Auth';
 import { Role } from '../enum/Role';
-import ErrorSnackbar from '../common/ErrorSnackBar';
 import { Button } from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonIcon from '@mui/icons-material/Person';
@@ -13,9 +12,7 @@ const Login: React.FC = () => {
     const {
         login,
         loading: isLoggingIn,
-        error,
-        isSuccess,
-        setError
+        isSuccess
     } = useLogin();
     const { register, handleSubmit, setValue, reset } = useForm<ILoginRequest>({
         defaultValues: {
@@ -115,7 +112,6 @@ const Login: React.FC = () => {
                 </Button>
 
             </form>
-            <ErrorSnackbar open={Boolean(error)} message={error?.message} onClose={() => setError(null)} />
         </div>
     );
 };

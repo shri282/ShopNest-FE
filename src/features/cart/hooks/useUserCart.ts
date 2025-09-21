@@ -1,31 +1,24 @@
 import { useEffect, useState } from 'react';
 import { ICart } from '../../../interfaces/Cart';
-import CartService from '../../../services/CartService';
+import { request } from '../../../request/request';
+import { userCartURL } from '../../../constants/apiEndPoints';
+import { useAsyncHandler } from '../../../hooks/useAsyncHandler';
 
 export function useUserCart(userId?: number) {
     const [cart, setCart] = useState<ICart | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<Error | null>(null);
+    const { run, error, loading } = useAsyncHandler();
 
     useEffect(() => {
         if (!userId) return;
 
-        const fetchData = async () => {
-            setLoading(true);
-            setError(null);
+        (async () => {
+            const cart = await run(() => {
+                return request.get<ICart>(userCartURL(userId));
+            })
 
-            try {
-                const cart = await CartService.getUserCart(userId);
-                setCart(cart);
-            } catch (err) {
-                setError(err as Error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [userId]);
+            setCart(cart);
+        })();
+    }, [userId, run]);
 
     return { cart, setCart, loading, error };
 }

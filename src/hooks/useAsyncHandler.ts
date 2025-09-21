@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 export const useAsyncHandler = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<any>(null);
     const [isSuccess, setIsSuccess] = useState(false);
 
-    const run = async<T>(asyncFn: () => Promise<T>) => {
+    const run = useCallback(async<T>(asyncFn: () => Promise<T>) => {
         try {
             setLoading(true);
             const result = await asyncFn();
@@ -17,12 +17,11 @@ export const useAsyncHandler = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
     return {
         loading,
         error,
-        setError,
         isSuccess,
         run,
     };
