@@ -1,12 +1,22 @@
-import React from 'react';
-import '../css/login.css';
-import { ILoginRequest } from '../interfaces/Auth';
-import { Role } from '../enum/Role';
-import { Button } from '@mui/material';
-import LoginIcon from '@mui/icons-material/Login';
-import PersonIcon from '@mui/icons-material/Person';
-import { useForm } from 'react-hook-form';
-import { useLogin } from '../hooks/useLogin';
+import React, { useState } from "react";
+import {
+    Box,
+    Card,
+    CardContent,
+    Typography,
+    TextField,
+    Checkbox,
+    FormControlLabel,
+    Button,
+    Divider,
+    IconButton,
+    InputAdornment,
+    Link,
+    Grid
+} from "@mui/material";
+import { Visibility, VisibilityOff, PermIdentity, LockOutlined, Facebook, Apple, Google } from "@mui/icons-material";
+import { useLogin } from "../hooks/useLogin";
+// import loginHeroBg from "@/assets/login-hero-bg.jpg";
 
 const Login: React.FC = () => {
     const {
@@ -14,105 +24,191 @@ const Login: React.FC = () => {
         loading: isLoggingIn,
         isSuccess
     } = useLogin();
-    const { register, handleSubmit, setValue, reset } = useForm<ILoginRequest>({
-        defaultValues: {
-            username: "",
-            password: "",
-            role: Role.USER
-        }
+    const [showPassword, setShowPassword] = useState(false);
+    const [formData, setFormData] = useState({
+        username: "",
+        password: "",
+        role: "USER",
+        rememberMe: false
     });
 
-    const onSubmit = async (loginForm: ILoginRequest) => {
-        await login(loginForm);
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value, type, checked } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: type === "checkbox" ? checked : value
+        }));
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        await login(formData);
         if (!isSuccess) {
-            reset();
+            // reset();
         }
     };
 
     return (
-        <div className="login-container">
-            <form className="login-form"
-                onSubmit={handleSubmit(onSubmit)}
+        <Grid container sx={{ minHeight: "100vh" }}>
+            {/* Left Hero Section */}
+            <Grid
+                size={{ lg: 6 }}
+                sx={{
+                    display: { xs: "none", lg: "flex" },
+                    backgroundImage: `linear-gradient(135deg, rgba(35,48,68,0.9), rgba(35,48,68,0.7)), url("images/login bg.png")`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    color: "white",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    px: 8
+                }}
             >
-                <h2>Login</h2>
-                <div className='login-form-fields'>
-                    <label>Username</label>
-                    <input
-                        {...register("username", {
-                            required: "username is required"
-                        })}
-                        type="text"
-                        name="username"
-                        placeholder="Enter your email"
-                        required
-                    />
-                </div>
-                <div className='login-form-fields'>
-                    <label>Password</label>
-                    <input
-                        {...register("password", {
-                            required: "password is required"
-                        })}
-                        type="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        required
-                    />
-                </div>
-                <div className='login-form-fields'>
-                    <label>Role</label>
-                    <select {...register("role")} name="role">
-                        <option value={Role.USER}>User</option>
-                        <option value={Role.ADMIN}>Admin</option>
-                        <option value={Role.SELLER}>Seller</option>
-                    </select>
-                </div>
-                <Button
-                    fullWidth
-                    type='submit'
-                    sx={{
-                        backgroundColor: '#1976d2',
-                        color: 'white',
-                        marginTop: 2,
-                        alignSelf: 'center',
-                        '&:hover': {
-                            backgroundColor: '#115293'
-                        }
-                    }}
-                    size="medium"
-                    endIcon={<LoginIcon />}
-                    loading={isLoggingIn}
-                    loadingPosition='end'
-                    variant="contained"
-                >
-                    {isLoggingIn ? 'Logging in...' : 'Login'}
-                </Button>
+                <Box maxWidth={400}>
+                    <Typography variant="h3" fontWeight="bold" gutterBottom>
+                        Welcome Back to ShopNest
+                    </Typography>
+                    <Typography variant="h6" color="whiteAlpha.80" gutterBottom>
+                        Access your account to continue shopping our curated collection of premium products.
+                    </Typography>
+                    <Box mt={4}>
+                        <Box display="flex" alignItems="center" mb={1}>
+                            <Box width={8} height={8} bgcolor="secondary.main" borderRadius="50%" mr={2} />
+                            <Typography>Exclusive member benefits</Typography>
+                        </Box>
+                        <Box display="flex" alignItems="center" mb={1}>
+                            <Box width={8} height={8} bgcolor="secondary.main" borderRadius="50%" mr={2} />
+                            <Typography>Early access to new arrivals</Typography>
+                        </Box>
+                        <Box display="flex" alignItems="center">
+                            <Box width={8} height={8} bgcolor="secondary.main" borderRadius="50%" mr={2} />
+                            <Typography>Personalized recommendations</Typography>
+                        </Box>
+                    </Box>
+                </Box>
+            </Grid>
 
-                <Button
-                    fullWidth
-                    onClick={() => {
-                        setValue("username", "tharun")
-                        setValue("password", "tharun123")
-                        setValue("role", "user")
-                    }}
-                    sx={{
-                        backgroundColor: '#9c27b0',
-                        color: 'white',
-                        marginTop: 2,
-                        alignSelf: 'center',
-                        '&:hover': {
-                            backgroundColor: '#7b1fa2'
-                        }
-                    }}
-                    size="medium"
-                    endIcon={<PersonIcon />}
-                    variant="contained"
-                >
-                    Use Guest Credentials
-                </Button>
+            {/* Right Login Form Section */}
+            <Grid
+                size={{ xs: 12, lg: 6 }}
+                container
+                justifyContent="center"
+                alignItems="center"
+                sx={{ my: 3, backgroundColor: "background.paper", px: 4 }}
+            >
+                <Box maxWidth={450} width="100%">
+                    <Card sx={{ boxShadow: 6 }}>
+                        <CardContent>
+                            <Box textAlign="center" mb={3}>
+                                <Typography variant="h5" fontWeight="bold">Sign In</Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    Enter your credentials to access your account
+                                </Typography>
+                            </Box>
 
-            </form>
-        </div>
+                            {/* Social Login */}
+                            <Grid container spacing={2} mb={3}>
+                                <Grid size={{ xs: 4 }}>
+                                    <Button fullWidth variant="outlined" startIcon={<Google />} sx={{ height: 40 }}>Google</Button>
+                                </Grid>
+                                <Grid size={{ xs: 4 }}>
+                                    <Button fullWidth variant="outlined" startIcon={<Facebook />} sx={{ height: 40 }}>Facebook</Button>
+                                </Grid>
+                                <Grid size={{ xs: 4 }}>
+                                    <Button fullWidth variant="outlined" startIcon={<Apple />} sx={{ height: 40 }}>Apple</Button>
+                                </Grid>
+                            </Grid>
+
+                            <Divider sx={{ mb: 3 }}>or continue with email</Divider>
+
+                            {/* Login Form */}
+                            <form>
+                                <TextField
+                                    fullWidth
+                                    size="small"
+                                    label="Username"
+                                    name="username"
+                                    type="text"
+                                    value={formData.username}
+                                    onChange={handleInputChange}
+                                    margin="normal"
+                                    variant="outlined"
+                                    required
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <PermIdentity />
+                                            </InputAdornment>
+                                        )
+                                    }}
+                                />
+
+                                <TextField
+                                    fullWidth
+                                    size="small"
+                                    label="Password"
+                                    name="password"
+                                    type={showPassword ? "text" : "password"}
+                                    value={formData.password}
+                                    onChange={handleInputChange}
+                                    margin="normal"
+                                    variant="outlined"
+                                    required
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <LockOutlined />
+                                            </InputAdornment>
+                                        ),
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        )
+                                    }}
+                                />
+
+                                <Box display="flex" justifyContent="space-between" alignItems="center" mt={1}>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={formData.rememberMe}
+                                                onChange={(e) =>
+                                                    setFormData(prev => ({ ...prev, rememberMe: e.target.checked }))
+                                                }
+                                            />
+                                        }
+                                        label="Remember me"
+                                    />
+                                    <Link href="/forgot-password" underline="hover" variant="body2">
+                                        Forgot password?
+                                    </Link>
+                                </Box>
+
+                                <Button onClick={handleSubmit} variant="contained" loading={isLoggingIn} color="primary" fullWidth sx={{ mt: 2, height: 33 }}>
+                                    {isLoggingIn ? 'Signing in...' : 'Sign In'}
+                                </Button>
+                                <Button onClick={() => {
+                                    setFormData({ password: "tharun123", rememberMe: true, role: "USER", username: "tharun" })
+                                }} variant="contained" color="primary" fullWidth sx={{ mt: 2, height: 33 }}>
+                                    Use Guest Credentials
+                                </Button>
+                            </form>
+
+                            <Box textAlign="center" mt={3}>
+                                <Typography variant="body2" color="text.secondary">
+                                    Don't have an account?{" "}
+                                    <Link href="/register" underline="hover">
+                                        Create one here
+                                    </Link>
+                                </Typography>
+                            </Box>
+                        </CardContent>
+                    </Card>
+                </Box>
+            </Grid>
+        </Grid>
     );
 };
 
