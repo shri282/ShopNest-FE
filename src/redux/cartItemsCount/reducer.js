@@ -6,16 +6,21 @@ const INITIAL_STATE = {
 
 const cartItemsCountReducer = (state = INITIAL_STATE, action) => {
     switch(action.type) {
+        case actionTypes.SET:
+            return { value: action.payload };
+
         case actionTypes.INCREMENT:
             return {
                 ...state,
                 value: state.value + 1
             }
+
         case actionTypes.DECREMENT:
             return {
                 ...state,
                 value: state.value - 1
             }
+            
         case actionTypes.ADD:
             return {
                 ...state,

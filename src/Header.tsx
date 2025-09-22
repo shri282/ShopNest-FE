@@ -99,8 +99,10 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
     }, [searchProducts]);
 
     useEffect(() => {
-        dispatch({ type: cartItemsCountActionTypes.ADD, payload: cartItemsCountInit })
-    }, [cartItemsCountInit, dispatch])
+        if (user) {
+            dispatch({ type: cartItemsCountActionTypes.SET, payload: cartItemsCountInit })
+        }
+    }, [cartItemsCountInit, user, dispatch])
 
     return (
         <AppBar position="sticky" color="primary" sx={{ height: '100%', width: '100%', backgroundColor: '#111827' }}>

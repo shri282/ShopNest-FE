@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import CartService from '../../../services/CartService';
+import { request } from '../../../request/request';
+import { userCartURL } from '../../../constants/apiEndPoints';
 
 export function useCartItemCount(userId?: number) {
     const [totalItems, setTotalItems] = useState<number | null>(null);
@@ -7,16 +8,10 @@ export function useCartItemCount(userId?: number) {
     useEffect(() => {
         if (!userId) return;
 
-        const fetchData = async () => {
-            try {
-                const cartTotal = await CartService.getUserCartItemsTotal(userId);
-                setTotalItems(cartTotal.totalItems);
-            } catch (err) {
-                console.log("error in getting cart items count", err);
-            }
-        };
-
-        fetchData();
+        (async () => {
+            const cartTotal = await request.get<{ totalItems: number }>(userCartURL(userId) + "/count");
+            setTotalItems(cartTotal.totalItems);
+        })();
     }, [userId])
 
     return totalItems;
