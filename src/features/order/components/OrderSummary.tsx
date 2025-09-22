@@ -4,7 +4,7 @@ import { ICart } from '../../../interfaces/Cart';
 
 interface OrderSummaryProps {
     cart: ICart
-    onCheckout: () => void;
+    onCheckout: (cartId: number) => void;
 }
 
 const OrderSummary: React.FC<OrderSummaryProps> = ({ cart, onCheckout }) => {
@@ -52,7 +52,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ cart, onCheckout }) => {
                 <Typography fontWeight="bold">₹{cart.grandTotal}</Typography>
             </Box>
 
-            <Button onClick={onCheckout} fullWidth variant="contained" sx={{ background: '#5c6bc0' }}>
+            <Button onClick={() => onCheckout(cart.id)} fullWidth variant="contained" sx={{ background: '#5c6bc0' }}>
                 CHECKOUT
             </Button>
         </Box>

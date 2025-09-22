@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './css/register.css';
+import '../css/register.css';
 import { User } from '../interfaces/User';
 
 const Register: React.FC = () => {

@@ -3,6 +3,7 @@ const authSelectors = (state) => {
     isAuthenticated: () => state.isAuthenticated,
     getUser: () => state.user,
     getToken: () => state.token,
+    isRehydrated: () => state.rehydrated
   };
 };
 

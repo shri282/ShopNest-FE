@@ -6,7 +6,6 @@ import Cart from './features/cart/Cart';
 import PrivateRoute from './components/PrivateRoute';
 import UserLayout from './layouts/UserLayout';
 import UserDashboard from './features/dashboard/UserDashboard';
-import SearchResults from './pages/SearchResults';
 import Product from './features/product/Product';
 import ProductListTable from './components/ProductsListTable';
 import Wishlist from './features/wishlist/Wishlist';
@@ -26,7 +25,6 @@ function App() {
 
             <Route path="/" element={<UserLayout />}>
               <Route index element={<UserDashboard />} />
-              <Route path="/search-results" element={<SearchResults />} />
               <Route path="/orders" element={<div>orders.....</div>} />
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/product/:id" element={<Product />} />

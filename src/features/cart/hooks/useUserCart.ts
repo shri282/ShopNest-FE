@@ -4,13 +4,11 @@ import { request } from '../../../request/request';
 import { userCartURL } from '../../../constants/apiEndPoints';
 import { useAsyncHandler } from '../../../hooks/useAsyncHandler';
 
-export function useUserCart(userId?: number) {
+export function useUserCart(userId: number) {
     const [cart, setCart] = useState<ICart | null>(null);
     const { run, error, loading } = useAsyncHandler();
 
     useEffect(() => {
-        if (!userId) return;
-
         (async () => {
             const cart = await run(() => {
                 return request.get<ICart>(userCartURL(userId));

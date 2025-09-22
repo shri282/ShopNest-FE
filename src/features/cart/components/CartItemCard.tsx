@@ -22,7 +22,6 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ item, setCart, setIsLoading
     const dispatch = useDispatch<AppDispatch>();
 
     const updateItemQuantity = async (item: ICartItem, quantity: number) => {
-        if (!user) return;
         if (item.quantity + quantity === 0) return removeItem(item.id);
         setIsLoading(true);
 
@@ -38,7 +37,6 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ item, setCart, setIsLoading
     }
 
     const removeItem = async (itemId: number) => {
-        if (!user) return;
         setIsLoading(true);
 
         try {

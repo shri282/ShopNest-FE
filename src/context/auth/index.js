@@ -10,9 +10,11 @@ function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(authReducer, initialAuthState);
 
   useEffect(() => {
-    const storedAuth = readSession("loggedInUser");
-    if (storedAuth) {
-      dispatch({ type: "LOGIN", payload: storedAuth });
+    const auth = readSession("loggedInUser");
+    if (auth) {
+      dispatch({ type: "RE-HYDRATE", payload: { ...auth, isAuthenticated: true } });
+    } else {
+      dispatch({ type: "RE-HYDRATE", payload: { isAuthenticated: false } })
     }
   }, []);
 

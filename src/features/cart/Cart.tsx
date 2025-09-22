@@ -14,12 +14,11 @@ import { useCheckout } from './hooks/useCheckout';
 
 const Cart: React.FC = () => {
     // context
-    const { authContextSelector } = useAuthContext();
-    const user = authContextSelector.getUser();
+    const user = useAuthContext().authContextSelector.getUser();
     
     // on mount
-    const { cart, setCart, error, loading } = useUserCart(user?.id);
-    const { handleCheckout } = useCheckout(cart?.id);
+    const { cart, setCart, error, loading } = useUserCart(user.id);
+    const { checkoutCart } = useCheckout();
 
     // others
     const [isApiLoading, setIsApiLoading] = useState(false);
@@ -49,7 +48,7 @@ const Cart: React.FC = () => {
                             </Box>
                         </Box>
                         <Box sx={{ position: 'sticky', top: 90, overflow: 'hidden', alignSelf: 'flex-start' }}>
-                            <OrderSummary onCheckout={handleCheckout} cart={cart} />
+                            <OrderSummary onCheckout={checkoutCart} cart={cart} />
                         </Box>
                     </Box>
                 }
