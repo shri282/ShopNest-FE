@@ -272,7 +272,7 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerToggle }) => {
                         <IconButton
                             onClick={() => {
                                 if (user && token) {
-                                    return navigate("/user/cart");
+                                    return navigate("/cart");
                                 }
                                 return navigate("/login");
                             }}
