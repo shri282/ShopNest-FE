@@ -3,10 +3,11 @@ import {
     Box,
     CssBaseline
 } from '@mui/material';
-import Header from '../Header';
+import Header from './Header';
 import { NavItem } from '../interfaces/User';
 import { Outlet } from 'react-router-dom';
 import SideDrawer from '../common/SideDrawer';
+import Footer from './Footer';
 
 const navs: NavItem[] = [
     {
@@ -31,10 +32,10 @@ export default function UserLayout() {
     };
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <CssBaseline />
 
-            {/* AppBar */}
+            {/* Header */}
             <Box
                 position={'fixed'}
                 sx={{
@@ -59,6 +60,11 @@ export default function UserLayout() {
                 }}
             >
                 <Outlet />
+            </Box>
+
+            {/* Footer */}
+            <Box>
+                <Footer />
             </Box>
         </Box>
     );

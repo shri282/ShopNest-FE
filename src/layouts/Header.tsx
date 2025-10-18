@@ -1,20 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
-import { useThrottle } from "./hooks/useThrottle";
-import { IProduct } from "./interfaces/Product";
-import ProductService from "./services/ProductService";
+import { useThrottle } from "../hooks/useThrottle";
+import { IProduct } from "../interfaces/Product";
+import ProductService from "../services/ProductService";
 import { AppBar, Badge, Link, Box, Divider, IconButton, InputBase, List, ListItemButton, ListItemText, MenuItem, Paper, Select, styled, Toolbar, Typography, ClickAwayListener } from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import { useCartItemCount } from "./features/cart/hooks/useCartItemCount";
-import { AppDispatch, RootState } from "./redux/store";
+import { useCartItemCount } from "../features/cart/hooks/useCartItemCount";
+import { AppDispatch, RootState } from "../redux/store";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import * as cartItemsCountActionTypes from "./redux/cartItemsCount/types";
-import AccountMenu from "./features/user/AccountMenu";
+import * as cartItemsCountActionTypes from "../redux/cartItemsCount/types";
+import AccountMenu from "../features/user/AccountMenu";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { useAuthContext } from "./context/auth";
+import { useAuthContext } from "../context/auth";
 
 
 const Search = styled('div')(({ theme }) => ({
