@@ -7,7 +7,7 @@ const Product = lazy(() => import("../features/product/Product"));
 const Wishlist = lazy(() => import("../features/wishlist/Wishlist"));
 const UserLayout = lazy(() => import("../layouts/UserLayout"));
 
-const routes = [
+const userRoutes = [
     {
         path: "/",
         element: <UserLayout />,
@@ -19,9 +19,12 @@ const routes = [
             { path: "cart", element: <PrivateRoute><Cart /></PrivateRoute> }
         ]
             
-    },
+    }
+]
+
+const sellerRoutes = [
     {
-        path: "/seller/dashboard",
+        path: "/",
         element: <UserLayout />,
         children: [
             { index: true, element: <ProductListTable /> }
@@ -29,4 +32,4 @@ const routes = [
     }
 ]
 
-export default routes;
+export default { sellerRoutes, userRoutes };

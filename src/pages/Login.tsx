@@ -16,7 +16,6 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff, PermIdentity, LockOutlined, Facebook, Apple, Google } from "@mui/icons-material";
 import { useLogin } from "../hooks/useLogin";
-// import loginHeroBg from "@/assets/login-hero-bg.jpg";
 
 const Login: React.FC = () => {
     const {

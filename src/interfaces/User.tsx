@@ -8,6 +8,7 @@ export interface User {
     dob: String;
     gender: String;
     password: String;
+    activeRole: string;
     roles: Role[];
     enabled: boolean;
     accountNonLocked: boolean;

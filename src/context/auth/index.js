@@ -3,6 +3,7 @@ import { initialAuthState, authReducer } from "./reducer.js";
 import authActions from "./actions.js";
 import authSelectors from "./selectors.js";
 import { readSession } from "../../utils/WebStorage";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -23,11 +24,12 @@ function AuthProvider({ children }) {
 
 function useAuthContext() {
   const context = useContext(AuthContext);
+  const navigate = useNavigate();
   if (context === undefined) {
     throw new Error("useAuthContext must be used within an AuthProvider");
   }
   const [state, dispatch] = context;
-  const authContextAction = authActions(dispatch);
+  const authContextAction = authActions(dispatch, navigate);
   const authContextSelector = authSelectors(state);
   return { state, authContextAction, authContextSelector };
 }

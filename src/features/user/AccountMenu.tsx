@@ -22,7 +22,6 @@ const AccountMenu: React.FC = () => {
                 break;
             case "Logout":
                 authContextAction.logout();
-                navigate("/login");
                 break;
 
             default:

@@ -1,8 +1,7 @@
 import './App.css';
+import Shopnest from './app/Shopnest';
 import { AuthProvider } from './context/auth';
 import { NotificationProvider } from './context/notification';
-import AppRouter from './routes/AppRouter';
-import AuthRouter from './routes/AuthRouter';
 
 // #TODO: specifications for product, coupon apply and shipping cost feature
 // order summary, charges, order tracking, delivery partner assignment.
@@ -11,8 +10,7 @@ function App() {
     <div className="App">
       <AuthProvider>
         <NotificationProvider>
-          <AuthRouter />
-          <AppRouter />
+          <Shopnest />
         </NotificationProvider>
       </AuthProvider>
     </div>
