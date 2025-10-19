@@ -13,8 +13,6 @@ function AuthProvider({ children }) {
     const auth = readSession("loggedInUser");
     if (auth) {
       dispatch({ type: "RE-HYDRATE", payload: { ...auth, isAuthenticated: true } });
-    } else {
-      dispatch({ type: "RE-HYDRATE", payload: { isAuthenticated: false } })
     }
   }, []);
 
