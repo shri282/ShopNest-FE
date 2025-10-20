@@ -12,13 +12,13 @@ import UpdateProductPopup from '../../components/UpdateProductPopup';
 import * as cartItemsCountTypes from "../../redux/cartItemsCount/types"
 import DataState from '../../common/DataState';
 import styled from '@emotion/styled';
-import CustomerReviews from './components/CustomerReviews';
-import WriteReview from './components/WriteReview';
-import ProductReviewStats from './components/ProductReviewStats';
+import ProductReviewStats from './ProductReviewStats';
 import SnackBar from '../../common/SnackBar';
 import { ISnackbarState } from '../../common/types';
 import { useAuthContext } from '../../context/auth';
 import ProductPageSkeletonLoader from '../../components/loaders/ProductPageSkeletonLoader';
+import WriteReview from './WriteReview';
+import CustomerReviews from './CustomerReviews';
 
 
 const StyledButton = styled(Button)({
@@ -340,7 +340,6 @@ const Product = () => {
 
                     <SnackBar state={snackbar} onClose={() => setSnackbar((prev) => ({ ...prev, open: false }))} />
                 </Box>
-
             }
         />
     )

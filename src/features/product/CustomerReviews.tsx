@@ -16,10 +16,10 @@ import {
 } from '@mui/material';
 import { ThumbUpOutlined, ThumbDownOutlined, CheckCircle } from '@mui/icons-material';
 import React, { useEffect, useMemo, useState } from 'react';
-import ProductService from '../../../services/ProductService';
-import { IProductReview } from '../../../interfaces/Product';
-import { formatDate } from '../../../utils/date';
-import DataState from '../../../common/DataState';
+import { IProductReview } from '../../interfaces/Product';
+import ProductService from '../../services/ProductService';
+import DataState from '../../common/DataState';
+import { formatDate } from '../../utils/date';
 
 interface CustomerReviewsProps {
   productId: number;

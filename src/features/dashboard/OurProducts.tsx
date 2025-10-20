@@ -5,11 +5,11 @@ import {
     Tab,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import FeaturedProductCard from "../../product/components/FeaturedProductCard";
-import { IProduct } from "../../../interfaces/Product";
-import ProductService from "../../../services/ProductService";
-import DataState from "../../../common/DataState";
-import ErrorSnackbar from "../../../common/ErrorSnackBar";
+import { IProduct } from "../../interfaces/Product";
+import ProductService from "../../services/ProductService";
+import DataState from "../../common/DataState";
+import FeaturedProductCard from "../product/FeaturedProductCard";
+import ErrorSnackbar from "../../common/ErrorSnackBar";
 
 interface OurProductsProps {
     category: string | undefined;

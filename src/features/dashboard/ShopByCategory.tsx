@@ -1,10 +1,10 @@
 import { Box, Typography, IconButton } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import { IProductCategory } from "../../../interfaces/Product";
-import ProductService from "../../../services/ProductService";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
-import DataState from "../../../common/DataState";
-import ErrorSnackbar from "../../../common/ErrorSnackBar";
+import { IProductCategory } from "../../interfaces/Product";
+import ProductService from "../../services/ProductService";
+import DataState from "../../common/DataState";
+import ErrorSnackbar from "../../common/ErrorSnackBar";
 
 interface ShopByCategoryProps {
     setSelectedCategory: (category: string) => void;

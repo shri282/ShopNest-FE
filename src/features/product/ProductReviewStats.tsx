@@ -1,9 +1,9 @@
 import { Box, LinearProgress, Rating, Typography, Stack } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { IProductReviewStats } from '../../../interfaces/Product'
-import DataState from '../../../common/DataState'
-import ErrorSnackbar from '../../../common/ErrorSnackBar'
-import ProductService from '../../../services/ProductService'
+import { IProductReviewStats } from '../../interfaces/Product'
+import DataState from '../../common/DataState'
+import ErrorSnackbar from '../../common/ErrorSnackBar'
+import ProductService from '../../services/ProductService'
 
 function ProductReviewStats({ productId, reviewSubmitted }: { productId: number, reviewSubmitted: boolean }) {
     const [productReviewStats, setProductReviewStats] = useState<IProductReviewStats | null>(null)

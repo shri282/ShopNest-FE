@@ -5,12 +5,12 @@ import {
 } from '@mui/material';
 import { useUserCart } from './hooks/useUserCart';
 import DataState from '../../common/DataState';
-import OrderSummary from '../order/components/OrderSummary';
 import { useNavigate } from 'react-router-dom';
 import LoadingOverlay from '../../common/LoadingOverlay';
-import ShoppingCartList from './components/ShoppingCartList';
+import ShoppingCartList from './ShoppingCartList';
 import { useAuthContext } from '../../context/auth';
 import { useCheckout } from './hooks/useCheckout';
+import OrderSummary from '../order/OrderSummary';
 
 const Cart: React.FC = () => {
     // context

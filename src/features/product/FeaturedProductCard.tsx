@@ -2,9 +2,9 @@ import { Box, Card, CardContent, CardMedia, IconButton, Typography } from '@mui/
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import React, { useState } from 'react';
-import { IProduct } from '../../../interfaces/Product';
 import { useNavigate } from 'react-router-dom';
-import AddWishlistItemPopup from '../../wishlist/components/AddWishlistItemPopup';
+import { IProduct } from '../../interfaces/Product';
+import AddWishlistItemPopup from '../wishlist/AddWishlistItemPopup';
 
 interface FeaturedProductCardProps {
     product: IProduct

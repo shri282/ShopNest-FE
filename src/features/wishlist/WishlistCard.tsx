@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import React from "react";
-import { IWishlistItem } from "../../../interfaces/Cart";
+import { IWishlistItem } from "../../interfaces/Cart";
 
 interface WishlistCardProps {
     item: IWishlistItem;

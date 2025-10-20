@@ -1,11 +1,11 @@
 import { Box, Typography, Button } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import React, { useEffect, useState } from "react";
-import FeaturedProductCard from "../../product/components/FeaturedProductCard";
-import { IProduct } from "../../../interfaces/Product";
-import ProductService from "../../../services/ProductService";
-import ErrorSnackbar from "../../../common/ErrorSnackBar";
-import DataState from "../../../common/DataState";
+import { IProduct } from "../../interfaces/Product";
+import ProductService from "../../services/ProductService";
+import DataState from "../../common/DataState";
+import ErrorSnackbar from "../../common/ErrorSnackBar";
+import FeaturedProductCard from "../product/FeaturedProductCard";
 
 function NewArrivals() {
     const [products, setProducts] = useState<IProduct[]>([]);

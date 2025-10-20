@@ -4,11 +4,11 @@ import {
 } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
-import { IProduct, IProductReviewForm } from '../../../interfaces/Product';
-import ProductService from '../../../services/ProductService';
-import SnackBar from '../../../common/SnackBar';
-import { ISnackbarState } from '../../../common/types';
-import { useAuthContext } from '../../../context/auth';
+import { IProduct, IProductReviewForm } from '../../interfaces/Product';
+import { useAuthContext } from '../../context/auth';
+import { ISnackbarState } from '../../common/types';
+import ProductService from '../../services/ProductService';
+import SnackBar from '../../common/SnackBar';
 
 interface WriteReviewProps {
   product: IProduct;

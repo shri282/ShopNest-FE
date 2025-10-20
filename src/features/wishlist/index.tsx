@@ -1,12 +1,12 @@
 import { Box, Button, Divider, Grid, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined'
-import WishlistCard from './components/WishlistCard'
 import { IWishlistDetail, IWishlistItem } from '../../interfaces/Cart'
 import CartService from '../../services/CartService'
 import DataState from '../../common/DataState'
 import ErrorSnackbar from '../../common/ErrorSnackBar'
 import { useAuthContext } from '../../context/auth'
+import WishlistCard from './WishlistCard'
 
 const Wishlist = () => {
     const { authContextSelector } = useAuthContext();

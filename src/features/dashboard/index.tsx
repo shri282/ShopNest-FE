@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { Box } from '@mui/material';
 import PromotionalBanner from '../../common/PromotionalBanner';
-import ShopByCategory from './components/ShopByCategory';
-import NewArrivals from './components/NewArrivals';
-import OurProducts from './components/OurProducts';
+import ShopByCategory from './ShopByCategory';
+import NewArrivals from './NewArrivals';
+import OurProducts from './OurProducts';
 
 const UserDashboard: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>();

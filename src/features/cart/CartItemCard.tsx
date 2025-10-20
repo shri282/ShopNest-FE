@@ -1,12 +1,12 @@
 import { Box, Button, CardMedia, Typography } from '@mui/material'
 import React from 'react'
-import { ICart, ICartItem } from '../../../interfaces/Cart'
-import { useAuthContext } from '../../../context/auth';
-import { AppDispatch } from '../../../redux/store';
 import { useDispatch } from 'react-redux';
-import CartService from '../../../services/CartService';
-import * as cartItemsCountTypes from '../../../redux/cartItemsCount/types';
-import { useNotification } from '../../../context/notification';
+import * as cartItemsCountTypes from '../../redux/cartItemsCount/types';
+import { ICart, ICartItem } from '../../interfaces/Cart';
+import { useAuthContext } from '../../context/auth';
+import { useNotification } from '../../context/notification';
+import { AppDispatch } from '../../redux/store';
+import CartService from '../../services/CartService';
 
 interface CartItemCardProps {
     item: ICartItem;
