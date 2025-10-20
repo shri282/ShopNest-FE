@@ -32,4 +32,5 @@ const sellerRoutes = [
     }
 ]
 
-export default { sellerRoutes, userRoutes };
+const routes = { sellerRoutes, userRoutes };
+export default routes;
