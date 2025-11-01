@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff, PermIdentity, LockOutlined, Facebook, Apple, Google } from "@mui/icons-material";
 import { useLogin } from "../hooks/useLogin";
+import axios from "axios";
 
 const Login: React.FC = () => {
     const {
@@ -45,6 +46,17 @@ const Login: React.FC = () => {
             // reset();
         }
     };
+
+    const socialLoginHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        const { name } = e.currentTarget;
+
+        try {
+            const resp = await axios.get(`http://localhost:8080/auth/oauth/${name}/login`);
+            console.log(resp.data);
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     return (
         <Grid container sx={{ minHeight: "100vh" }}>
@@ -107,13 +119,40 @@ const Login: React.FC = () => {
                             {/* Social Login */}
                             <Grid container spacing={2} mb={3}>
                                 <Grid size={{ xs: 4 }}>
-                                    <Button fullWidth variant="outlined" startIcon={<Google />} sx={{ height: 40 }}>Google</Button>
+                                    <Button 
+                                      onClick={socialLoginHandler} 
+                                      name="google" 
+                                      fullWidth 
+                                      variant="outlined" 
+                                      startIcon={<Google />} 
+                                      sx={{ height: 40 }}
+                                    >
+                                        Google
+                                    </Button>
                                 </Grid>
                                 <Grid size={{ xs: 4 }}>
-                                    <Button fullWidth variant="outlined" startIcon={<Facebook />} sx={{ height: 40 }}>Facebook</Button>
+                                    <Button 
+                                      onClick={socialLoginHandler} 
+                                      name="facebook" 
+                                      fullWidth 
+                                      variant="outlined" 
+                                      startIcon={<Facebook />} 
+                                      sx={{ height: 40 }}
+                                    >
+                                        Facebook
+                                    </Button>
                                 </Grid>
                                 <Grid size={{ xs: 4 }}>
-                                    <Button fullWidth variant="outlined" startIcon={<Apple />} sx={{ height: 40 }}>Apple</Button>
+                                    <Button 
+                                      onClick={socialLoginHandler} 
+                                      name="github" 
+                                      fullWidth 
+                                      variant="outlined" 
+                                      startIcon={<Apple />} 
+                                      sx={{ height: 40 }}
+                                    >
+                                        Github
+                                    </Button>
                                 </Grid>
                             </Grid>
 

@@ -1,5 +1,5 @@
 // auth module
-export const LOGIN_URL = "/login";
+export const LOGIN_URL = "/auth/login";
 export const REGISTER_URL = "/register";
 
 // user
