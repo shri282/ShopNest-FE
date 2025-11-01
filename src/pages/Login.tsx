@@ -51,8 +51,8 @@ const Login: React.FC = () => {
         const { name } = e.currentTarget;
 
         try {
-            const resp = await axios.get(`http://localhost:8080/auth/oauth/${name}/login`);
-            console.log(resp.data);
+            const resp: { data: string } = await axios.get(`http://localhost:8080/auth/oauth/${name}/login`);
+            // window.location.href = resp.data;
         } catch (err) {
             console.error(err);
         }
