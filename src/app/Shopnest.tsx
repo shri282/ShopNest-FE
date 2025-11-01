@@ -15,7 +15,7 @@ function Shopnest() {
     );
   }
   
-  return <AppRouter role={authContextSelector.getUser().activeRole} />;
+  return <AppRouter role={authContextSelector.getUser()?.activeRole ? authContextSelector.getUser().activeRole : "USER"} />;
 }
 
 export default Shopnest;

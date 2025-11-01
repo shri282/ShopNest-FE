@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff, PermIdentity, LockOutlined, Facebook, Apple, Google } from "@mui/icons-material";
 import { useLogin } from "../hooks/useLogin";
-import axios from "axios";
+import { useOAuth } from "../hooks/useOAuth";
 
 const Login: React.FC = () => {
     const {
@@ -24,6 +24,8 @@ const Login: React.FC = () => {
         loading: isLoggingIn,
         isSuccess
     } = useLogin();
+    const { oauthLogin } = useOAuth();
+
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
         username: "",
@@ -47,16 +49,8 @@ const Login: React.FC = () => {
         }
     };
 
-    const socialLoginHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        const { name } = e.currentTarget;
-
-        try {
-            const resp: { data: string } = await axios.get(`http://localhost:8080/auth/oauth/${name}/login`);
-            // window.location.href = resp.data;
-        } catch (err) {
-            console.error(err);
-        }
-    }
+    const socialLoginHandler = (e: React.MouseEvent<HTMLButtonElement>) => 
+        oauthLogin(e.currentTarget.name);
 
     return (
         <Grid container sx={{ minHeight: "100vh" }}>
