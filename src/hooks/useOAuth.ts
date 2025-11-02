@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useAuthContext } from "../context/auth";
 
+const BE_BASEURL = process.env.REACT_APP_BACKEND_URL;
+
 export const useOAuth = () => {
     const { authContextAction } = useAuthContext();
 
@@ -8,13 +10,13 @@ export const useOAuth = () => {
         let url = '';
         switch (provider) {
             case 'google':
-                url = 'http://localhost:8080/auth/oauth/google/start';
+                url = `${BE_BASEURL}/auth/oauth/google/start`;
                 break;
             case 'github':
-                url = 'http://localhost:8080/auth/oauth/github/start';
+                url =  `${BE_BASEURL}/auth/oauth/github/start`;
                 break;
             case 'facebook':
-                url = 'http://localhost:8080/auth/oauth/facebook/start';
+                url =  `${BE_BASEURL}/auth/oauth/facebook/start`;
                 break;
 
             default:
