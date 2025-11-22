@@ -20,8 +20,8 @@ import {
   PermIdentity,
   LockOutlined,
   Facebook,
-  Apple,
   Google,
+  GitHub
 } from "@mui/icons-material";
 import { useLogin } from "../hooks/useLogin";
 import { useOAuth } from "../hooks/useOAuth";
@@ -167,7 +167,7 @@ const Login: React.FC = () => {
                     name="github"
                     fullWidth
                     variant="outlined"
-                    startIcon={<Apple />}
+                    startIcon={<GitHub />}
                     sx={{ height: 40 }}
                   >
                     Github
