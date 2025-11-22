@@ -1,55 +1,57 @@
-import { Box, CircularProgress, Typography } from '@mui/material';
-import React from 'react';
+import { Box, CircularProgress, Typography } from "@mui/material";
+import React from "react";
 
 interface DataStateLoaderStyle {
-    width?: string;
-    height?: string;
-    backgroundColor?: string;
+  width?: string;
+  height?: string;
+  backgroundColor?: string;
 }
 
 interface DataStateProps<T> {
-    data: T | null;
-    loading: boolean;
-    error: Error | null;
-    loaderStyle?: DataStateLoaderStyle;
-    render: (data: T) => React.ReactElement;
-    fallback?: React.ReactElement;
-    loader?: React.ReactElement;
+  data: T | null;
+  loading: boolean;
+  error: Error | null;
+  loaderStyle?: DataStateLoaderStyle;
+  render: (data: T) => React.ReactElement;
+  fallback?: React.ReactElement;
+  loader?: React.ReactElement;
 }
 
 const DataState = <T,>({
-    data,
-    loading,
-    loaderStyle = {},
-    error,
-    render,
-    loader = <CircularProgress />,
-    fallback = <Typography>No data found.</Typography>,
+  data,
+  loading,
+  loaderStyle = {},
+  error,
+  render,
+  loader = <CircularProgress />,
+  fallback = <Typography>No data found.</Typography>,
 }: DataStateProps<T>) => {
-    if (loading) {
-        return (
-            <Box sx={{
-                height: '70vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                mt: 4,
-                ...loaderStyle
-            }}>
-                {loader}
-            </Box>
-        );
-    }
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          height: "70vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          mt: 4,
+          ...loaderStyle,
+        }}
+      >
+        {loader}
+      </Box>
+    );
+  }
 
-    if (error) {
-        return <Typography color="error">{error.message}</Typography>;
-    }
+  if (error) {
+    return <Typography color="error">{error.message}</Typography>;
+  }
 
-    if (!data) {
-        return fallback;
-    }
+  if (!data) {
+    return fallback;
+  }
 
-    return render(data);
-}
+  return render(data);
+};
 
 export default DataState;

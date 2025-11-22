@@ -1,9 +1,4 @@
-import {
-    Box,
-    Typography,
-    Tabs,
-    Tab,
-} from "@mui/material";
+import { Box, Typography, Tabs, Tab } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { IProduct } from "../../interfaces/Product";
 import ProductService from "../../services/ProductService";
@@ -12,99 +7,115 @@ import FeaturedProductCard from "../product/FeaturedProductCard";
 import ErrorSnackbar from "../../common/ErrorSnackBar";
 
 interface OurProductsProps {
-    category: string | undefined;
+  category: string | undefined;
 }
 
 const OurProducts: React.FC<OurProductsProps> = ({ category }) => {
-    const [products, setProducts] = useState<IProduct[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<any>(null);
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<any>(null);
 
-    const [tab, setTab] = useState(0);
-    const [filter, setFilter] = useState<any>();
+  const [tab, setTab] = useState(0);
+  const [filter, setFilter] = useState<any>();
 
-    const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
+  const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
 
+  useEffect(() => {
+    const newFilter: any = {};
+    if (category) {
+      newFilter["category"] = category;
+    }
 
-    useEffect(() => {
-        const newFilter: any = {};
-        if (category) {
-            newFilter['category'] = category;
-        }
+    if (tab === 1) newFilter["newArrivals"] = true;
+    else if (tab === 2) newFilter["bestSellers"] = true;
+    else if (tab === 3) newFilter["saleItems"] = true;
 
-        if (tab === 1) newFilter['newArrivals'] = true;
-        else if (tab === 2) newFilter['bestSellers'] = true;
-        else if (tab === 3) newFilter['saleItems'] = true;
+    setFilter(newFilter);
+  }, [tab, category]);
 
-        setFilter(newFilter);
-    }, [tab, category])
+  useEffect(() => {
+    const fetchProductsByTab = async () => {
+      setLoading(true);
 
-    useEffect(() => {
-        const fetchProductsByTab = async () => {
-            setLoading(true);
+      try {
+        const data = await ProductService.getProducts(filter);
+        setProducts(data);
+      } catch (error: any) {
+        setError(error);
+        setErrorPopupOpen(true);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-            try {
-                const data = await ProductService.getProducts(filter);
-                setProducts(data);
-            } catch (error: any) {
-                setError(error);
-                setErrorPopupOpen(true);
-            } finally {
-                setLoading(false);
-            }
-        }
+    fetchProductsByTab();
+  }, [tab, filter]);
 
-        fetchProductsByTab();
-    }, [tab, filter]);
+  return (
+    <Box paddingTop={10}>
+      {/* Heading */}
+      <Typography sx={{ color: "brown", fontSize: "14px", mb: 1 }}>
+        Our Products
+      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 4,
+        }}
+      >
+        <Typography sx={{ fontSize: "32px", fontWeight: "bold" }}>
+          Top {category ? category : "Products"}
+        </Typography>
 
-    return (
-        <Box paddingTop={10}>
-            {/* Heading */}
-            <Typography sx={{ color: "brown", fontSize: "14px", mb: 1 }}>
-                Our Products
-            </Typography>
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 4 }}>
-                <Typography sx={{ fontSize: "32px", fontWeight: "bold" }}>
-                    Top {category ? category : "Products"}
-                </Typography>
+        {/* Tabs */}
+        <Tabs
+          value={tab}
+          onChange={(e, newValue) => setTab(newValue)}
+          textColor="inherit"
+          TabIndicatorProps={{ style: { background: "brown" } }}
+        >
+          <Tab
+            label="All Products"
+            sx={{
+              textTransform: "none",
+              fontWeight: tab === 0 ? "bold" : "400",
+            }}
+          />
+          <Tab label="New Arrivals" sx={{ textTransform: "none" }} />
+          <Tab label="Best Sellers" sx={{ textTransform: "none" }} />
+          <Tab label="Sale Items" sx={{ textTransform: "none" }} />
+        </Tabs>
+      </Box>
 
-                {/* Tabs */}
-                <Tabs
-                    value={tab}
-                    onChange={(e, newValue) => setTab(newValue)}
-                    textColor="inherit"
-                    TabIndicatorProps={{ style: { background: "brown" } }}
-                >
-                    <Tab label="All Products" sx={{ textTransform: "none", fontWeight: tab === 0 ? "bold" : "400" }} />
-                    <Tab label="New Arrivals" sx={{ textTransform: "none" }} />
-                    <Tab label="Best Sellers" sx={{ textTransform: "none" }} />
-                    <Tab label="Sale Items" sx={{ textTransform: "none" }} />
-                </Tabs>
-            </Box>
-
-            {/* Product Grid */}
-            <DataState
-                data={products}
-                error={error}
-                loaderStyle={{ height: '400px' }}
-                loading={loading}
-                render={(products) =>
-                    <Box
-                        sx={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-                            gap: 4,
-                        }}
-                    >
-                        {products.map((product) => (
-                            <FeaturedProductCard key={product.id} product={product} />
-                        ))}
-                    </Box>
-                }
-            />
-            <ErrorSnackbar open={errorPopupOpen} message={error?.message} onClose={() => setErrorPopupOpen(false)} />
-        </Box>
-    );
-}
+      {/* Product Grid */}
+      <DataState
+        data={products}
+        error={error}
+        loaderStyle={{ height: "400px" }}
+        loading={loading}
+        render={(products) => (
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+              gap: 4,
+            }}
+          >
+            {products.map((product) => (
+              <FeaturedProductCard key={product.id} product={product} />
+            ))}
+          </Box>
+        )}
+      />
+      <ErrorSnackbar
+        open={errorPopupOpen}
+        message={error?.message}
+        onClose={() => setErrorPopupOpen(false)}
+      />
+    </Box>
+  );
+};
 
 export default OurProducts;

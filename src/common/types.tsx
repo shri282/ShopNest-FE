@@ -1,5 +1,5 @@
 export interface ISnackbarState {
-    open: boolean;
-    message: string;
-    status: "Error" | "Info";
+  open: boolean;
+  message: string;
+  status: "Error" | "Info";
 }

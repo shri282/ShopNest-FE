@@ -1,38 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
-  Box, Button, Rating, TextField, Typography, Paper, Stack, Collapse, IconButton
-} from '@mui/material';
-import { useForm, Controller } from 'react-hook-form';
-import CloseIcon from '@mui/icons-material/Close';
-import { IProduct, IProductReviewForm } from '../../interfaces/Product';
-import { useAuthContext } from '../../context/auth';
-import { ISnackbarState } from '../../common/types';
-import ProductService from '../../services/ProductService';
-import SnackBar from '../../common/SnackBar';
+  Box,
+  Button,
+  Rating,
+  TextField,
+  Typography,
+  Paper,
+  Stack,
+  Collapse,
+  IconButton,
+} from "@mui/material";
+import { useForm, Controller } from "react-hook-form";
+import CloseIcon from "@mui/icons-material/Close";
+import { IProduct, IProductReviewForm } from "../../interfaces/Product";
+import { useAuthContext } from "../../context/auth";
+import { ISnackbarState } from "../../common/types";
+import ProductService from "../../services/ProductService";
+import SnackBar from "../../common/SnackBar";
 
 interface WriteReviewProps {
   product: IProduct;
   onReviewSubmit: () => void;
 }
 
-const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) => {
+const WriteReview: React.FC<WriteReviewProps> = ({
+  product,
+  onReviewSubmit,
+}) => {
   const { authContextSelector } = useAuthContext();
   const user = authContextSelector.getUser();
-  const { control, register, handleSubmit, reset } = useForm<IProductReviewForm>({
-    defaultValues: {
-      rating: 0,
-      title: '',
-      content: '',
-      media: [],
-    },
-  });
+  const { control, register, handleSubmit, reset } =
+    useForm<IProductReviewForm>({
+      defaultValues: {
+        rating: 0,
+        title: "",
+        content: "",
+        media: [],
+      },
+    });
 
   const [submitLoader, setSubmitLoader] = useState<boolean>(false);
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [snackbar, setSnackbar] = useState<ISnackbarState>({
     open: false,
     message: "",
-    status: "Info"
+    status: "Info",
   });
 
   const onSubmit = async (data: IProductReviewForm) => {
@@ -45,16 +57,16 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
       setSnackbar({
         open: true,
         message: "Review submitted successfully!",
-        status: "Info"
-      })
+        status: "Info",
+      });
       onReviewSubmit();
       setOpenForm(false);
     } catch (error: any) {
       setSnackbar({
         open: true,
         message: error.message,
-        status: "Error"
-      })
+        status: "Error",
+      });
     } finally {
       setSubmitLoader(false);
     }
@@ -76,10 +88,10 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
             fullWidth
             onClick={() => setOpenForm(true)}
             sx={{
-              borderRadius: '50px',
-              textTransform: 'none',
+              borderRadius: "50px",
+              textTransform: "none",
               py: 1.5,
-              fontWeight: 500
+              fontWeight: 500,
             }}
           >
             Write a product review
@@ -91,7 +103,12 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
       <Collapse in={openForm} timeout={500}>
         {openForm && (
           <Box mt={1}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={2}
+            >
               <Typography variant="h6" fontWeight="bold">
                 Write a Review
               </Typography>
@@ -104,13 +121,17 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
               <Stack spacing={3}>
                 {/* Rating */}
                 <Box>
-                  <Typography variant="subtitle1" fontWeight="bolder" gutterBottom>
+                  <Typography
+                    variant="subtitle1"
+                    fontWeight="bolder"
+                    gutterBottom
+                  >
                     Overall Rating
                   </Typography>
                   <Controller
                     name="rating"
                     control={control}
-                    rules={{ required: 'Rating is required' }}
+                    rules={{ required: "Rating is required" }}
                     render={({ field }) => (
                       <Rating
                         {...field}
@@ -124,7 +145,7 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
 
                 {/* Title */}
                 <TextField
-                  {...register('title', { required: 'Title is required' })}
+                  {...register("title", { required: "Title is required" })}
                   label="Title"
                   placeholder="Summarize your experience"
                   fullWidth
@@ -132,7 +153,7 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
 
                 {/* Review */}
                 <TextField
-                  {...register('content', { required: 'Review is required' })}
+                  {...register("content", { required: "Review is required" })}
                   label="Review"
                   placeholder="Tell others about your experience..."
                   fullWidth
@@ -142,7 +163,9 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
 
                 {/* Photos */}
                 <Box>
-                  <Typography sx={{ marginBottom: 1 }}>Upload Photos</Typography>
+                  <Typography sx={{ marginBottom: 1 }}>
+                    Upload Photos
+                  </Typography>
                   <Controller
                     name="media"
                     control={control}
@@ -151,7 +174,7 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
                         <Button
                           variant="outlined"
                           component="label"
-                          sx={{ textTransform: 'none' }}
+                          sx={{ textTransform: "none" }}
                         >
                           Choose Files
                           <input
@@ -162,7 +185,10 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
                             onChange={(e) => {
                               if (!e.target.files) return;
                               const newFiles = Array.from(e.target.files);
-                              const updatedFiles = [...(field.value || []), ...newFiles];
+                              const updatedFiles = [
+                                ...(field.value || []),
+                                ...newFiles,
+                              ];
                               field.onChange(updatedFiles);
                             }}
                           />
@@ -170,35 +196,44 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
 
                         {/* Preview */}
                         {field.value && field.value.length > 0 && (
-                          <Box mt={2} sx={{ p: 2, backgroundColor: '#f7f7f7', borderRadius: 2 }}>
+                          <Box
+                            mt={2}
+                            sx={{
+                              p: 2,
+                              backgroundColor: "#f7f7f7",
+                              borderRadius: 2,
+                            }}
+                          >
                             <Stack direction="row" spacing={2} flexWrap="wrap">
                               {field.value.map((file: File, index: number) => (
                                 <Box
                                   key={index}
                                   sx={{
-                                    position: 'relative',
+                                    position: "relative",
                                     width: 90,
                                     height: 90,
                                     borderRadius: 1,
-                                    border: '1px solid #ddd',
-                                    overflow: 'hidden',
-                                    backgroundColor: '#fff',
+                                    border: "1px solid #ddd",
+                                    overflow: "hidden",
+                                    backgroundColor: "#fff",
                                   }}
                                 >
                                   {/* Remove Button */}
                                   <IconButton
                                     size="small"
                                     sx={{
-                                      position: 'absolute',
+                                      position: "absolute",
                                       top: 2,
                                       right: 2,
-                                      bgcolor: 'rgba(0,0,0,0.6)',
-                                      color: '#fff',
-                                      '&:hover': { bgcolor: 'rgba(0,0,0,0.8)' },
+                                      bgcolor: "rgba(0,0,0,0.6)",
+                                      color: "#fff",
+                                      "&:hover": { bgcolor: "rgba(0,0,0,0.8)" },
                                       zIndex: 2,
                                     }}
                                     onClick={() => {
-                                      const updatedFiles = field.value.filter((_, i) => i !== index);
+                                      const updatedFiles = field.value.filter(
+                                        (_, i) => i !== index
+                                      );
                                       field.onChange(updatedFiles);
                                     }}
                                   >
@@ -211,9 +246,9 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
                                     src={URL.createObjectURL(file)}
                                     alt={`preview-${index}`}
                                     sx={{
-                                      width: '100%',
-                                      height: '100%',
-                                      objectFit: 'cover',
+                                      width: "100%",
+                                      height: "100%",
+                                      objectFit: "cover",
                                       borderRadius: 1,
                                     }}
                                   />
@@ -234,7 +269,7 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
                   color="primary"
                   size="large"
                   disabled={submitLoader}
-                  sx={{ textTransform: 'none' }}
+                  sx={{ textTransform: "none" }}
                 >
                   {submitLoader ? "Submitting..." : "Submit Review"}
                 </Button>
@@ -244,7 +279,10 @@ const WriteReview: React.FC<WriteReviewProps> = ({ product, onReviewSubmit }) =>
         )}
       </Collapse>
 
-      <SnackBar state={snackbar} onClose={() => setSnackbar((prev) => ({ ...prev, open: false }))} />
+      <SnackBar
+        state={snackbar}
+        onClose={() => setSnackbar((prev) => ({ ...prev, open: false }))}
+      />
     </Paper>
   );
 };

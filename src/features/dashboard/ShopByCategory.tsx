@@ -7,172 +7,180 @@ import DataState from "../../common/DataState";
 import ErrorSnackbar from "../../common/ErrorSnackBar";
 
 interface ShopByCategoryProps {
-    setSelectedCategory: (category: string) => void;
+  setSelectedCategory: (category: string) => void;
 }
 
-const ShopByCategory: React.FC<ShopByCategoryProps> = ({ setSelectedCategory }) => {
-    const [productCategories, setProductCategories] = useState<IProductCategory[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<any>(null);
+const ShopByCategory: React.FC<ShopByCategoryProps> = ({
+  setSelectedCategory,
+}) => {
+  const [productCategories, setProductCategories] = useState<
+    IProductCategory[]
+  >([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<any>(null);
 
-    const [showLeftArrow, setShowLeftArrow] = useState(false);
-    const [showRightArrow, setShowRightArrow] = useState(false);
-    const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(false);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
-    const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
+  const [errorPopupOpen, setErrorPopupOpen] = React.useState(false);
 
-    
-    useEffect(() => {
-        const fetchProductCategories = async () => {
-            setLoading(true);
-            
-            try {
-                const productCategoriesResp = await ProductService.getProductsCategories();
-                setProductCategories(productCategoriesResp);
-            } catch (error: any) {
-                setError(error);
-                setErrorPopupOpen(true);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchProductCategories();
-    }, []);
+  useEffect(() => {
+    const fetchProductCategories = async () => {
+      setLoading(true);
 
-    // Check for overflow & update arrow visibility
-    const updateArrows = () => {
-        if (scrollRef.current) {
-            const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-            setShowLeftArrow(scrollLeft > 0);
-            setShowRightArrow(scrollLeft + clientWidth < scrollWidth);
-        }
+      try {
+        const productCategoriesResp =
+          await ProductService.getProductsCategories();
+        setProductCategories(productCategoriesResp);
+      } catch (error: any) {
+        setError(error);
+        setErrorPopupOpen(true);
+      } finally {
+        setLoading(false);
+      }
     };
+    fetchProductCategories();
+  }, []);
 
-    // Run when scroll happens
-    useEffect(() => {
-        const el = scrollRef.current;
-        if (!el) return;
+  // Check for overflow & update arrow visibility
+  const updateArrows = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setShowLeftArrow(scrollLeft > 0);
+      setShowRightArrow(scrollLeft + clientWidth < scrollWidth);
+    }
+  };
 
-        updateArrows(); // initial check
+  // Run when scroll happens
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
 
-        el.addEventListener("scroll", updateArrows);
-        window.addEventListener("resize", updateArrows);
+    updateArrows(); // initial check
 
-        return () => {
-            el.removeEventListener("scroll", updateArrows);
-            window.removeEventListener("resize", updateArrows);
-        };
-    }, [productCategories]);
+    el.addEventListener("scroll", updateArrows);
+    window.addEventListener("resize", updateArrows);
 
-    // Scroll function
-    const scroll = (direction: "left" | "right") => {
-        if (scrollRef.current) {
-            const scrollAmount = 200;
-            scrollRef.current.scrollBy({
-                left: direction === "left" ? -scrollAmount : scrollAmount,
-                behavior: "smooth",
-            });
-        }
+    return () => {
+      el.removeEventListener("scroll", updateArrows);
+      window.removeEventListener("resize", updateArrows);
     };
+  }, [productCategories]);
 
-    return (
-        <Box 
-            paddingTop={5}
-            display={'flex'}
-            flexDirection={'column'}
-            alignItems={'center'}
-        >
-            {/* Heading */}
-            <Typography sx={{ color: "brown", fontSize: "14px", mb: 1 }}>
-                Shop by Category
-            </Typography>
-            <Typography sx={{ fontSize: "30px", fontWeight: "bold", mb: 5 }}>
-                Find What You Need
-            </Typography>
+  // Scroll function
+  const scroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const scrollAmount = 200;
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
 
-            {/* Wrapper with arrows */}
-            <DataState
-                data={productCategories}
-                error={error}
-                loaderStyle={{ height: '50px' }}
-                loading={loading}
-                render={(productCategories) =>
-                    <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
-                        {/* Left arrow */}
-                        {showLeftArrow && (
-                            <IconButton onClick={() => scroll("left")}>
-                                <ArrowBackIos />
-                            </IconButton>
-                        )}
+  return (
+    <Box
+      paddingTop={5}
+      display={"flex"}
+      flexDirection={"column"}
+      alignItems={"center"}
+    >
+      {/* Heading */}
+      <Typography sx={{ color: "brown", fontSize: "14px", mb: 1 }}>
+        Shop by Category
+      </Typography>
+      <Typography sx={{ fontSize: "30px", fontWeight: "bold", mb: 5 }}>
+        Find What You Need
+      </Typography>
 
-                        {/* Scrollable categories */}
-                        <Box
-                            ref={scrollRef}
-                            sx={{
-                                display: "flex",
-                                overflowX: "auto",
-                                scrollBehavior: "smooth",
-                                gap: 4,
-                                flex: 1,
-                                "&::-webkit-scrollbar": { display: "none" },
-                            }}
-                        >
-                            {productCategories.map((cat, index) => (
-                                <Box
-                                    key={index}
-                                    onClick={() => setSelectedCategory(cat.name)}
-                                    sx={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        alignItems: "center",
-                                        textAlign: "center",
-                                        width: "150px",
-                                        flexGrow: 1,
-                                        cursor: "pointer",
-                                        flexShrink: 0,
-                                    }}
-                                >
-                                    <Box
-                                        sx={{
-                                            width: "120px",
-                                            height: "120px",
-                                            borderRadius: "50%",
-                                            overflow: "hidden",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            mb: 2,
-                                            border: "1px solid #eee",
-                                        }}
-                                    >
-                                        <img
-                                            style={{ width: "100%", objectFit: "cover" }}
-                                            src={cat.imageUrl}
-                                            alt={cat.name}
-                                        />
-                                    </Box>
-                                    <Typography sx={{ fontSize: "18px", fontWeight: "500" }}>
-                                        {cat.name}
-                                    </Typography>
-                                    <Typography sx={{ fontSize: "14px", color: "gray" }}>
-                                        12 Products
-                                    </Typography>
-                                </Box>
-                            ))}
-                        </Box>
+      {/* Wrapper with arrows */}
+      <DataState
+        data={productCategories}
+        error={error}
+        loaderStyle={{ height: "50px" }}
+        loading={loading}
+        render={(productCategories) => (
+          <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
+            {/* Left arrow */}
+            {showLeftArrow && (
+              <IconButton onClick={() => scroll("left")}>
+                <ArrowBackIos />
+              </IconButton>
+            )}
 
-                        {/* Right arrow */}
-                        {showRightArrow && (
-                            <IconButton onClick={() => scroll("right")}>
-                                <ArrowForwardIos />
-                            </IconButton>
-                        )}
-                    </Box>
-                }
-            />
-            <ErrorSnackbar open={errorPopupOpen} message={error?.message} onClose={() => setErrorPopupOpen(false)} />
-        </Box>
-    );
+            {/* Scrollable categories */}
+            <Box
+              ref={scrollRef}
+              sx={{
+                display: "flex",
+                overflowX: "auto",
+                scrollBehavior: "smooth",
+                gap: 4,
+                flex: 1,
+                "&::-webkit-scrollbar": { display: "none" },
+              }}
+            >
+              {productCategories.map((cat, index) => (
+                <Box
+                  key={index}
+                  onClick={() => setSelectedCategory(cat.name)}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    textAlign: "center",
+                    width: "150px",
+                    flexGrow: 1,
+                    cursor: "pointer",
+                    flexShrink: 0,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: "120px",
+                      height: "120px",
+                      borderRadius: "50%",
+                      overflow: "hidden",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      mb: 2,
+                      border: "1px solid #eee",
+                    }}
+                  >
+                    <img
+                      style={{ width: "100%", objectFit: "cover" }}
+                      src={cat.imageUrl}
+                      alt={cat.name}
+                    />
+                  </Box>
+                  <Typography sx={{ fontSize: "18px", fontWeight: "500" }}>
+                    {cat.name}
+                  </Typography>
+                  <Typography sx={{ fontSize: "14px", color: "gray" }}>
+                    12 Products
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+
+            {/* Right arrow */}
+            {showRightArrow && (
+              <IconButton onClick={() => scroll("right")}>
+                <ArrowForwardIos />
+              </IconButton>
+            )}
+          </Box>
+        )}
+      />
+      <ErrorSnackbar
+        open={errorPopupOpen}
+        message={error?.message}
+        onClose={() => setErrorPopupOpen(false)}
+      />
+    </Box>
+  );
 };
 
 export default ShopByCategory;

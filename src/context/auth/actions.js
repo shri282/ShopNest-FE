@@ -1,5 +1,5 @@
-import { writeSession } from '../../utils/WebStorage';
-import * as actionTypes from './types'
+import { writeSession } from "../../utils/WebStorage";
+import * as actionTypes from "./types";
 
 const authActions = (dispatch, navigate) => {
   return {

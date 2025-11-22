@@ -4,16 +4,16 @@ export const REGISTER_URL = "/register";
 
 // user
 export const getUserAddressesURL = (userId: number) => {
-    return `/users/${userId}/address`;
-}
+  return `/users/${userId}/address`;
+};
 
 export const updateUserAddressURL = (userId: number) => {
-    return `/users/${userId}/update-address`;
-}
+  return `/users/${userId}/update-address`;
+};
 
 export const addUserAddressesURL = (userId: number) => {
-    return `/users/${userId}/add-address`;
-}
+  return `/users/${userId}/add-address`;
+};
 
 // product module
 
@@ -24,13 +24,13 @@ export const SEARCH_PRODUCT = "/products/search";
 
 // cart module
 export const userCartURL = (userId: Number) => {
-    return `/users/${userId}/cart`;
+  return `/users/${userId}/cart`;
 };
 
 export const userCartItemURL = (userId: number, itemId: number) => {
-    return `/users/${userId}/cart/cartItem/${itemId}`;
+  return `/users/${userId}/cart/cartItem/${itemId}`;
 };
 
 export const userCartCheckoutURL = (cartId: number) => {
-    return `/api/user/payment/checkout-session/${cartId}`;
-}
+  return `/api/user/payment/checkout-session/${cartId}`;
+};

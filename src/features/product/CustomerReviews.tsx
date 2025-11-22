@@ -13,29 +13,37 @@ import {
   ToggleButton,
   IconButton,
   Grid,
-} from '@mui/material';
-import { ThumbUpOutlined, ThumbDownOutlined, CheckCircle } from '@mui/icons-material';
-import React, { useEffect, useMemo, useState } from 'react';
-import { IProductReview } from '../../interfaces/Product';
-import ProductService from '../../services/ProductService';
-import DataState from '../../common/DataState';
-import { formatDate } from '../../utils/date';
+} from "@mui/material";
+import {
+  ThumbUpOutlined,
+  ThumbDownOutlined,
+  CheckCircle,
+} from "@mui/icons-material";
+import React, { useEffect, useMemo, useState } from "react";
+import { IProductReview } from "../../interfaces/Product";
+import ProductService from "../../services/ProductService";
+import DataState from "../../common/DataState";
+import { formatDate } from "../../utils/date";
 
 interface CustomerReviewsProps {
   productId: number;
   reviewSubmitted: boolean;
 }
 
-const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId, reviewSubmitted }) => {
+const CustomerReviews: React.FC<CustomerReviewsProps> = ({
+  productId,
+  reviewSubmitted,
+}) => {
   // Data State
   const [reviews, setReviews] = useState<IProductReview[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
 
   // ui controls
-  const [sort, setSort] = useState<'newest' | 'oldest' | 'lowest rating' | 'highest rating'>('newest');
+  const [sort, setSort] = useState<
+    "newest" | "oldest" | "lowest rating" | "highest rating"
+  >("newest");
   const [filter, setFilter] = useState<number | null>(null);
-
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -56,19 +64,19 @@ const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId, reviewSubm
 
   const sortedReviews = useMemo(() => {
     return [...reviews]
-      .filter(r => !filter || Math.round(r.rating) === filter)
+      .filter((r) => !filter || Math.round(r.rating) === filter)
       .sort((a, b) => {
-        if (sort === 'newest' || sort === 'oldest') {
-          const d1 = new Date(a.createdAt ?? '').getTime();
-          const d2 = new Date(b.createdAt ?? '').getTime();
-          return sort === 'newest' ? d2 - d1 : d1 - d2;
+        if (sort === "newest" || sort === "oldest") {
+          const d1 = new Date(a.createdAt ?? "").getTime();
+          const d2 = new Date(b.createdAt ?? "").getTime();
+          return sort === "newest" ? d2 - d1 : d1 - d2;
         }
 
-        if (sort === 'highest rating') {
+        if (sort === "highest rating") {
           return b.rating - a.rating;
         }
 
-        if (sort === 'lowest rating') {
+        if (sort === "lowest rating") {
           return a.rating - b.rating;
         }
 
@@ -76,9 +84,8 @@ const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId, reviewSubm
       });
   }, [reviews, filter, sort]);
 
-
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: "100%" }}>
       {/* Header */}
       <Stack
         direction="row"
@@ -101,7 +108,15 @@ const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId, reviewSubm
             <Select
               size="small"
               value={sort}
-              onChange={(e) => setSort(e.target.value as 'newest' | 'oldest' | 'lowest rating' | 'highest rating')}
+              onChange={(e) =>
+                setSort(
+                  e.target.value as
+                    | "newest"
+                    | "oldest"
+                    | "lowest rating"
+                    | "highest rating"
+                )
+              }
             >
               <MenuItem value="newest">Newest</MenuItem>
               <MenuItem value="oldest">Oldest</MenuItem>
@@ -115,12 +130,12 @@ const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId, reviewSubm
             <Typography variant="caption">Filter by rating:</Typography>
             <ToggleButtonGroup
               size="small"
-              value={filter ?? 'all'}
+              value={filter ?? "all"}
               exclusive
-              onChange={(_, v) => setFilter(v === 'all' ? null : v)}
+              onChange={(_, v) => setFilter(v === "all" ? null : v)}
             >
               <ToggleButton value="all">All</ToggleButton>
-              {[5, 4, 3, 2, 1].map(r => (
+              {[5, 4, 3, 2, 1].map((r) => (
                 <ToggleButton key={r} value={r}>
                   {r}★
                 </ToggleButton>
@@ -134,9 +149,9 @@ const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId, reviewSubm
       <Box
         sx={{
           maxHeight: 500,
-          overflowY: 'auto',
-          '&::-webkit-scrollbar': {
-            display: 'none',
+          overflowY: "auto",
+          "&::-webkit-scrollbar": {
+            display: "none",
           },
           p: 1,
         }}
@@ -156,18 +171,22 @@ const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId, reviewSubm
                 <Paper
                   key={index}
                   elevation={1}
-                  sx={{ p: 2, borderRadius: 2, bgcolor: 'background.paper' }}
+                  sx={{ p: 2, borderRadius: 2, bgcolor: "background.paper" }}
                 >
                   {/* Header */}
-                  <Stack direction="row" justifyContent="space-between" alignItems="center">
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
                     <Stack direction="row" spacing={2} alignItems="center">
                       <Avatar>
-                        {review.reviewer?.username?.[0]?.toUpperCase() ?? 'A'}
+                        {review.reviewer?.username?.[0]?.toUpperCase() ?? "A"}
                       </Avatar>
                       <Box>
                         <Stack direction="row" alignItems="center" spacing={1}>
                           <Typography variant="subtitle1" fontWeight="bold">
-                            {review.reviewer?.username ?? 'Anonymous'}
+                            {review.reviewer?.username ?? "Anonymous"}
                           </Typography>
                           <Chip
                             label="Verified"
@@ -177,11 +196,15 @@ const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId, reviewSubm
                           />
                         </Stack>
                         <Typography variant="caption" color="text.secondary">
-                          {formatDate(review.createdAt, 'MMMM dd, yyyy')}
+                          {formatDate(review.createdAt, "MMMM dd, yyyy")}
                         </Typography>
                       </Box>
                     </Stack>
-                    <Rating value={review.rating ?? 0} precision={0.5} readOnly />
+                    <Rating
+                      value={review.rating ?? 0}
+                      precision={0.5}
+                      readOnly
+                    />
                   </Stack>
 
                   {/* Title */}
@@ -195,7 +218,7 @@ const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId, reviewSubm
                   <Typography
                     variant="body2"
                     color="text.secondary"
-                    sx={{ mt: 0.5, whiteSpace: 'pre-wrap' }}
+                    sx={{ mt: 0.5, whiteSpace: "pre-wrap" }}
                   >
                     {review.content}
                   </Typography>
@@ -203,21 +226,25 @@ const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId, reviewSubm
                   {/* Media Section */}
                   {review.mediaUrls && review.mediaUrls.length > 0 && (
                     <Grid container spacing={2} mt={1}>
-                      {review.mediaUrls.split(',').map((url, idx) => (
+                      {review.mediaUrls.split(",").map((url, idx) => (
                         <Grid size={{ xs: 4, sm: 3, md: 2 }} key={idx}>
                           <Paper
                             variant="outlined"
                             sx={{
                               borderRadius: 2,
-                              overflow: 'hidden',
-                              cursor: 'pointer',
-                              '&:hover': { opacity: 0.8 },
+                              overflow: "hidden",
+                              cursor: "pointer",
+                              "&:hover": { opacity: 0.8 },
                             }}
                           >
                             <img
                               src={url}
                               alt={`review-media-${idx}`}
-                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                              }}
                             />
                           </Paper>
                         </Grid>
@@ -250,7 +277,6 @@ const CustomerReviews: React.FC<CustomerReviewsProps> = ({ productId, reviewSubm
             </Stack>
           )}
         />
-
       </Box>
     </Box>
   );

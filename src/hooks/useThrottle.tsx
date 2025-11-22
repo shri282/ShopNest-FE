@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export function useThrottle<T>(value: T, delay: number): T {
-    const [throttledValue, setThrottledValue] = useState(value);
+  const [throttledValue, setThrottledValue] = useState(value);
 
-    useEffect(() => {
-        const handler = setTimeout(() => {
-            setThrottledValue(value);
-        }, delay);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setThrottledValue(value);
+    }, delay);
 
-        return () => {
-            clearTimeout(handler);
-        };
-    }, [value, delay]);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
 
-    return throttledValue;
+  return throttledValue;
 }

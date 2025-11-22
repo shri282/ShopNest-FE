@@ -1,13 +1,13 @@
 export const readSession = (key: string) => {
-    const value = sessionStorage.getItem(key);
+  const value = sessionStorage.getItem(key);
 
-    if (!value) {
-        return null;
-    }
+  if (!value) {
+    return null;
+  }
 
-    return JSON.parse(value);
-}
+  return JSON.parse(value);
+};
 
 export const writeSession = (key: string, data: any) => {
-    sessionStorage.setItem(key, JSON.stringify(data));
-}
+  sessionStorage.setItem(key, JSON.stringify(data));
+};

@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 export const formatDate = (dateString, formatStr) => {
   const date = new Date(dateString);

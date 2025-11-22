@@ -1,35 +1,35 @@
 import * as actionTypes from "./types";
 
 const INITIAL_STATE = {
-    value: 0
-}
+  value: 0,
+};
 
 const cartItemsCountReducer = (state = INITIAL_STATE, action) => {
-    switch(action.type) {
-        case actionTypes.SET:
-            return { value: action.payload };
+  switch (action.type) {
+    case actionTypes.SET:
+      return { value: action.payload };
 
-        case actionTypes.INCREMENT:
-            return {
-                ...state,
-                value: state.value + 1
-            }
+    case actionTypes.INCREMENT:
+      return {
+        ...state,
+        value: state.value + 1,
+      };
 
-        case actionTypes.DECREMENT:
-            return {
-                ...state,
-                value: state.value - 1
-            }
-            
-        case actionTypes.ADD:
-            return {
-                ...state,
-                value: state.value + action.payload
-            }
+    case actionTypes.DECREMENT:
+      return {
+        ...state,
+        value: state.value - 1,
+      };
 
-        default:
-            return INITIAL_STATE;
-    }
-}
+    case actionTypes.ADD:
+      return {
+        ...state,
+        value: state.value + action.payload,
+      };
+
+    default:
+      return INITIAL_STATE;
+  }
+};
 
 export default cartItemsCountReducer;

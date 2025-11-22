@@ -48,7 +48,7 @@ function ProductPageSkeletonLoader() {
           <Skeleton variant="rectangular" width={140} height={45} />
           <Skeleton variant="rectangular" width={140} height={45} />
         </Stack>
-        <Skeleton variant="rectangular" width={'100%'} height={'600px'} />
+        <Skeleton variant="rectangular" width={"100%"} height={"600px"} />
       </Box>
     </Box>
   );

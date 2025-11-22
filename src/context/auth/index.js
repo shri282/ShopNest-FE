@@ -1,4 +1,10 @@
-import { useMemo, useReducer, createContext, useContext, useEffect } from "react";
+import {
+  useMemo,
+  useReducer,
+  createContext,
+  useContext,
+  useEffect,
+} from "react";
 import { initialAuthState, authReducer } from "./reducer.js";
 import authActions from "./actions.js";
 import authSelectors from "./selectors.js";
@@ -13,7 +19,10 @@ function AuthProvider({ children }) {
   useEffect(() => {
     const auth = readSession("loggedInUser");
     if (auth) {
-      dispatch({ type: "RE-HYDRATE", payload: { ...auth, isAuthenticated: true } });
+      dispatch({
+        type: "RE-HYDRATE",
+        payload: { ...auth, isAuthenticated: true },
+      });
     }
   }, []);
 

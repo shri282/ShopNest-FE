@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react';
-import { Box } from '@mui/material';
-import PromotionalBanner from '../../common/PromotionalBanner';
-import ShopByCategory from './ShopByCategory';
-import NewArrivals from './NewArrivals';
-import OurProducts from './OurProducts';
+import React, { useRef, useState } from "react";
+import { Box } from "@mui/material";
+import PromotionalBanner from "../../common/PromotionalBanner";
+import ShopByCategory from "./ShopByCategory";
+import NewArrivals from "./NewArrivals";
+import OurProducts from "./OurProducts";
 
 const UserDashboard: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>();
@@ -14,13 +14,15 @@ const UserDashboard: React.FC = () => {
     setSelectedCategory(category);
 
     if (ourProductsRef.current) {
-      ourProductsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      ourProductsRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
   };
 
   return (
-    <Box p={2} paddingTop={5} width={'100%'}>
-
+    <Box p={2} paddingTop={5} width={"100%"}>
       <PromotionalBanner
         title="Monsoon Mega Sale"
         subtitle="Up to 70% Off"
@@ -35,7 +37,7 @@ const UserDashboard: React.FC = () => {
       <ShopByCategory setSelectedCategory={handleCategorySelect} />
 
       <NewArrivals />
-      
+
       <div ref={ourProductsRef}>
         <OurProducts category={selectedCategory} />
       </div>
