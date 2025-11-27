@@ -23,7 +23,7 @@ import {
 } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
-import { IProduct } from "../../interfaces/Product";
+import { IProduct, IProductReviewStats } from "../../interfaces/Product";
 import ProductService from "../../services/ProductService";
 import CartService from "../../services/CartService";
 import UpdateProductPopup from "../../components/UpdateProductPopup";
@@ -37,6 +37,7 @@ import { useAuthContext } from "../../context/auth";
 import ProductPageSkeletonLoader from "../../components/loaders/ProductPageSkeletonLoader";
 import WriteReview from "./WriteReview";
 import CustomerReviews from "./CustomerReviews";
+import useOnFetch from "../../hooks/useOnFetch";
 
 const StyledButton = styled(Button)({
   padding: "12px 24px",
@@ -81,6 +82,8 @@ const Product = () => {
     status: "Info",
   });
 
+  const { onFetch: fetchRatingStats, result: ratingStat } = useOnFetch<IProductReviewStats>();
+
   const getProduct = useCallback(async () => {
     setLoading(true);
 
@@ -123,6 +126,7 @@ const Product = () => {
   useEffect(() => {
     if (!id) return;
     getProduct();
+    fetchRatingStats(ProductService.getProductReviewStats(Number(id)));
   }, [id, getProduct]);
 
   const formatPrice = (price: number) => {
@@ -187,14 +191,9 @@ const Product = () => {
               </Typography>
 
               <Stack direction="row" alignItems="center" mb={2}>
-                <Rating
-                  value={4.5}
-                  precision={0.5}
-                  readOnly
-                  emptyIcon={<StarBorder fontSize="inherit" />}
-                />
+                <Rating value={ratingStat?.averageRating} precision={0.1} readOnly />
                 <Typography variant="body2" color="text.secondary" ml={1}>
-                  (24 reviews)
+                  {`(${ratingStat?.totalRatings || 0} reviews)`}
                 </Typography>
               </Stack>
 

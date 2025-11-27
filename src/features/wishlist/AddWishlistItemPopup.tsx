@@ -106,7 +106,7 @@ const AddWishlistItemPopup: React.FC<AddWishlistItemFormProps> = ({
     } catch (error: any) {
       setSnackbar({
         open: true,
-        message: error.message,
+        message: error.response.data.message,
         status: "Error",
       });
     } finally {

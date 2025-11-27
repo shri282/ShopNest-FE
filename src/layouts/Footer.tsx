@@ -1,72 +1,123 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, TextField, IconButton, Stack } from "@mui/material";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import React from "react";
 
 function Footer() {
   return (
     <Box
       sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        backgroundColor: "#111827",
-        p: 5,
-        marginTop: 5,
-        paddingBottom: 10,
+        bgcolor: "#111827",
         color: "white",
+        py: 8,
+        px: { xs: 3, md: 10 },
+        display: "flex",
+        flexDirection: { xs: "column", md: "row" },
+        justifyContent: "space-between",
+        gap: 5,
       }}
     >
       {/* Subscribe */}
-      <Box display={"flex"} flexDirection={"column"} gap={1}>
-        <Typography variant="h4" color="brown">
+      <Box sx={{ maxWidth: 350 }}>
+        <Typography variant="h4" sx={{ fontWeight: 700, color: "#f97316" }}>
           Say Hello!!!
         </Typography>
-        <Typography variant="subtitle2">
-          Get the lates trends delivered to your inbox!!
+
+        <Typography mt={1} variant="subtitle2" color="#cbd5e1">
+          Get the latest trends delivered to your inbox!
         </Typography>
-        <Button variant="contained" color="secondary">
-          SUBSCRIBE
-        </Button>
+
+        <Stack direction="row" spacing={1} mt={3}>
+          <TextField
+            variant="outlined"
+            size="small"
+            placeholder="Enter your email"
+            sx={{
+              flex: 1,
+              bgcolor: "white",
+              borderRadius: 1,
+            }}
+          />
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: "#f97316",
+              "&:hover": { bgcolor: "#ea580c" },
+              px: 3,
+            }}
+          >
+            SUBSCRIBE
+          </Button>
+        </Stack>
       </Box>
 
       {/* Quick Links */}
       <Box
         sx={{
           display: "flex",
-          gap: 5,
-          textTransform: "uppercase",
-          marginRight: 10,
+          gap: { xs: 5, md: 10 },
+          textTransform: "capitalize",
         }}
       >
-        <Box>
-          <Typography sx={{ fontWeight: 700, color: "brown" }}>home</Typography>
-          <Box my={2} sx={{ cursor: "pointer" }}>
-            <Typography variant="subtitle1">offers</Typography>
-            <Typography variant="subtitle1">products</Typography>
-            <Typography variant="subtitle1">New arrivals</Typography>
-            <Typography variant="subtitle1">best selling</Typography>
+        {[
+          {
+            title: "Home",
+            links: ["offers", "products", "new arrivals", "best selling"],
+          },
+          {
+            title: "Company",
+            links: ["about us", "community", "reviews", "faq"],
+          },
+          {
+            title: "Social",
+            links: ["instagram", "facebook", "twitter", "linkedin"],
+          },
+        ].map((section) => (
+          <Box key={section.title}>
+            <Typography variant="h6" sx={{ fontWeight: 700, color: "#f97316" }}>
+              {section.title}
+            </Typography>
+            <Box mt={2} sx={{ cursor: "pointer" }}>
+              {section.links.map((l) => (
+                <Typography
+                  key={l}
+                  variant="subtitle2"
+                  sx={{
+                    my: 0.5,
+                    color: "#cbd5e1",
+                    transition: "color .3s",
+                    "&:hover": { color: "#f97316" },
+                  }}
+                >
+                  {l}
+                </Typography>
+              ))}
+            </Box>
           </Box>
-        </Box>
-        <Box>
-          <Typography sx={{ fontWeight: 700, color: "brown" }}>
-            company
-          </Typography>
-          <Box my={2} sx={{ cursor: "pointer" }}>
-            <Typography variant="subtitle1">about us</Typography>
-            <Typography variant="subtitle1">community</Typography>
-            <Typography variant="subtitle1">reviews</Typography>
-            <Typography variant="subtitle1">faq</Typography>
-          </Box>
-        </Box>
-        <Box>
-          <Typography sx={{ fontWeight: 700, color: "brown" }}>
-            social
-          </Typography>
-          <Box my={2} sx={{ cursor: "pointer" }}>
-            <Typography variant="subtitle1">instagram</Typography>
-            <Typography variant="subtitle1">facebook</Typography>
-            <Typography variant="subtitle1">twitter</Typography>
-            <Typography variant="subtitle1">linkedin</Typography>
-          </Box>
-        </Box>
+        ))}
+      </Box>
+
+      {/* Social icons */}
+      <Box>
+        <Typography variant="h6" sx={{ fontWeight: 700, color: "#f97316", mb: 2 }}>
+          Follow Us
+        </Typography>
+        <Stack direction="row" spacing={2}>
+          {[InstagramIcon, FacebookIcon, TwitterIcon, LinkedInIcon].map((Icon, i) => (
+            <IconButton
+              key={i}
+              sx={{
+                color: "#cbd5e1",
+                "&:hover": { color: "#f97316", transform: "scale(1.2)" },
+                transition: ".3s",
+              }}
+            >
+              <Icon />
+            </IconButton>
+          ))}
+        </Stack>
       </Box>
     </Box>
   );
