@@ -12,12 +12,12 @@ import {
   Modal,
   LinearProgress,
 } from "@mui/material";
-import { IWishlistSummary } from "../../interfaces/Cart";
 import CartService from "../../services/CartService";
 import { useNavigate } from "react-router-dom";
 import { ISnackbarState } from "../../common/types";
 import SnackBar from "../../common/SnackBar";
 import { useAuthContext } from "../../context/auth";
+import { IWishlistSummary } from "../../interfaces/Wishlist";
 
 interface AddWishlistItemFormProps {
   product: IProduct;

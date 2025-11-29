@@ -1,89 +1,88 @@
-import { Box, Button, Divider, Grid, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import { IWishlistDetail, IWishlistItem } from "../../interfaces/Cart";
-import CartService from "../../services/CartService";
+import { Box, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import DataState from "../../common/DataState";
-import ErrorSnackbar from "../../common/ErrorSnackBar";
 import { useAuthContext } from "../../context/auth";
-import WishlistCard from "./WishlistCard";
+import WishlistDetailView from "./WishlistDetailView";
+import WishlistSideBar from "./WishlistSideBar";
+import { WishlistService } from "../../services/WishlistService";
+import { IWishlistSummary } from "../../interfaces/Wishlist";
 
 const Wishlist = () => {
   const { authContextSelector } = useAuthContext();
   const user = authContextSelector.getUser();
 
-  const [wishlist, setWishlist] = useState<IWishlistDetail | null>(null);
+  const [wishlistSummaries, setWishlistSummaries] = useState<
+    IWishlistSummary[] | null
+  >(null);
+  const [selectedWishlist, setSelectedWishlist] = useState<IWishlistSummary>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
 
-  const [errorPopupOpen, setErrorPopupOpen] = useState(false);
-
   useEffect(() => {
-    const getDefaultWishlist = async () => {
+    const getAllWishlistSummary = async () => {
       if (!user) return;
       setLoading(true);
 
       try {
-        const wishlistData = await CartService.getDefaultWishlist(user.id);
-        setWishlist(wishlistData);
+        const wishlistData = await WishlistService.getAllWishlistSummary(
+          user.id
+        );
+        setWishlistSummaries(wishlistData);
+        setSelectedWishlist(wishlistData.find((ele) => ele.default));
       } catch (err) {
         setError(err);
-        setErrorPopupOpen(true);
       } finally {
         setLoading(false);
       }
     };
 
-    getDefaultWishlist();
+    getAllWishlistSummary();
   }, [user]);
 
   return (
     <Box p={2} paddingTop={5}>
       <DataState
-        data={wishlist}
+        data={wishlistSummaries}
         error={error}
         loading={loading}
-        render={(wishlist: IWishlistDetail) => (
-          <>
-            <Divider />
-            <Box display="flex" p={1} justifyContent="space-between">
-              <Typography variant="h5">
-                Wishlist ({wishlist?.wishlistItems.length})
-              </Typography>
-              <Box>
-                <Button
-                  variant="outlined"
+        render={(data: IWishlistSummary[]) => (
+          <Box mt={3} display={"flex"} gap={3}>
+            <Box>
+              <WishlistSideBar
+                wishlistSummaries={data}
+                setSelectedWishlist={setSelectedWishlist}
+                selectedWishlist={selectedWishlist}
+              />
+            </Box>
+            <Box>
+              {selectedWishlist ? (
+                <WishlistDetailView wishlistId={selectedWishlist.id} />
+              ) : (
+                <Box
                   sx={{
-                    color: "black",
-                    fontWeight: "bolder",
-                    textTransform: "none",
-                    border: "1.5px solid",
-                    borderColor: "rgba(0, 0, 0, 0.1)",
+                    width: 700,
+                    height: 400,
+                    borderRadius: 3,
+                    border: "2px dashed #d1d5db",
+                    backgroundColor: "#f8fafc",
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    gap: 2,
                   }}
                 >
-                  <ShoppingCartOutlinedIcon
-                    sx={{ color: "black", marginRight: "2px" }}
-                  />
-                  Move all to Cart
-                </Button>
-              </Box>
+                  <Typography variant="h6" fontWeight={500}>
+                    Nothing selected yet
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Please choose a wishlist from the left sidebar
+                  </Typography>
+                </Box>
+              )}
             </Box>
-            <Divider />
-            <Grid mt={2} container spacing={2}>
-              {wishlist?.wishlistItems.map((item: IWishlistItem) => (
-                <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={item.id}>
-                  <WishlistCard item={item} />
-                </Grid>
-              ))}
-            </Grid>
-          </>
+          </Box>
         )}
-      />
-
-      <ErrorSnackbar
-        open={errorPopupOpen}
-        message={error?.message}
-        onClose={() => setErrorPopupOpen(false)}
       />
     </Box>
   );

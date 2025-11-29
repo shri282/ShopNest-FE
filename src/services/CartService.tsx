@@ -2,9 +2,7 @@ import { AxiosResponse } from "axios";
 import { apiPrivate } from "../config/axios";
 import {
   ICart,
-  ICheckoutSession,
-  IWishlistDetail,
-  IWishlistSummary,
+  ICheckoutSession
 } from "../interfaces/Cart";
 import { IProduct } from "../interfaces/Product";
 import {
@@ -12,6 +10,7 @@ import {
   userCartItemURL,
   userCartURL,
 } from "../constants/apiEndPoints";
+import { IWishlistDetail, IWishlistSummary } from "../interfaces/Wishlist";
 
 class CartService {
   static async removeCartItem(userId: number, itemId: number): Promise<ICart> {

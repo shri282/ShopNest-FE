@@ -34,3 +34,11 @@ export const userCartItemURL = (userId: number, itemId: number) => {
 export const userCartCheckoutURL = (cartId: number) => {
   return `/api/user/payment/checkout-session/${cartId}`;
 };
+
+export const getAllWishlistSummaryURL = (userId: number) => {
+  return `/user/${userId}/wishlists/summary`;
+};
+
+export const getWishlistURL = (userId: number, wishlistId: number) => {
+  return `/user/${userId}/wishlists/${wishlistId}`;
+};
