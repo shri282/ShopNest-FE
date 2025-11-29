@@ -21,12 +21,11 @@ const WishlistSideBar: React.FC<WishlistSideBarProps> = ({
   setSelectedWishlist,
   selectedWishlist,
 }) => {
-  console.log(wishlistSummaries);
   
   return (
     <Box
       sx={{
-        width: 260,
+        width: 280,
         borderRight: "1px solid #e0e0e0",
         height: "100vh",
         p: 2,

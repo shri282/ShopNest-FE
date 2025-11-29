@@ -54,7 +54,7 @@ const Wishlist = () => {
                 selectedWishlist={selectedWishlist}
               />
             </Box>
-            <Box>
+            <Box sx={{ flex: 1 }}>
               {selectedWishlist ? (
                 <WishlistDetailView wishlistId={selectedWishlist.id} />
               ) : (
